@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "temp",
+    "target": "ES2016",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "newLine": "LF",
+    "strict": true,
+    "noEmit": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "useUnknownInCatchVariables": true,
+    "allowImportingTsExtensions": true,
+    "composite": true
+  },
+  "include": ["packages/*/src"],
+  "exclude": ["**/node_modules/**"]
+}

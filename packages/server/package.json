@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "description": "鱼鱼的B站直播姬H5插件服务端",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only ./src/app.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "ts-node-dev": "^1.1.8"
+  }
+}
