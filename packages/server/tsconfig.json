@@ -6,5 +6,6 @@
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "types": ["@types/node", "./global"]
-  }
+  },
+  "include": ["src"]
 }
