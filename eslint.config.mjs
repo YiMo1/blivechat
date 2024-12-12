@@ -13,6 +13,7 @@ export default tseslint.config(
   prettierConfig,
   {
     rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
       eqeqeq: 'error',
       'prefer-template': 'error',
     },
