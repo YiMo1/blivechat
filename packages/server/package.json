@@ -1,16 +1,16 @@
 {
   "name": "server",
   "description": "鱼鱼的B站直播姬H5插件服务端",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --transpile-only ./src/app.ts"
   },
   "dependencies": {
-    "express": "^4.21.2",
-    "shared": "workspace:*"
-  },
-  "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "shared": "workspace:*",
     "ts-node-dev": "^1.1.8"
   }
 }

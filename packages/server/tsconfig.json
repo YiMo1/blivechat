@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "composite": true,
-    "module": "CommonJS",
-    "moduleResolution": "node"
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "types": ["@types/node", "./global"]
   }
 }

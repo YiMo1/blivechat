@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "temp",
-    "target": "ES2016",
+    "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "newLine": "LF",
