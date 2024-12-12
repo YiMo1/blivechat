@@ -1,5 +1,6 @@
 {
   "name": "shared",
   "description": "鱼鱼的B站直播姬H5插件工具包",
-  "type": "module"
+  "type": "module",
+  "main": "./src/index.ts"
 }

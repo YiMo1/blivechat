@@ -46,6 +46,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      shared:
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
