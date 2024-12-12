@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import { resolve as _resolve } from 'node:path'
+import { router } from './router/index.ts'
 
 function resolve(...paths: string[]) {
   return _resolve(__dirname, ...paths)
@@ -13,16 +14,10 @@ function loadEnvFile() {
 
 function main() {
   loadEnvFile()
+  const app = express()
+  app.use(express.json())
+  app.use(router)
+  app.listen(3000)
 }
 
 main()
-
-const router = express.Router()
-
-router.get('/', (_, res) => {
-  res.send('hello')
-})
-
-const app = express()
-app.use(router)
-app.listen(3000)
