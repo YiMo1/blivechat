@@ -5,7 +5,7 @@ import { gameEnd, gameStart, heartbeat } from '../api/index.ts'
 export const router = express.Router()
 
 router.post('/start', async (req, res) => {
-  const code = req.body.code
+  const code = process.env.NODE_ENV === 'development' ? process.env.CODE : req.body.code
   if (!isString(code)) {
     res.send({ code: 4000, msg: '参数错误', data: null })
     return

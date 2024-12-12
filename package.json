@@ -5,7 +5,9 @@
   "packageManager": "pnpm@9.15.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm run --filter server dev",
+    "dev": "set NODE_ENV=development&& pnpm run -r dev",
+    "dev:client": "set NODE_ENV=development&& pnpm run --filter client dev",
+    "dev:server": "set NODE_ENV=development&& pnpm run --filter server dev",
     "check": "vue-tsc --incremental --noEmit",
     "lint": "eslint --fix --cache --cache-location \"temp/.eslintcache\" .",
     "format": "prettier --write --cache .",
