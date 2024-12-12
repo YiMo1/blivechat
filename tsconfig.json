@@ -17,6 +17,5 @@
     "allowImportingTsExtensions": true,
     "composite": true
   },
-  "include": ["packages/*/src"],
   "exclude": ["**/node_modules/**", "**/dist/**"]
 }

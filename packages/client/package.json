@@ -2,7 +2,13 @@
   "name": "client",
   "description": "鱼鱼的B站直播姬H5插件客户端",
   "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
   "dependencies": {
-    "shared": "workspace:*"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "shared": "workspace:*",
+    "vite": "^5.4.11",
+    "vue": "^3.5.13"
   }
 }
