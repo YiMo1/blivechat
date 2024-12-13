@@ -16,6 +16,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       eqeqeq: 'error',
       'prefer-template': 'error',
+      'no-else-return': ['error', { allowElseIf: false }],
     },
   },
 )
