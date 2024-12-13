@@ -31,6 +31,7 @@ export default tseslint.config(
       'prefer-template': 'error',
       'no-else-return': ['error', { allowElseIf: false }],
       'object-shorthand': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
 )
