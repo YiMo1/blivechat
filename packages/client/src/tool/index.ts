@@ -1,5 +1,6 @@
 import { isString } from 'shared'
 import { inflate } from 'pako'
+import type * as WS from '../types/index.d.ts'
 
 export const INFO_SESSION_STORAGE_KEY = 'BLIVECHAT_INFO'
 export const PROJECT_HEARBEAT_INTERVAL = 1000 * 20
@@ -17,6 +18,18 @@ export enum OPERATION {
 export enum VERSION {
   ACTUAL = 0,
   COMPRESSED = 2,
+}
+
+export enum GUARD_LEVEL {
+  NONE = 0,
+  GOVERNOR = 1,
+  ADMIRAL = 2,
+  CAPTAIN = 3,
+}
+
+export enum DM_TYPE {
+  NORMAL = 0,
+  EMOJI = 1,
 }
 
 export enum CMD {
@@ -51,7 +64,8 @@ export function makePacket(rawBody: object | string, operation: OPERATION, versi
   return packet
 }
 
-export async function parseWsMessage(rawData: Blob) {
+type Package = WS.SMSReplyPackage | WS.SMSReplyPackage | WS.AuthReplyPackage
+export async function parseWsMessage(rawData: Blob): Promise<Package> {
   const buffer = await rawData.arrayBuffer()
   const view = new DataView(buffer)
   const bodyBuffer = buffer.slice(16)
@@ -63,14 +77,14 @@ export async function parseWsMessage(rawData: Blob) {
     headerLength: view.getUint16(4),
     version,
     operation,
-    sequenceId: view.getUint32(12),
+    sequenceId: view.getUint32(12) as 0,
     body: operation === OPERATION.OP_HEARTBEAT_REPLY ? undefined : parseWsMessageBody(bodyBuffer, version),
   }
 }
 
 const textDecoder = new TextDecoder()
 
-export function parseWsMessageBody(body: ArrayBuffer, version: VERSION): any {
+export function parseWsMessageBody(body: ArrayBuffer, version: VERSION) {
   if (version === VERSION.ACTUAL) {
     return JSON.parse(textDecoder.decode(body))
   }
