@@ -6,7 +6,10 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@types/pako": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vueuse/core": "^12.0.0",
+    "pako": "^2.1.0",
     "shared": "workspace:*",
     "vite": "^5.4.11",
     "vue": "^3.5.13"
