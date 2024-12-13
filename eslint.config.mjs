@@ -17,6 +17,7 @@ export default tseslint.config(
       eqeqeq: 'error',
       'prefer-template': 'error',
       'no-else-return': ['error', { allowElseIf: false }],
+      'object-shorthand': 'error',
     },
   },
 )
