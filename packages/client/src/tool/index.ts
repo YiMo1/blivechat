@@ -56,14 +56,15 @@ export async function parseWsMessage(rawData: Blob) {
   const view = new DataView(buffer)
   const bodyBuffer = buffer.slice(16)
   const version = view.getUint16(6) as VERSION
+  const operation = view.getUint32(8)
 
   return {
     packetLength: view.getUint32(0),
     headerLength: view.getUint16(4),
-    version: version,
-    operation: view.getUint32(8),
+    version,
+    operation,
     sequenceId: view.getUint32(12),
-    body: parseWsMessageBody(bodyBuffer, version),
+    body: operation === OPERATION.OP_HEARTBEAT_REPLY ? undefined : parseWsMessageBody(bodyBuffer, version),
   }
 }
 
