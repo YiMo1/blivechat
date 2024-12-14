@@ -1,6 +1,6 @@
 {
   "name": "shared",
-  "description": "鱼鱼的B站直播姬H5插件工具包",
+  "description": "鱼鱼的B站弹幕姬工具包",
   "type": "module",
   "main": "./src/index.ts"
 }

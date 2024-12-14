@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "description": "鱼鱼的B站直播姬H5插件服务端",
+  "description": "鱼鱼的B站弹幕姬服务端",
   "type": "module",
   "scripts": {
     "dev": "ts-node-dev --transpile-only ./src/app.ts"
