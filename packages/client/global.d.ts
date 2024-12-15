@@ -5,3 +5,4 @@ declare module '*.vue' {
 }
 
 declare const BASE_URL: string
+declare type StrictOmit<T, K extends keyof T> = Omit<T, K>

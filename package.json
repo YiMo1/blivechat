@@ -49,12 +49,12 @@
     "packages/server/**/*.{ts,tsx,vue}": [
       "eslint --fix",
       "prettier --write",
-      "bash -c 'vue-tsc -p packages/server/tsconfig.json --noEmit'"
+      "bash -c 'vue-tsc -p packages/server/tsconfig.json'"
     ],
     "packages/client/**/*.{ts,tsx,vue}": [
       "eslint --fix",
       "prettier --write",
-      "bash -c 'vue-tsc -p packages/client/tsconfig.json --noEmit'"
+      "bash -c 'vue-tsc -p packages/client/tsconfig.json'"
     ],
     "packages/!(server|client)/**/*.{ts,tsx,vue}": [
       "eslint --fix",

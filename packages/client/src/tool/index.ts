@@ -45,6 +45,10 @@ export enum CMD {
   INTERACTION_END = 'LIVE_OPEN_PLATFORM_INTERACTION_END',
 }
 
+export enum GUARD_THEME {
+  DEFAULT = 1,
+}
+
 const textEncoder = new TextEncoder()
 
 export function makePacket(rawBody: object | string, operation: OPERATION, version: VERSION = VERSION.ACTUAL) {
@@ -61,7 +65,7 @@ export function makePacket(rawBody: object | string, operation: OPERATION, versi
   const packet = new Uint8Array(header.length + body.length)
   packet.set(header)
   packet.set(body, header.length)
-  return packet
+  return packet.buffer
 }
 
 type Package = WS.SMSReplyPackage | WS.SMSReplyPackage | WS.AuthReplyPackage
@@ -89,7 +93,7 @@ export function parseWsMessageBody(body: ArrayBuffer, version: VERSION) {
     return JSON.parse(textDecoder.decode(body))
   }
   if (version === VERSION.COMPRESSED) {
-    let buffer = inflate(body).buffer
+    let buffer = arrayBufferLikeToArrayBuffer(inflate(body).buffer)
     const pkgs: Blob[] = []
     while (buffer.byteLength > 0) {
       const view = new DataView(buffer)
@@ -101,4 +105,13 @@ export function parseWsMessageBody(body: ArrayBuffer, version: VERSION) {
     return pkgs.map((pkg) => parseWsMessage(pkg))
   }
   throw new Error('未知的version值')
+}
+
+export function arrayBufferLikeToArrayBuffer(arrayBufferLike: ArrayBufferLike) {
+  const byteLength = arrayBufferLike.byteLength
+  const targetBuffer = new ArrayBuffer(byteLength)
+  const targetView = new Uint8Array(targetBuffer)
+  const sourceView = new Uint8Array(arrayBufferLike)
+  targetView.set(sourceView)
+  return targetBuffer
 }

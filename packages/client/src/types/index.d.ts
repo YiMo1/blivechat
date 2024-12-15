@@ -129,7 +129,7 @@ export interface Guard {
   cmd: CMD.GUARD
   data: {
     user_info: UserInfo
-    guard_level: GUARD_LEVEL
+    guard_level: Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>
     guard_num: number
     guard_unit: string
     price: number

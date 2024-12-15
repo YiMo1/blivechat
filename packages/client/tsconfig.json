@@ -1,11 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": true,
-    "types": ["./global", "vite/client"],
+    "types": ["./global", "vite/client", "element-plus/global"],
     "jsxImportSource": "vue",
     "jsx": "preserve",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"]
 }

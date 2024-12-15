@@ -9,9 +9,11 @@
     "@types/pako": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vueuse/core": "^12.0.0",
+    "element-plus": "^2.9.1",
     "pako": "^2.1.0",
     "shared": "workspace:*",
     "vite": "^5.4.11",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   }
 }

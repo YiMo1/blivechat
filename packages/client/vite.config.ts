@@ -13,4 +13,9 @@ export default defineConfig({
   define: {
     BASE_URL: JSON.stringify(env.BASE_URL),
   },
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+    },
+  },
 })
