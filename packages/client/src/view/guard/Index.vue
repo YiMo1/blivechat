@@ -20,7 +20,6 @@ import { getConfig } from './tool.ts'
 import type { Guard } from './type.d.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
-import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const themeMap = {
