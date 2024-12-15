@@ -23,6 +23,9 @@ export default tseslint.config(
         parser: tsEslintParser,
       },
     },
+    rules: {
+      'no-undef': 'off',
+    },
   },
   {
     rules: {
