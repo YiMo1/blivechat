@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" id="guard-page">
     <video id="full-screen-cele" muted autoplay :src="url" disablePictureInPicture @ended="() => $emit('ended')" />
-    <img id="avatar" :guard-level="guard.level" :src="guard.uface" referrerpolicy="no-referrer" />
+    <img id="avatar" :guard-level="guard.level" :src="guard.uface" />
     <div id="name" :guard-level="guard.level">{{ guard.uname }}</div>
   </div>
 </template>
