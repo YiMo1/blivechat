@@ -1,14 +1,14 @@
 <template>
   <div id="guard-page" @animationend.self="() => $emit('ended')">
-    <img id="full-screen-cele" :src="map[guard.level]" />
-    <img id="avatar" :guard-level="guard.level" :src="guard.uface" />
-    <div id="name" :guard-level="guard.level">{{ guard.uname }}</div>
+    <img id="full-screen-cele" :src="map[guard.data.guard_level]" />
+    <img id="avatar" :guard-level="guard.data.guard_level" :src="guard.data.user_info.uface" />
+    <div id="name" :guard-level="guard.data.guard_level">{{ guard.data.user_info.uname }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { GUARD_LEVEL } from '@/tool/index.ts'
-import type { Guard } from '../type.d.ts'
+import type { Guard } from '@/types/index.ts'
 
 defineProps<{ guard: Guard }>()
 defineEmits<{ ended: [] }>()

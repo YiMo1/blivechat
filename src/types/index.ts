@@ -1,7 +1,7 @@
 import type { OPERATION, VERSION, CMD, HEADER_SIZE, GUARD_LEVEL, DM_TYPE } from '../tool/index.ts'
 
 export interface BasePackage {
-  headerLength: HEADER_SIZE
+  headerLength: typeof HEADER_SIZE
   operation: OPERATION
   packetLength: number
   /** @deprecated */
@@ -20,8 +20,20 @@ export interface HearbeatReplyPackage extends BasePackage {
 
 export interface SMSReplyPackage extends BasePackage {
   operation: OPERATION.OP_SEND_SMS_REPLY
-  body: Chat | Gift | SuperChat | Guard | Like | LiveStart | LiveEnd | EnterRoom | InteractionEnd | SuperChatOffline
+  body: Message
 }
+
+export type Message =
+  | Chat
+  | Gift
+  | SuperChat
+  | Guard
+  | Like
+  | LiveStart
+  | LiveEnd
+  | EnterRoom
+  | InteractionEnd
+  | SuperChatOffline
 
 export interface Chat {
   cmd: CMD.CHAT

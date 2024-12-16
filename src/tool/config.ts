@@ -1,5 +1,6 @@
 import type { RouteLocationNormalizedLoadedGeneric, LocationQueryValue } from 'vue-router'
-import { GUARD_THEME, isArray } from '@/tool/index.ts'
+import { isArray } from './general.ts'
+import { GUARD_THEME } from './contanst.ts'
 
 export function getConfig(route: RouteLocationNormalizedLoadedGeneric) {
   return {
