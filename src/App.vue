@@ -71,34 +71,34 @@ onBeforeMount(() => {
           store.all.push(message)
           switch (message.cmd) {
             case CMD.CHAT:
-              store.chats.push(message)
+              store.chats.push(message.data)
               break
             case CMD.ENTER_ROOM:
-              store.enterRooms.push(message)
+              store.enterRooms.push(message.data)
               break
             case CMD.GIFT:
-              store.gifts.push(message)
+              store.gifts.push(message.data)
               break
             case CMD.SUPER_CHAT:
-              store.superChats.push(message)
+              store.superChats.push(message.data)
               break
             case CMD.SUPER_CHAT_OFFLINE:
-              store.superChatOfflines.push(message)
+              store.superChatOfflines.push(message.data)
               break
             case CMD.LIKE:
-              store.likes.push(message)
+              store.likes.push(message.data)
               break
             case CMD.LIVE_END:
-              store.liveEnds.push(message)
+              store.liveEnds.push(message.data)
               break
             case CMD.LIVE_START:
-              store.liveStarts.push(message)
+              store.liveStarts.push(message.data)
               break
             case CMD.INTERACTION_END:
-              store.interactionEnds.push(message)
+              store.interactionEnds.push(message.data)
               break
             case CMD.GUARD:
-              store.guards.push(message)
+              store.guards.push(message.data)
               break
           }
           return

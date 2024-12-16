@@ -15,16 +15,16 @@ import type {
 } from '../types/index.d.ts'
 
 export const useMessageStore = defineStore('message', () => {
-  const guards = ref<Guard[]>([])
-  const chats = ref<Chat[]>([])
-  const gifts = ref<Gift[]>([])
-  const enterRooms = ref<EnterRoom[]>([])
-  const liveEnds = ref<LiveEnd[]>([])
-  const likes = ref<Like[]>([])
-  const liveStarts = ref<LiveStart[]>([])
-  const superChats = ref<SuperChat[]>([])
-  const superChatOfflines = ref<SuperChatOffline[]>([])
-  const interactionEnds = ref<InteractionEnd[]>([])
+  const guards = ref<Guard['data'][]>([])
+  const chats = ref<Chat['data'][]>([])
+  const gifts = ref<Gift['data'][]>([])
+  const enterRooms = ref<EnterRoom['data'][]>([])
+  const liveEnds = ref<LiveEnd['data'][]>([])
+  const likes = ref<Like['data'][]>([])
+  const liveStarts = ref<LiveStart['data'][]>([])
+  const superChats = ref<SuperChat['data'][]>([])
+  const superChatOfflines = ref<SuperChatOffline['data'][]>([])
+  const interactionEnds = ref<InteractionEnd['data'][]>([])
   const all = ref<Message[]>([])
 
   return {
