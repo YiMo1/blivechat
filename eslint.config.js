@@ -8,7 +8,7 @@ import vueEslintParser from 'vue-eslint-parser'
 import tsEslintParser from '@typescript-eslint/parser'
 
 export default tseslint.config(
-  { ignores: ['node_modules/*', 'temp/*', '**/dist'] },
+  { ignores: ['node_modules', 'temp', 'dist'] },
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,

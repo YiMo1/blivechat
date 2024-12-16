@@ -15,7 +15,14 @@
     "noUnusedParameters": true,
     "useUnknownInCatchVariables": true,
     "allowImportingTsExtensions": true,
-    "composite": true
+    "types": ["./global", "vite/client", "element-plus/global"],
+    "jsxImportSource": "vue",
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "exclude": ["**/node_modules/**", "**/dist/**"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -5,9 +5,8 @@
   "packageManager": "pnpm@9.15.0",
   "type": "module",
   "scripts": {
-    "dev": "set NODE_ENV=development&& pnpm run -r dev",
-    "dev:client": "set NODE_ENV=development&& pnpm run --filter client dev",
-    "dev:server": "set NODE_ENV=development&& pnpm run --filter server dev",
+    "dev": "vite",
+    "build": "vite build",
     "check": "vue-tsc --incremental --noEmit",
     "lint": "eslint --fix --cache --cache-location \"temp/.eslintcache\" .",
     "format": "prettier --write --cache .",
@@ -23,18 +22,32 @@
   "license": "MIT",
   "dependencies": {
     "@eslint/js": "^9.16.0",
+    "@types/express": "^5.0.0",
+    "@types/express-serve-static-core": "^5.0.2",
+    "@types/pako": "^2.0.3",
     "@typescript-eslint/parser": "^8.18.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vueuse/core": "^12.0.0",
     "axios": "^1.7.9",
+    "element-plus": "^2.9.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.32.0",
+    "express": "^4.21.2",
     "lint-staged": "^15.2.11",
+    "pako": "^2.1.0",
     "prettier": "^3.4.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "~5.6.0",
     "typescript-eslint": "^8.18.0",
+    "unplugin-auto-import": "^0.19.0",
+    "unplugin-vue-components": "^0.27.5",
+    "vite": "^5.4.11",
+    "vite-plugin-express": "^1.0.3",
+    "vue": "^3.5.13",
     "vue-eslint-parser": "^9.4.3",
+    "vue-router": "^4.5.0",
     "vue-tsc": "^2.1.10"
   },
   "simple-git-hooks": {
@@ -46,20 +59,10 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "packages/server/**/*.{ts,tsx,vue}": [
+    "*.{ts,tsx,vue}": [
       "eslint --fix",
       "prettier --write",
-      "bash -c 'vue-tsc -p packages/server/tsconfig.json'"
-    ],
-    "packages/client/**/*.{ts,tsx,vue}": [
-      "eslint --fix",
-      "prettier --write",
-      "bash -c 'vue-tsc -p packages/client/tsconfig.json'"
-    ],
-    "packages/!(server|client)/**/*.{ts,tsx,vue}": [
-      "eslint --fix",
-      "prettier --write",
-      "bash -c vue-tsc --noEmit"
+      "bash -c vue-tsc"
     ]
   }
 }

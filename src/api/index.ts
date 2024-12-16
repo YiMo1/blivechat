@@ -1,8 +1,9 @@
-import axios from 'axios'
+import _axios from 'axios'
 
-axios.defaults.baseURL = BASE_URL
-axios.defaults.headers.common.Accept = 'application/json'
-axios.defaults.headers.common['Content-Type'] = 'application/json'
+const axios = _axios.create({
+  baseURL: __BASE_URL__,
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+})
 
 export interface Info {
   game_info: { game_id: string }
