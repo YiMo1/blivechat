@@ -1,5 +1,5 @@
 <template>
-  <div id="guard-page" @animationend.self="() => $emit('ended')">
+  <div v-if="guard" id="guard-page" :key="guard.msg_id" @animationend.self="() => guards.shift()">
     <img id="full-screen-cele" :src="map[guard.guard_level]" />
     <img id="avatar" :guard-level="guard.guard_level" :src="guard.user_info.uface" />
     <div id="name" :guard-level="guard.guard_level">{{ guard.user_info.uname }}</div>
@@ -8,10 +8,12 @@
 
 <script setup lang="ts">
 import { GUARD_LEVEL } from '@/tool/index.ts'
-import type { Guard } from '@/types/index.ts'
+import { useMessageStore } from '@/store/index.ts'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
-defineProps<{ guard: Guard['data'] }>()
-defineEmits<{ ended: [] }>()
+const { guards } = storeToRefs(useMessageStore())
+const guard = computed(() => guards.value[0])
 
 const map = {
   [GUARD_LEVEL.GOVERNOR]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_1_loop.webp',

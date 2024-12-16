@@ -1,18 +1,12 @@
 <template>
-  <async-component
-    v-if="computedGuards[0]"
-    :key="computedGuards[0].msg_id"
-    :guard="computedGuards[0]"
-    @ended="() => computedGuards.shift()"
-  />
+  <async-component />
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, onBeforeMount, computed } from 'vue'
+import { defineAsyncComponent, onBeforeMount } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { GUARD_THEME, GUARD_LEVEL, getConfig } from '@/tool/index.ts'
 import { useRoute } from 'vue-router'
-import type { Guard } from '@/types/index.ts'
 
 const store = useMessageStore()
 const route = useRoute()
@@ -24,29 +18,26 @@ const AsyncComponent = defineAsyncComponent({
   loader: themeMap[theme],
 })
 
-const guards = ref<Guard['data'][]>([])
-const computedGuards = computed(() => (isTest ? guards.value : store.guards))
-
 onBeforeMount(() => {
   if (isTest) {
     const pushGuards = () => {
-      guards.value.push({
+      store.guards.push({
         user_info: {
-          uid: 0, //用户UID(已废弃，固定为0)
-          open_id: '39b8fedb-60a5-4e29-ac75-b16955f7e632', //用户唯一标识
-          uname: names[Math.floor(Math.random() * names.length)], //用户昵称
-          uface: 'https://static.hdslb.com/images/member/noface.gif', //用户头像
+          uid: 0,
+          open_id: '39b8fedb-60a5-4e29-ac75-b16955f7e632',
+          uname: names[Math.floor(Math.random() * names.length)],
+          uface: 'https://static.hdslb.com/images/member/noface.gif',
         },
-        guard_level: levels[Math.floor(Math.random() * levels.length)], //对应的大航海等级 1总督 2提督 3舰长
+        guard_level: levels[Math.floor(Math.random() * levels.length)],
         guard_num: 1,
-        guard_unit: '月', // (正常单位为“月”，如为其他内容，无视`guard_num`以本字段内容为准，例如`*3天`)
+        guard_unit: '月',
         price: 198000,
-        fans_medal_level: 24, //粉丝勋章等级
-        fans_medal_name: 'aw4ifC', //粉丝勋章名
-        fans_medal_wearing_status: false, //该房间粉丝勋章佩戴情况
+        fans_medal_level: 24,
+        fans_medal_name: 'aw4ifC',
+        fans_medal_wearing_status: false,
         timestamp: 1653555128,
         room_id: 460695,
-        msg_id: (id++).toString(), //消息唯一id
+        msg_id: (id++).toString(),
       })
     }
 
