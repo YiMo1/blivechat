@@ -1,6 +1,6 @@
 <template>
-  <div v-if="show" id="guard-page">
-    <video id="full-screen-cele" muted autoplay :src="url" disablePictureInPicture @ended="() => $emit('ended')" />
+  <div id="guard-page" @animationend.self="() => $emit('ended')">
+    <img id="full-screen-cele" :src="map[guard.level]" />
     <img id="avatar" :guard-level="guard.level" :src="guard.uface" />
     <div id="name" :guard-level="guard.level">{{ guard.uname }}</div>
   </div>
@@ -9,30 +9,15 @@
 <script setup lang="ts">
 import { GUARD_LEVEL } from '@/tool/index.ts'
 import type { Guard } from '../type.d.ts'
-import { ref } from 'vue'
 
-const props = defineProps<{ guard: Guard }>()
+defineProps<{ guard: Guard }>()
 defineEmits<{ ended: [] }>()
 
 const map = {
-  [GUARD_LEVEL.GOVERNOR]: () => import('@/assets/总督.mp4'),
-  [GUARD_LEVEL.ADMIRAL]: () => import('@/assets/提督.mp4'),
-  [GUARD_LEVEL.CAPTAIN]: () => import('@/assets/舰长.mp4'),
-} as const
-
-const show = ref(false)
-const url = ref<string>()
-
-async function loadVideo() {
-  url.value = (await map[props.guard.level]()).default
-  const video = document.createElement('video')
-  video.src = url.value
-  video.addEventListener('canplay', () => {
-    show.value = true
-  })
+  [GUARD_LEVEL.GOVERNOR]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_1_loop.webp',
+  [GUARD_LEVEL.ADMIRAL]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_2_loop.webp',
+  [GUARD_LEVEL.CAPTAIN]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/captain_test_loop_2.webp',
 }
-
-loadVideo()
 </script>
 
 <style>
