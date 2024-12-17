@@ -8,6 +8,7 @@ export const CONFIG_INJECTION_KEY: InjectionKey<{
   isTest: boolean
   code: string | null
   guardTheme: GUARD_THEME
+  chatTheme: CHAT_THEME
 }> = Symbol()
 
 export enum OPERATION {
@@ -49,5 +50,9 @@ export enum CMD {
 }
 
 export enum GUARD_THEME {
+  DEFAULT = 'default',
+}
+
+export enum CHAT_THEME {
   DEFAULT = 'default',
 }

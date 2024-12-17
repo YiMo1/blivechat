@@ -11,11 +11,7 @@ const store = useMessageStore()
 const themeMap = {
   [GUARD_THEME.DEFAULT]: () => import('./theme/Default.vue'),
 } as const
-const { guardTheme: theme, isTest } = inject(CONFIG_INJECTION_KEY, {
-  isTest: true,
-  code: null,
-  guardTheme: GUARD_THEME.DEFAULT,
-})
+const { guardTheme: theme, isTest } = inject(CONFIG_INJECTION_KEY) || { isTest: true, guardTheme: GUARD_THEME.DEFAULT }
 const AsyncComponent = defineAsyncComponent({
   loader: themeMap[theme],
 })
