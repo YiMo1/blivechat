@@ -1,7 +1,14 @@
+import type { InjectionKey } from 'vue'
+
 export const INFO_SESSION_STORAGE_KEY = 'BLIVECHAT_INFO'
 export const PROJECT_HEARBEAT_INTERVAL = 1000 * 20
 export const WS_HEARBEAT_INTERVAL = 1000 * 30
 export const HEADER_SIZE = 16
+export const CONFIG_INJECTION_KEY: InjectionKey<{
+  isTest: boolean
+  code: string | null
+  guardTheme: GUARD_THEME
+}> = Symbol()
 
 export enum OPERATION {
   OP_HEARTBEAT = 2,
@@ -42,5 +49,5 @@ export enum CMD {
 }
 
 export enum GUARD_THEME {
-  DEFAULT = 1,
+  DEFAULT = 'default',
 }

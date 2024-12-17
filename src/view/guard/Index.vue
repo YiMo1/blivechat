@@ -3,17 +3,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeMount } from 'vue'
+import { defineAsyncComponent, onBeforeMount, inject } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
-import { GUARD_THEME, GUARD_LEVEL, getConfig } from '@/tool/index.ts'
-import { useRoute } from 'vue-router'
+import { GUARD_THEME, GUARD_LEVEL, CONFIG_INJECTION_KEY } from '@/tool/index.ts'
 
 const store = useMessageStore()
-const route = useRoute()
 const themeMap = {
   [GUARD_THEME.DEFAULT]: () => import('./theme/Default.vue'),
 } as const
-const { theme, isTest } = getConfig(route)
+const { guardTheme: theme, isTest } = inject(CONFIG_INJECTION_KEY, {
+  isTest: true,
+  code: null,
+  guardTheme: GUARD_THEME.DEFAULT,
+})
 const AsyncComponent = defineAsyncComponent({
   loader: themeMap[theme],
 })

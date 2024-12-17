@@ -12,21 +12,35 @@ import {
   OPERATION,
   parseWsMessage,
   CMD,
-  getConfig,
+  CONFIG_INJECTION_KEY,
+  GUARD_THEME,
 } from '@/tool/index.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
-import { useRoute } from 'vue-router'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, provide } from 'vue'
 
 const store = useMessageStore()
-const route = useRoute()
-const { code, isTest } = getConfig(route)
 const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })
+const config = getConfig()
+provide(CONFIG_INJECTION_KEY, config)
+
+function getConfig() {
+  const search = new URLSearchParams(location.search)
+  let guardTheme = search.get('guardTheme')
+  if (!Array.prototype.includes.call(Object.values(GUARD_THEME), guardTheme)) {
+    guardTheme = GUARD_THEME.DEFAULT
+  }
+
+  return {
+    code: search.get('code'),
+    isTest: Boolean(Number(search.get('test'))),
+    guardTheme: guardTheme as GUARD_THEME,
+  }
+}
 
 async function start() {
-  if (!code) return
-  const { data } = await startGame(code)
+  if (!config.code) return
+  const { data } = await startGame(config.code)
   if (data.code !== 0) {
     ElMessage.error(data.message)
     return
@@ -54,8 +68,8 @@ const { resume: resumeHearbeat } = useIntervalFn(heartbeat, PROJECT_HEARBEAT_INT
 })
 
 onBeforeMount(() => {
-  if (!isTest) {
-    if (!code) {
+  if (!config.isTest) {
+    if (!config.code) {
       ElMessage.error('加载失败: 缺少身份码或不是测试环境')
       return
     }
