@@ -32,7 +32,6 @@ export default (env, mode) => {
       __ACCESS_KEY_SECRED__: JSON.stringify(env.ACCESS_KEY_SECRED),
       __PROJECT_ID__: JSON.stringify(env.PROJECT_ID),
       __CODE__: JSON.stringify(env.CODE),
-      __BASE_URL__: JSON.stringify(env.BASE_URL),
     },
     resolve: { alias: { '@': resolve('../src') } },
   })

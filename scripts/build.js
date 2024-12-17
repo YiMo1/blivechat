@@ -1,7 +1,7 @@
 // @ts-check
 import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
 import { resolve as _resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 import baseConfig from './baseConfig.js'
 import { nodeExternals } from 'rollup-plugin-node-externals'
 
@@ -11,11 +11,12 @@ function resolve(...paths) {
   return _resolve(__dirname, ...paths)
 }
 const env = loadEnv('production', resolve('../'), '')
+const url = new URL(env.URL)
 
 const clientConfig = mergeConfig(
   baseConfig(env, 'client'),
   defineConfig({
-    define: { __DEV__: JSON.stringify(false) },
+    define: { __DEV__: JSON.stringify(false), __BASE_URL__: JSON.stringify(url.origin + url.pathname) },
     build: { outDir: 'dist/client' },
   }),
 )
@@ -24,7 +25,11 @@ const serverConfig = mergeConfig(
   baseConfig(env, 'server'),
   defineConfig({
     plugins: [{ ...nodeExternals({ deps: false }), name: 'node-externals', enforce: 'pre' }],
-    define: { __DEV__: JSON.stringify(false) },
+    define: {
+      __DEV__: JSON.stringify(false),
+      __PORT__: JSON.stringify(Number(url.port)),
+      __BASE_URL__: JSON.stringify(url.pathname),
+    },
     build: {
       outDir: 'dist/server',
       lib: {

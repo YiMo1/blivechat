@@ -4,7 +4,6 @@ import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import baseConfig from './baseConfig.js'
 import express from 'vite-plugin-express'
-import { json } from 'express'
 
 const __dirname = fileURLToPath(dirname(import.meta.url))
 /** @param {string[]} paths */
@@ -16,10 +15,8 @@ const env = loadEnv('development', resolve('../'), '')
 const config = mergeConfig(
   baseConfig(env, 'client'),
   defineConfig({
-    plugins: [
-      express({ middlewareFiles: 'src/server/router.ts', defaultMiddlewares: [json()], prefixUrl: env.BASE_URL }),
-    ],
-    define: { __DEV__: JSON.stringify(true) },
+    plugins: [express({ middlewareFiles: 'src/server/router.ts' })],
+    define: { __DEV__: JSON.stringify(true), __BASE_URL__: JSON.stringify('/api') },
   }),
 )
 
