@@ -1,5 +1,6 @@
 export * from './general.ts'
 export * from './contanst.ts'
+export * from './mock.ts'
 import { isString } from './general.ts'
 import { HEADER_SIZE, VERSION, OPERATION } from './contanst.ts'
 import { inflate } from 'pako'
