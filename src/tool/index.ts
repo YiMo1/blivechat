@@ -4,7 +4,6 @@ import { isString } from './general.ts'
 import { HEADER_SIZE, VERSION, OPERATION } from './contanst.ts'
 import { inflate } from 'pako'
 import type * as WS from '../types/index.d.ts'
-import crypto from 'crypto'
 
 const textEncoder = new TextEncoder()
 
@@ -71,33 +70,4 @@ export function arrayBufferLikeToArrayBuffer(arrayBufferLike: ArrayBufferLike) {
   const sourceView = new Uint8Array(arrayBufferLike)
   targetView.set(sourceView)
   return targetBuffer
-}
-
-export function getMd5Content(data: crypto.BinaryLike) {
-  return crypto.createHash('md5').update(data).digest('hex')
-}
-
-export function getHmacSha256Content(data: crypto.BinaryLike) {
-  return crypto.createHmac('sha256', __ACCESS_KEY_SECRED__).update(data).digest('hex')
-}
-
-export function getEncodeHeader(body = {}) {
-  const timestamp = parseInt(`${Date.now()}`)
-  const nonce = parseInt(`${Math.random() * 100000000}`) + timestamp
-  const header = {
-    'x-bili-accesskeyid': __ACCESS_KEY_ID__,
-    'x-bili-content-md5': getMd5Content(JSON.stringify(body)),
-    'x-bili-signature-method': 'HMAC-SHA256',
-    'x-bili-signature-nonce': `${nonce}`,
-    'x-bili-signature-version': '1.0',
-    'x-bili-timestamp': timestamp,
-  }
-  const data: string[] = []
-  for (const [key, value] of Object.entries(header)) {
-    data.push(`${key}:${value}`)
-  }
-  return {
-    ...header,
-    Authorization: getHmacSha256Content(data.join('\n')),
-  }
 }

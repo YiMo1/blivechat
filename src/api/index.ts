@@ -1,6 +1,6 @@
-import _axios from 'axios'
+import axios from 'axios'
 
-const axios = _axios.create({
+const instance = axios.create({
   baseURL: __BASE_URL__,
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 })
@@ -19,13 +19,13 @@ interface Result<T = object> {
 }
 
 export function startGame(code: string) {
-  return axios.post<Result<Info>>('/start', { code })
+  return instance.post<Result<Info>>('/start', { code })
 }
 
 export function endGame(gameId: string) {
-  return axios.post<Result>('/end', { gameId })
+  return instance.post<Result>('/end', { gameId })
 }
 
 export function keepHeartbeat(gameId: string) {
-  return axios.post<Result>('/heartbeat', { gameId })
+  return instance.post<Result>('/heartbeat', { gameId })
 }
