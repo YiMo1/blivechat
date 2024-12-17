@@ -1,30 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type {
-  Guard,
-  Message,
-  Chat,
-  Gift,
-  EnterRoom,
-  Like,
-  LiveEnd,
-  LiveStart,
-  SuperChat,
-  SuperChatOffline,
-  InteractionEnd,
-} from '../types/index.d.ts'
+import type { Guard, Message, Chat, Gift, Like, SuperChat } from '../types/index.d.ts'
+
+export type Chats = Guard | Chat | Gift | Like | SuperChat
 
 export const useMessageStore = defineStore('message', () => {
   const guards = ref<Guard['data'][]>([])
-  const chats = ref<Chat['data'][]>([])
+  const chats = ref<Chats[]>([])
   const gifts = ref<Gift['data'][]>([])
-  const enterRooms = ref<EnterRoom['data'][]>([])
-  const liveEnds = ref<LiveEnd['data'][]>([])
   const likes = ref<Like['data'][]>([])
-  const liveStarts = ref<LiveStart['data'][]>([])
   const superChats = ref<SuperChat['data'][]>([])
-  const superChatOfflines = ref<SuperChatOffline['data'][]>([])
-  const interactionEnds = ref<InteractionEnd['data'][]>([])
   const all = ref<Message[]>([])
 
   return {
@@ -33,11 +18,6 @@ export const useMessageStore = defineStore('message', () => {
     chats,
     gifts,
     likes,
-    enterRooms,
-    liveEnds,
-    liveStarts,
-    superChatOfflines,
     superChats,
-    interactionEnds,
   }
 })
