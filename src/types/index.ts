@@ -168,6 +168,7 @@ export interface Like {
     fans_medal_wearing_status: boolean
     fans_medal_name: string
     fans_medal_level: number
+    msg_id: string
   }
 }
 
