@@ -75,10 +75,16 @@ watch(
   scroll-behavior: smooth;
   font-size: 16px;
 }
+.container > ul {
+  position: relative;
+}
+.container > ul > li {
+  width: 100%;
+  margin-bottom: var(--chat_gap);
+}
 /* 普通弹幕 */
 .container .chat {
   display: flex;
-  margin-bottom: var(--chat_gap);
 }
 .chat .avatar {
   width: 30px;
@@ -117,7 +123,6 @@ watch(
 /* 上舰弹幕 */
 .container .guard {
   display: flex;
-  margin-bottom: var(--chat_gap);
   background-color: #0f9d58;
   padding: 6px 12px;
   height: 50px;
@@ -140,7 +145,6 @@ watch(
 /* 礼物弹幕 */
 .container .gift {
   border-radius: 4px;
-  margin-bottom: var(--chat_gap);
   overflow: hidden;
   color: #fff;
 }
@@ -168,15 +172,19 @@ watch(
   padding: 4px 8px;
   font-size: 14px;
 }
+/* 入场离场动画 */
 .chat-move,
 .chat-enter-active,
 .chat-leave-active {
   transition: all 0.3s ease;
 }
-.chat-enter-from,
-.chat-leave-to {
+.chat-enter-from {
   opacity: 0;
   transform: translateX(-100%);
+}
+.chat-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
 }
 .chat-leave-active {
   position: absolute;
