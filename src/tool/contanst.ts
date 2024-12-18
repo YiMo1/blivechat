@@ -9,7 +9,9 @@ export const CONFIG_INJECTION_KEY: InjectionKey<{
   code: string | null
   guardTheme: GUARD_THEME
   chatTheme: CHAT_THEME
+  chatRetainedQuantity: number
 }> = Symbol()
+export const DEFUALT_CHAT_RETAINED_QUANTITY = 100
 
 export enum OPERATION {
   OP_HEARTBEAT = 2,

@@ -15,6 +15,7 @@ import {
   CONFIG_INJECTION_KEY,
   GUARD_THEME,
   CHAT_THEME,
+  DEFUALT_CHAT_RETAINED_QUANTITY,
 } from '@/tool/index.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
@@ -35,12 +36,17 @@ function getConfig() {
   if (!Array.prototype.includes.call(Object.values(CHAT_THEME), chatTheme)) {
     chatTheme = CHAT_THEME.DEFAULT
   }
+  let chatRetainedQuantity = parseInt(search.get('chatRetainedQuantity') || '')
+  if (Number.isNaN(chatRetainedQuantity) || chatRetainedQuantity < 1) {
+    chatRetainedQuantity = DEFUALT_CHAT_RETAINED_QUANTITY
+  }
 
   return {
     code: search.get('code'),
     isTest: Boolean(Number(search.get('test'))),
     guardTheme: guardTheme as GUARD_THEME,
     chatTheme: chatTheme as CHAT_THEME,
+    chatRetainedQuantity,
   }
 }
 
