@@ -1,88 +1,88 @@
 <template>
   <div class="container">
-    <div class="super_chat_wrapper">
-      <transition-group name="super_chat" tag="ul" class="super_chat_container">
-        <template v-for="superChat in superChats" :key="superChat.msg_id">
-          <li class="tag" @click="() => expandSuperChat(superChat)">
-            <div class="backgroud">
-              <div
-                class="progress"
-                :style="{ 'animation-duration': `${superChat.end_time - superChat.start_time}ms` }"
-                @animationend="() => delSuperChat(superChat)"
-              />
+    <transition-group name="super_chat" tag="ul" class="super_chat_container">
+      <template v-for="superChat in superChats.toReversed()" :key="superChat.msg_id">
+        <li class="tag" @click="() => expandSuperChat(superChat)">
+          <div class="backgroud">
+            <div
+              class="progress"
+              :style="{ 'animation-duration': `${superChat.end_time - superChat.start_time}ms` }"
+              @animationend="() => delSuperChat(superChat)"
+            />
+          </div>
+          <img class="avatar" :src="superChat.uface" />
+          <span>CN￥{{ superChat.rmb }}</span>
+        </li>
+      </template>
+    </transition-group>
+    <transition-group id="chat_container" name="chat" tag="ul" class="chat_container">
+      <template v-for="chat in chats" :key="chat.data.msg_id">
+        <li v-if="chat.cmd === CMD.CHAT" class="chat">
+          <img class="avatar" :src="chat.data.uface" />
+          <div>
+            <div class="name">
+              <span>{{ chat.data.uname }}</span>
+              <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+              </div>
             </div>
-            <img class="avatar" :src="superChat.uface" />
-            <span>CN￥{{ superChat.rmb }}</span>
-          </li>
-        </template>
-      </transition-group>
-    </div>
-    <div ref="chatWrapper" class="chat_wrapper">
-      <transition-group name="chat" tag="ul" class="chat_container">
-        <template v-for="chat in chats" :key="chat.data.msg_id">
-          <li v-if="chat.cmd === CMD.CHAT" class="chat">
+            <div>
+              <span v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg">{{ chat.data.msg }}</span>
+              <img v-else class="emoji" :src="chat.data.emoji_img_url" />
+            </div>
+          </div>
+        </li>
+        <li v-else-if="chat.cmd === CMD.GUARD" class="guard">
+          <img class="avatar" :src="chat.data.user_info.uface" />
+          <div>
+            <div class="name">
+              <span>{{ chat.data.user_info.uname }}</span>
+            </div>
+            <div class="msg">欢迎{{ chat.data.user_info.uname }}上舰</div>
+          </div>
+        </li>
+        <li v-else-if="chat.cmd === CMD.GIFT" class="gift">
+          <div class="info">
             <img class="avatar" :src="chat.data.uface" />
             <div>
               <div class="name">
                 <span>{{ chat.data.uname }}</span>
-                <div v-if="chat.data.fans_medal_wearing_status" class="medal">
-                  <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
-                  <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
-                </div>
               </div>
-              <div>
-                <span v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg">{{ chat.data.msg }}</span>
-                <img v-else class="emoji" :src="chat.data.emoji_img_url" />
-              </div>
+              <div class="price">CN￥{{ (chat.data.price / 1000).toFixed(1) }}</div>
             </div>
-          </li>
-          <li v-else-if="chat.cmd === CMD.GUARD" class="guard">
-            <img class="avatar" :src="chat.data.user_info.uface" />
+          </div>
+          <div class="msg">投喂&ensp;{{ chat.data.gift_name }}×{{ chat.data.gift_num }}</div>
+        </li>
+        <li v-else-if="chat.cmd === CMD.SUPER_CHAT" class="super_chat">
+          <div class="info">
+            <img class="avatar" :src="chat.data.uface" />
             <div>
               <div class="name">
-                <span>{{ chat.data.user_info.uname }}</span>
+                <span>{{ chat.data.uname }}</span>
               </div>
-              <div class="msg">欢迎{{ chat.data.user_info.uname }}上舰</div>
+              <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
             </div>
-          </li>
-          <li v-else-if="chat.cmd === CMD.GIFT" class="gift">
-            <div class="info">
-              <img class="avatar" :src="chat.data.uface" />
-              <div>
-                <div class="name">
-                  <span>{{ chat.data.uname }}</span>
-                </div>
-                <div class="price">CN￥{{ (chat.data.price / 1000).toFixed(1) }}</div>
-              </div>
-            </div>
-            <div class="msg">投喂&ensp;{{ chat.data.gift_name }}×{{ chat.data.gift_num }}</div>
-          </li>
-          <li v-else-if="chat.cmd === CMD.SUPER_CHAT" class="super_chat">
-            <div class="info">
-              <img class="avatar" :src="chat.data.uface" />
-              <div>
-                <div class="name">
-                  <span>{{ chat.data.uname }}</span>
-                </div>
-                <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
-              </div>
-            </div>
-            <div class="msg">{{ chat.data.message }}</div>
-          </li>
-        </template>
-      </transition-group>
-    </div>
+          </div>
+          <div class="msg">{{ chat.data.message }}</div>
+        </li>
+      </template>
+    </transition-group>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
 import { CMD, DM_TYPE, emptyArrowFunction } from '@/tool/index.ts'
 
 const { chats, superChats } = storeToRefs(useMessageStore())
-const chatWrapper = ref<HTMLDivElement>()
+const chatContainer = ref<HTMLDivElement | null>(null)
+
+onMounted(() => {
+  chatContainer.value = document.querySelector<HTMLDivElement>('#chat_container')
+})
 
 type SuperChat = (typeof superChats.value)[number]
 
@@ -101,8 +101,8 @@ function delSuperChat(superChat: SuperChat) {
 watch(
   () => chats.value[chats.value.length - 1],
   () => {
-    if (chatWrapper.value) {
-      chatWrapper.value.scrollTop = chatWrapper.value?.scrollHeight
+    if (chatContainer.value) {
+      chatContainer.value.scrollTop = chatContainer.value?.scrollHeight
     }
   },
   { flush: 'post' },
@@ -116,31 +116,24 @@ watch(
   font-size: 16px;
   position: relative;
 }
-.chat_wrapper {
+
+.chat_container {
   width: 100%;
-  height: 100%;
-  overflow-x: hidden;
+  bottom: 0;
+  position: absolute;
+  max-height: 100%;
   overflow-y: auto;
-  padding-bottom: 20px;
+  padding-top: 150px;
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-.chat_container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 12px;
-  position: relative;
-  min-height: 100%;
 
   .chat,
   .gift,
   .guard,
   .super_chat {
     width: 100%;
-    flex: 0 0 auto;
+    margin-bottom: 12px;
   }
 
   .chat {
@@ -284,26 +277,15 @@ watch(
   }
 }
 
-.super_chat_wrapper {
+.super_chat_container {
   position: absolute;
-  width: 100%;
   top: 15px;
   left: 0;
   right: 0;
   z-index: 10;
+  max-width: 100%;
   overflow-x: auto;
-  overflow-y: hidden;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.super_chat_container {
-  width: 100%;
-  display: flex;
-  gap: 8px;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
+  text-wrap: nowrap;
   font-size: 14px;
   &::-webkit-scrollbar {
     display: none;
@@ -329,17 +311,17 @@ watch(
   $gap: 3px;
   .tag {
     height: $tag-height;
-    border-radius: $tag-height / 2;
+    border-radius: calc($tag-height / 2);
     min-width: 100px;
     color: #fff;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     padding-left: $gap;
     padding-right: 12px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    flex: 0 0 auto;
+    margin-right: 8px;
   }
 
   $avatar-height: $tag-height - $gap * 2;
@@ -370,9 +352,10 @@ watch(
 }
 .super_chat-leave-to {
   opacity: 0;
+  transform: translateY(-120%);
 }
 .super_chat-leave-active {
-  position: absolute;
+  position: absolute !important;
 }
 
 .chat-move,
@@ -386,7 +369,7 @@ watch(
 }
 .chat-leave-to {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(-150%);
 }
 .chat-leave-active {
   position: absolute;
