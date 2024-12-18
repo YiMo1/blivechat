@@ -6,6 +6,7 @@
 import { defineAsyncComponent, onBeforeMount, inject } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { GUARD_THEME, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
+import { useIntervalFn } from '@vueuse/core'
 
 const store = useMessageStore()
 const themeMap = {
@@ -19,9 +20,16 @@ const AsyncComponent = defineAsyncComponent({
 onBeforeMount(() => {
   if (isTest) {
     store.guards.push(mockGuard().data)
-    setInterval(() => {
+    const { pause, resume } = useIntervalFn(() => {
       store.guards.push(mockGuard().data)
     }, 1000 * 7)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        resume()
+      } else if (document.visibilityState === 'hidden') {
+        pause()
+      }
+    })
   }
 })
 </script>
