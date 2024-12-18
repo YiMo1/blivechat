@@ -109,12 +109,12 @@ const giftNames = [
   '萌兔火箭',
 ]
 
-function random(arr: any[]) {
+function randomByArray(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
 function randomGuardLevel(all: boolean) {
-  return random(all ? allGuardLevels : guardLevels)
+  return randomByArray(all ? allGuardLevels : guardLevels)
 }
 
 function randomMedalLevel() {
@@ -132,19 +132,19 @@ export function mockChat(): Chat {
     cmd: CMD.CHAT,
     data: {
       dm_type: r ? DM_TYPE.EMOJI : DM_TYPE.NORMAL,
-      emoji_img_url: random(emojis),
+      emoji_img_url: randomByArray(emojis),
       fans_medal_level: randomMedalLevel(),
-      fans_medal_name: random(medalNames),
+      fans_medal_name: randomByArray(medalNames),
       guard_level: randomGuardLevel(true),
       fans_medal_wearing_status: !!r,
-      uname: random(names),
+      uname: randomByArray(names),
       open_id: '',
       uid: 0,
-      uface: random(avatars),
+      uface: randomByArray(avatars),
       room_id: 0,
       timestamp: 0,
       msg_id: (id++).toString(),
-      msg: random(msgs),
+      msg: randomByArray(msgs),
     },
   }
 }
@@ -154,12 +154,12 @@ export function mockGuard(): Guard {
   return {
     cmd: CMD.GUARD,
     data: {
-      user_info: { open_id: '', uid: 0, uface: random(avatars), uname: random(names) },
+      user_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
       guard_num: 1,
       guard_unit: '月',
       price: randomPositiveInteger(1000000),
       fans_medal_level: randomMedalLevel(),
-      fans_medal_name: random(medalNames),
+      fans_medal_name: randomByArray(medalNames),
       guard_level: randomGuardLevel(false),
       fans_medal_wearing_status: !!r,
       room_id: 0,
@@ -175,18 +175,18 @@ export function mockGift(): Gift {
     cmd: CMD.GIFT,
     data: {
       uid: 0,
-      gift_name: random(giftNames),
+      gift_name: randomByArray(giftNames),
       combo_info: { combo_base_num: 0, combo_id: '', combo_count: 0, combo_timeout: 0 },
       combo_gift: false,
       paid: !!r,
-      uface: random(avatars),
-      uname: random(names),
+      uface: randomByArray(avatars),
+      uname: randomByArray(names),
       price: randomPositiveInteger(100000),
       r_price: randomPositiveInteger(100000),
-      anchor_info: { open_id: '', uid: 0, uface: random(avatars), uname: random(names) },
+      anchor_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
       open_id: '',
       fans_medal_level: randomMedalLevel(),
-      fans_medal_name: random(medalNames),
+      fans_medal_name: randomByArray(medalNames),
       fans_medal_wearing_status: !!r,
       guard_level: randomGuardLevel(false),
       room_id: 0,
@@ -207,17 +207,17 @@ export function mockSuperChat(): SuperChat {
       room_id: 0,
       uid: 0,
       open_id: '',
-      uname: random(names),
-      uface: random(avatars),
+      uname: randomByArray(names),
+      uface: randomByArray(avatars),
       message_id: id++,
-      message: random(msgs),
+      message: randomByArray(msgs),
       rmb: randomPositiveInteger(5000),
       timestamp: 0,
       start_time: Date.now(),
       end_time: Date.now() + randomPositiveInteger(1000 * 600) + 1000 * 60,
       guard_level: randomGuardLevel(true),
       fans_medal_level: randomMedalLevel(),
-      fans_medal_name: random(medalNames),
+      fans_medal_name: randomByArray(medalNames),
       fans_medal_wearing_status: !!r,
       msg_id: (id++).toString(),
     },
@@ -229,16 +229,16 @@ export function mockLike(): Like {
   return {
     cmd: CMD.LIKE,
     data: {
-      uname: random(names),
+      uname: randomByArray(names),
       uid: 0,
       open_id: '',
-      uface: random(avatars),
+      uface: randomByArray(avatars),
       timestamp: 0,
       room_id: 0,
       like_text: '为主播点赞了',
       like_count: randomPositiveInteger(20),
       fans_medal_level: randomMedalLevel(),
-      fans_medal_name: random(medalNames),
+      fans_medal_name: randomByArray(medalNames),
       fans_medal_wearing_status: !!r,
       msg_id: (id++).toString(),
     },
