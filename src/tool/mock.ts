@@ -1,10 +1,6 @@
 import { CMD, DM_TYPE, GUARD_LEVEL } from './contanst.ts'
 import type { Chat, Guard, Gift, SuperChat, Like } from '@/types/index.ts'
 
-function random(arr: any[]) {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
-
 let id = 0
 const avatars = ['https://static.hdslb.com/images/member/noface.gif']
 const names = [
@@ -24,23 +20,39 @@ const names = [
   '小鸟游六花',
   '雪之下雪乃',
   '宫园薰',
+  '立华奏',
+  '楪祈',
+  '冰雪殇璃陌梦',
+  '一之宫光',
+  '希洛梦',
+  '洛琪希',
+  '犬夜叉',
+  '江流儿',
+  '散华礼弥',
+  '蜡笔小新',
 ]
 const guardLevels = [GUARD_LEVEL.ADMIRAL, GUARD_LEVEL.CAPTAIN, GUARD_LEVEL.GOVERNOR]
-const allGuardLevels = [GUARD_LEVEL.ADMIRAL, GUARD_LEVEL.CAPTAIN, GUARD_LEVEL.GOVERNOR, GUARD_LEVEL.NONE]
-function randomGuardLevel(all: boolean) {
-  return random(all ? allGuardLevels : guardLevels)
-}
-
-function randomMedalLevel() {
-  return Math.floor(Math.random() * 40) + 1
-}
-
-function randomPositiveInteger(max: number) {
-  max = max < 1 ? 1 : parseInt(`${max}`)
-  return Math.floor(Math.random() * max) + 1
-}
-
-const medalNames = ['衅颖', '拉雪', '牛智杰', '辉雨涵', '佴帅', '节志明', '茆斌', '国国辉', '慕熙瑶', '畅茗泽']
+const allGuardLevels = [...guardLevels, GUARD_LEVEL.NONE]
+const medalNames = [
+  '宠鱼',
+  '旧尘恋',
+  '酸财鱼',
+  '流酱',
+  '易某',
+  '傲娇云',
+  '宝贝奈',
+  '烤地苽',
+  '真迪靓',
+  '滴星子',
+  '极温柔',
+  '你的花',
+  '好里谱',
+  '小堡呗',
+  '心愉悦',
+  '鲨露露',
+  '爱团叽',
+  '护苏包',
+]
 const emojis = [
   'http://i0.hdslb.com/bfs/emote/4cd1024d0c2ecee93224477946656d32c1705ccf.png',
   'http://i0.hdslb.com/bfs/emote/7a4cb0b644214d476ce198ddf6a7a0aa31311199.png',
@@ -58,7 +70,61 @@ const msgs = [
   '我忘不掉夏小姐了，如果不是知道了夏小姐，说不定我在这个世界没有留恋了',
   '二次元是不会背叛你的',
   '中嘞',
+  '不要误会，我不是针对你，我是说在座各位都是垃圾。',
+  '放了那个女孩。',
+  '我读书少，你不要骗我。',
+  '我全都要。',
+  '做人没有梦想和咸鱼有什么分别。',
+  '我话讲完，谁赞成？谁反对？',
+  '嘴上全是主义，心里全是生意',
+  '我从未见过如此厚颜无耻之人。',
+  '二营长，你TN的意大利炮呢？',
+  '你说的这个朋友到底是不是你自己。',
+  '我问你这瓜保熟吗？',
+  '一切都是时臣的错',
+  '教练，我想打篮球',
+  '真好啊，这锻炼到刚好的白大腿，这腿我能玩一年，实在不错',
+  '男人变态有什么错',
+  '今天的风儿甚为喧嚣啊',
+  '但是，我拒绝',
+  '我秃了，也变强了',
+  '我不做人了，JOJO！',
+  '我是要成为海贼王的男人',
+  '我喜欢你，比这地球上任何一个人都要喜欢！',
 ]
+const giftNames = [
+  '风暴节奏',
+  '粉丝团灯牌',
+  '小花花',
+  'flag',
+  '人气票',
+  '这个好哎',
+  '666',
+  '纯白花嫁',
+  '蔷薇恋语',
+  '泰酷辣',
+  '前方高能',
+  '告白花束',
+  '激素跑车',
+  '萌兔火箭',
+]
+
+function random(arr: any[]) {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+function randomGuardLevel(all: boolean) {
+  return random(all ? allGuardLevels : guardLevels)
+}
+
+function randomMedalLevel() {
+  return Math.floor(Math.random() * 40) + 1
+}
+
+function randomPositiveInteger(max: number) {
+  max = max < 1 ? 1 : parseInt(`${max}`)
+  return Math.floor(Math.random() * max) + 1
+}
 
 export function mockChat(): Chat {
   const r = Math.round(Math.random())
@@ -103,7 +169,6 @@ export function mockGuard(): Guard {
   }
 }
 
-const giftNames = ['冰激凌', '巧克力', '风暴节奏', '粉丝团灯牌', '跑车', '火箭', '飞机']
 export function mockGift(): Gift {
   const r = Math.round(Math.random())
   return {
