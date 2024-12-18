@@ -34,5 +34,10 @@ export default (env, mode) => {
       __CODE__: JSON.stringify(env.CODE),
     },
     resolve: { alias: { '@': resolve('../src') } },
+    css: {
+      preprocessorOptions: {
+        scss: { api: 'modern-compiler' },
+      },
+    },
   })
 }
