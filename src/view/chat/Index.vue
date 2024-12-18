@@ -11,7 +11,9 @@ import {
   mockChat,
   mockGuard,
   mockGift,
+  mockSuperChat,
   DEFUALT_CHAT_RETAINED_QUANTITY,
+  CMD,
 } from '@/tool/index.ts'
 import { useIntervalFn } from '@vueuse/core'
 
@@ -31,6 +33,21 @@ const {
 const AsyncComponent = defineAsyncComponent({
   loader: themeMap[theme],
 })
+const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
+function mockChats() {
+  return mockFns[Math.floor(Math.random() * mockFns.length)]()
+}
+const { pause, resume } = useIntervalFn(
+  () => {
+    const chat = mockChats()
+    if (chat.cmd === CMD.SUPER_CHAT) {
+      store.superChats.push(chat.data)
+    }
+    store.chats.push(chat)
+  },
+  1000 / 1,
+  { immediate: false },
+)
 
 watch(
   () => store.chats.length,
@@ -43,13 +60,7 @@ watch(
 
 onBeforeMount(() => {
   if (isTest) {
-    const mockFns = [mockChat, mockGuard, mockGift]
-    const mockChats = () => {
-      return mockFns[Math.floor(Math.random() * mockFns.length)]()
-    }
-    const { pause, resume } = useIntervalFn(() => {
-      store.chats.push(mockChats())
-    }, 1000 / 1)
+    resume()
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         resume()

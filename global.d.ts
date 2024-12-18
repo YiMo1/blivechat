@@ -13,3 +13,4 @@ declare const __BASE_URL__: string
 declare const __PORT__: number
 declare type StrictOmit<T, K extends keyof T> = Omit<T, K>
 declare const ElMessage: typeof import('element-plus').ElMessage
+declare const ElMessageBox: typeof import('element-plus').ElMessageBox
