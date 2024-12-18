@@ -121,9 +121,13 @@ function randomMedalLevel() {
   return Math.floor(Math.random() * 40) + 1
 }
 
-function randomPositiveInteger(max: number) {
-  max = max < 1 ? 1 : parseInt(`${max}`)
-  return Math.floor(Math.random() * max) + 1
+function randomNumber(options: { max?: number; min?: number; interger?: boolean } = {}) {
+  const { min = 0, max = 1, interger = true } = options
+  if (min > max) {
+    throw new Error('最小值不能大于最大值')
+  }
+  const n = Math.random() * (max - min) + min
+  return interger ? Math.round(n) : n
 }
 
 export function mockChat(): Chat {
@@ -157,7 +161,7 @@ export function mockGuard(): Guard {
       user_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
       guard_num: 1,
       guard_unit: '月',
-      price: randomPositiveInteger(1000000),
+      price: randomNumber({ max: 1000 * 20000, min: 1000 * 100 }),
       fans_medal_level: randomMedalLevel(),
       fans_medal_name: randomByArray(medalNames),
       guard_level: randomGuardLevel(false),
@@ -181,8 +185,8 @@ export function mockGift(): Gift {
       paid: !!r,
       uface: randomByArray(avatars),
       uname: randomByArray(names),
-      price: randomPositiveInteger(100000),
-      r_price: randomPositiveInteger(100000),
+      price: randomNumber({ max: 1000 * 1000, min: 1000 * 0.1 }),
+      r_price: randomNumber({ max: 1000 * 1000, min: 1000 * 0.1 }),
       anchor_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
       open_id: '',
       fans_medal_level: randomMedalLevel(),
@@ -194,7 +198,7 @@ export function mockGift(): Gift {
       msg_id: (id++).toString(),
       gift_id: 0,
       gift_icon: '',
-      gift_num: randomPositiveInteger(100),
+      gift_num: randomNumber({ max: 100, min: 1 }),
     },
   }
 }
@@ -211,10 +215,10 @@ export function mockSuperChat(): SuperChat {
       uface: randomByArray(avatars),
       message_id: id++,
       message: randomByArray(msgs),
-      rmb: randomPositiveInteger(5000),
+      rmb: randomNumber({ max: 5000, min: 1 }),
       timestamp: 0,
       start_time: Date.now(),
-      end_time: Date.now() + randomPositiveInteger(1000 * 600) + 1000 * 60,
+      end_time: Date.now() + randomNumber({ min: 1000 * 60, max: 1000 * 3600 }),
       guard_level: randomGuardLevel(true),
       fans_medal_level: randomMedalLevel(),
       fans_medal_name: randomByArray(medalNames),
@@ -236,7 +240,7 @@ export function mockLike(): Like {
       timestamp: 0,
       room_id: 0,
       like_text: '为主播点赞了',
-      like_count: randomPositiveInteger(20),
+      like_count: randomNumber({ max: 100, min: 1 }),
       fans_medal_level: randomMedalLevel(),
       fans_medal_name: randomByArray(medalNames),
       fans_medal_wearing_status: !!r,
