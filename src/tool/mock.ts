@@ -109,12 +109,14 @@ const giftNames = [
   '萌兔火箭',
 ]
 
-function randomByArray(arr: any[]) {
+function randomByArray<T extends any[]>(arr: T): T[number] {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-function randomGuardLevel(all: boolean) {
-  return randomByArray(all ? allGuardLevels : guardLevels)
+function randomGuardLevel<T extends boolean>(all: T) {
+  return randomByArray(all ? allGuardLevels : guardLevels) as T extends true
+    ? GUARD_LEVEL
+    : Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>
 }
 
 function randomMedalLevel() {
