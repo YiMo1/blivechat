@@ -2,11 +2,11 @@
   <div class="container">
     <transition-group name="super_chat" tag="ul" class="super_chat_container">
       <template v-for="superChat in superChats.toReversed()" :key="superChat.msg_id">
-        <li class="tag" @click="() => expandSuperChat(superChat)">
+        <li :class="['tag', calculationSuperChatColor(superChat.rmb)]" @click="() => expandSuperChat(superChat)">
           <div class="backgroud">
             <div
               class="progress"
-              :style="{ 'animation-duration': `${superChat.end_time - superChat.start_time}ms` }"
+              :style="{ 'animation-duration': `${(superChat.end_time - superChat.start_time) / 1000}s` }"
               @animationend="() => delSuperChat(superChat)"
             />
           </div>
@@ -54,7 +54,7 @@
           </div>
           <div class="msg">投喂&ensp;{{ chat.data.gift_name }}×{{ chat.data.gift_num }}</div>
         </li>
-        <li v-else-if="chat.cmd === CMD.SUPER_CHAT" class="super_chat">
+        <li v-else-if="chat.cmd === CMD.SUPER_CHAT" :class="['super_chat', calculationSuperChatColor(chat.data.rmb)]">
           <div class="info">
             <img class="avatar" :src="chat.data.uface" />
             <div>
@@ -96,6 +96,15 @@ function expandSuperChat(superChat: SuperChat) {
 
 function delSuperChat(superChat: SuperChat) {
   superChats.value = superChats.value.filter((item) => item.msg_id !== superChat.msg_id)
+}
+
+function calculationSuperChatColor(rmb: number) {
+  if (rmb < 50) return '_30'
+  if (rmb < 100) return '_50'
+  if (rmb < 500) return '_100'
+  if (rmb < 1000) return '_500'
+  if (rmb < 2000) return '_1000'
+  return '_2000'
 }
 
 watch(
@@ -244,14 +253,39 @@ watch(
   .super_chat {
     border-radius: 4px;
     overflow: hidden;
-    color: #fff;
+
+    &._30 {
+      --info-color: #edf5ff;
+      --msg-color: #2a60b2;
+    }
+    &._50 {
+      --info-color: #dbfffd;
+      --msg-color: #427d9e;
+    }
+    &._100 {
+      --info-color: #fff1c5;
+      --msg-color: #e2b52b;
+    }
+    &._500 {
+      --info-color: #ffead2;
+      --msg-color: #e09443;
+    }
+    &._1000 {
+      --info-color: #ffe7e4;
+      --msg-color: #e54d4d;
+    }
+    &._2000 {
+      --info-color: #ffd8d8;
+      --msg-color: #ab1a32;
+    }
 
     .info {
-      background-color: #e65100;
+      background-color: var(--info-color);
       padding: 8px 12px;
       height: 48px;
       display: flex;
       line-height: 1;
+      color: #111111cc;
     }
 
     .avatar {
@@ -267,12 +301,14 @@ watch(
 
     .price {
       font-size: 12px;
+      color: #333333bb;
     }
 
     .msg {
-      background-color: #f57c00;
+      background-color: var(--msg-color);
       padding: 6px 8px;
       font-size: 14px;
+      color: #ffffffbb;
     }
   }
 }
@@ -291,22 +327,6 @@ watch(
     display: none;
   }
 
-  .backgroud {
-    position: absolute;
-    inset: 0;
-    background-color: #d00000;
-    z-index: -1;
-  }
-
-  .progress {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: #e62117;
-    animation-name: progress;
-    animation-timing-function: linear;
-  }
-
   $tag-height: 32px;
   $gap: 3px;
   .tag {
@@ -322,6 +342,47 @@ watch(
     overflow: hidden;
     cursor: pointer;
     margin-right: 8px;
+
+    &._30 {
+      --background-color: #2a60b2;
+      --progress-color: #4781d8;
+    }
+    &._50 {
+      --background-color: #427d9e;
+      --progress-color: #6ea9cc;
+    }
+    &._100 {
+      --background-color: #e2b325;
+      --progress-color: #f5d559;
+    }
+    &._500 {
+      --background-color: #e88c03;
+      --progress-color: #ff9a00;
+    }
+    &._1000 {
+      --background-color: #cb1b1b;
+      --progress-color: #ed3030;
+    }
+    &._2000 {
+      --background-color: #9e1a1a;
+      --progress-color: #c4261d;
+    }
+  }
+
+  .backgroud {
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-color);
+    z-index: -1;
+  }
+
+  .progress {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--progress-color);
+    animation-name: progress;
+    animation-timing-function: linear;
   }
 
   $avatar-height: $tag-height - $gap * 2;
