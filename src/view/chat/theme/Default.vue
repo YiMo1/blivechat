@@ -22,7 +22,10 @@
           <div>
             <div class="name">
               <span>{{ chat.data.uname }}</span>
-              <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+              <div
+                v-if="chat.data.fans_medal_wearing_status"
+                :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+              >
                 <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
                 <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
               </div>
@@ -38,7 +41,10 @@
           <div>
             <div class="name">
               <span>{{ chat.data.user_info.uname }}</span>
-              <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+              <div
+                v-if="chat.data.fans_medal_wearing_status"
+                :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+              >
                 <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
                 <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
               </div>
@@ -52,7 +58,10 @@
             <div>
               <div class="name">
                 <span>{{ chat.data.uname }}</span>
-                <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                <div
+                  v-if="chat.data.fans_medal_wearing_status"
+                  :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+                >
                   <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
                   <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
                 </div>
@@ -68,7 +77,10 @@
             <div>
               <div class="name">
                 <span>{{ chat.data.uname }}</span>
-                <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                <div
+                  v-if="chat.data.fans_medal_wearing_status"
+                  :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+                >
                   <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
                   <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
                 </div>
@@ -119,6 +131,17 @@ function calculationSuperChatColor(rmb: number) {
   return '_2000'
 }
 
+function calculationMedalColor(level: number) {
+  if (level <= 5) return '_5'
+  if (level <= 10) return '_10'
+  if (level <= 15) return '_15'
+  if (level <= 2) return '_20'
+  if (level <= 25) return '_25'
+  if (level <= 30) return '_30'
+  if (level <= 35) return '_35'
+  return '_40'
+}
+
 watch(
   () => chats.value[chats.value.length - 1],
   () => {
@@ -142,20 +165,45 @@ watch(
   display: inline-flex;
   margin-left: 8px;
   border-radius: 2px;
-  border: 2px solid red;
+  border: 2px solid var(--color);
   font-size: 12px;
   line-height: 1.2;
+
+  &._5 {
+    --color: #75878a;
+  }
+  &._10 {
+    --color: #0aa344;
+  }
+  &._15 {
+    --color: #2e4e7e;
+  }
+  &._20 {
+    --color: #8d4bbb;
+  }
+  &._25 {
+    --color: #f2be45;
+  }
+  &._30 {
+    --color: #ff8936;
+  }
+  &._35 {
+    --color: #e54b4b;
+  }
+  &._40 {
+    --color: #ff0000;
+  }
 
   .medal_name {
     padding: 0 4px;
     color: #fff;
-    background-color: red;
+    background-color: var(--color);
   }
 
   .medal_level {
     padding: 0 4px;
     background-color: #fff;
-    color: red;
+    color: var(--color);
   }
 }
 
