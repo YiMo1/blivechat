@@ -36,7 +36,7 @@
             </div>
           </div>
         </li>
-        <li v-else-if="chat.cmd === CMD.GUARD" class="guard">
+        <li v-else-if="chat.cmd === CMD.GUARD" :class="['guard', calculationGuardColor(chat.data.guard_level)]">
           <img class="avatar" :src="chat.data.user_info.uface" />
           <div>
             <div class="name">
@@ -99,7 +99,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
-import { CMD, DM_TYPE, emptyArrowFunction } from '@/tool/index.ts'
+import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
 
 const { chats, superChats } = storeToRefs(useMessageStore())
 const chatContainer = ref<HTMLDivElement | null>(null)
@@ -140,6 +140,12 @@ function calculationMedalColor(level: number) {
   if (level <= 30) return '_30'
   if (level <= 35) return '_35'
   return '_40'
+}
+
+function calculationGuardColor(level: Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>) {
+  if (level === GUARD_LEVEL.ADMIRAL) return 'admiral'
+  if (level === GUARD_LEVEL.CAPTAIN) return 'captain'
+  if (level === GUARD_LEVEL.GOVERNOR) return 'governor'
 }
 
 watch(
@@ -258,11 +264,21 @@ watch(
 
   .guard {
     display: flex;
-    background-color: #0f9d58;
+    background-color: var(--color);
     padding: 8px 12px;
     height: 56px;
     border-radius: 4px;
     line-height: 1;
+
+    &.captain {
+      --color: #6eabdd;
+    }
+    &.admiral {
+      --color: #9771db;
+    }
+    &.governor {
+      --color: #db7070;
+    }
 
     .avatar {
       height: 100%;
