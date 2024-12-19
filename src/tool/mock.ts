@@ -206,6 +206,14 @@ export function mockGift(): Gift {
 }
 
 export function mockSuperChat(): SuperChat {
+  const i = randomByArray([
+    { rmb: 30, time: 1000 * 60 },
+    { rmb: 50, time: 1000 * 60 * 2 },
+    { rmb: 100, time: 1000 * 60 * 5 },
+    { rmb: 500, time: 1000 * 60 * 30 },
+    { rmb: 1000, time: 1000 * 60 * 60 },
+    { rmb: 2000, time: 1000 * 60 * 60 * 2 },
+  ])
   const r = Math.round(Math.random())
   return {
     cmd: CMD.SUPER_CHAT,
@@ -217,10 +225,10 @@ export function mockSuperChat(): SuperChat {
       uface: randomByArray(avatars),
       message_id: id++,
       message: randomByArray(msgs),
-      rmb: randomNumber({ max: 5000, min: 1 }),
+      rmb: i.rmb,
       timestamp: Date.now(),
       start_time: Date.now(),
-      end_time: Date.now() + randomNumber({ min: 1000 * 10, max: 1000 * 60 }),
+      end_time: Date.now() + i.time,
       guard_level: randomGuardLevel(true),
       fans_medal_level: randomMedalLevel(),
       fans_medal_name: randomByArray(medalNames),
