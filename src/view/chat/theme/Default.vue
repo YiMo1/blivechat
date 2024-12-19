@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <transition-group name="super_chat" tag="ul" class="super_chat_container">
+    <transition-group tag="ul" class="super_chat_container">
       <template v-for="superChat in superChats.toReversed()" :key="superChat.msg_id">
         <li :class="['tag', calculationSuperChatColor(superChat.rmb)]" @click="() => expandSuperChat(superChat)">
           <div class="backgroud">
@@ -15,7 +15,7 @@
         </li>
       </template>
     </transition-group>
-    <transition-group id="chat_container" name="chat" tag="ul" class="chat_container">
+    <transition-group id="chat_container" tag="ul" class="chat_container">
       <template v-for="chat in chats" :key="chat.data.msg_id">
         <li v-if="chat.cmd === CMD.CHAT" class="chat">
           <img class="avatar" :src="chat.data.uface" />
@@ -231,6 +231,23 @@ watch(
     width: 100%;
     margin-bottom: 12px;
 
+    &.v-move,
+    &.v-enter-active,
+    &.v-leave-active {
+      transition: all 0.3s ease;
+    }
+    &.v-enter-from {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    &.v-leave-to {
+      opacity: 0;
+      transform: translateY(-120%);
+    }
+    &.v-leave-active {
+      position: absolute;
+    }
+
     .name {
       display: flex;
       align-items: center;
@@ -444,6 +461,22 @@ watch(
       --background-color: #9e1a1a;
       --progress-color: #c4261d;
     }
+
+    &.v-move,
+    &.v-enter-active,
+    &.v-leave-active {
+      transition: all 0.3s ease;
+    }
+    &.v-enter-from {
+      transform: translateX(-100%);
+    }
+    &.v-leave-to {
+      opacity: 0;
+      transform: translateY(-120%);
+    }
+    &.v-leave-active {
+      position: absolute;
+    }
   }
 
   .backgroud {
@@ -478,38 +511,5 @@ watch(
   100% {
     width: 0%;
   }
-}
-
-.super_chat-move,
-.super_chat-enter-active,
-.super_chat-leave-active {
-  transition: all 0.3s ease;
-}
-.super_chat-enter-from {
-  transform: translateX(-100%);
-}
-.super_chat-leave-to {
-  opacity: 0;
-  transform: translateY(-120%);
-}
-.super_chat-leave-active {
-  position: absolute !important;
-}
-
-.chat-move,
-.chat-enter-active,
-.chat-leave-active {
-  transition: all 0.3s ease;
-}
-.chat-enter-from {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-.chat-leave-to {
-  opacity: 0;
-  transform: translateY(-150%);
-}
-.chat-leave-active {
-  position: absolute;
 }
 </style>
