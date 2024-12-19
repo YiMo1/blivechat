@@ -38,6 +38,10 @@
           <div>
             <div class="name">
               <span>{{ chat.data.user_info.uname }}</span>
+              <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+              </div>
             </div>
             <div class="msg">欢迎{{ chat.data.user_info.uname }}上舰</div>
           </div>
@@ -48,6 +52,10 @@
             <div>
               <div class="name">
                 <span>{{ chat.data.uname }}</span>
+                <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                  <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                  <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+                </div>
               </div>
               <div class="price">CN￥{{ (chat.data.price / 1000).toFixed(1) }}</div>
             </div>
@@ -60,6 +68,10 @@
             <div>
               <div class="name">
                 <span>{{ chat.data.uname }}</span>
+                <div v-if="chat.data.fans_medal_wearing_status" class="medal">
+                  <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                  <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+                </div>
               </div>
               <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
             </div>
@@ -122,8 +134,29 @@ watch(
 .container {
   margin: 0 20px;
   height: 100vh;
-  font-size: 16px;
+  font-size: 14px;
   position: relative;
+}
+
+.medal {
+  display: inline-flex;
+  margin-left: 8px;
+  border-radius: 2px;
+  border: 2px solid red;
+  font-size: 12px;
+  line-height: 1.2;
+
+  .medal_name {
+    padding: 0 4px;
+    color: #fff;
+    background-color: red;
+  }
+
+  .medal_level {
+    padding: 0 4px;
+    background-color: #fff;
+    color: red;
+  }
 }
 
 .chat_container {
@@ -143,6 +176,11 @@ watch(
   .super_chat {
     width: 100%;
     margin-bottom: 12px;
+
+    .name {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .chat {
@@ -168,34 +206,15 @@ watch(
     .msg {
       color: #111;
     }
-
-    .medal {
-      display: inline-flex;
-      margin-left: 4px;
-      border-radius: 4px;
-      border: 2px solid red;
-      font-size: 12px;
-    }
-
-    .medal_name {
-      padding: 0 4px;
-      color: #fff;
-      background-color: red;
-    }
-
-    .medal_level {
-      padding: 0 4px;
-      background-color: #fff;
-      color: red;
-    }
   }
 
   .guard {
     display: flex;
     background-color: #0f9d58;
-    padding: 6px 12px;
-    height: 50px;
+    padding: 8px 12px;
+    height: 56px;
     border-radius: 4px;
+    line-height: 1;
 
     .avatar {
       height: 100%;
@@ -204,13 +223,12 @@ watch(
     }
 
     .name {
-      line-height: 1;
       color: #fff;
+      height: 20px;
       margin-bottom: 6px;
     }
 
     .msg {
-      line-height: 1;
       color: #ffffffbb;
     }
   }
@@ -235,8 +253,7 @@ watch(
     }
 
     .name {
-      font-size: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .price {
@@ -246,7 +263,6 @@ watch(
     .msg {
       background-color: #1e88e5;
       padding: 6px 8px;
-      font-size: 14px;
     }
   }
 
@@ -295,8 +311,7 @@ watch(
     }
 
     .name {
-      font-size: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .price {
@@ -307,7 +322,6 @@ watch(
     .msg {
       background-color: var(--msg-color);
       padding: 6px 8px;
-      font-size: 14px;
       color: #ffffffbb;
     }
   }
@@ -322,7 +336,6 @@ watch(
   max-width: 100%;
   overflow-x: auto;
   text-wrap: nowrap;
-  font-size: 14px;
   &::-webkit-scrollbar {
     display: none;
   }
