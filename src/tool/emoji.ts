@@ -1,4 +1,6 @@
-export const emojiMaping = {
+import { type VNodeChild, h } from 'vue'
+
+export const defaultEmojiMaping = {
   dog: 'http://i0.hdslb.com/bfs/live/4428c84e694fbf4e0ef6c06e958d9352c3582740.png',
   花: 'http://i0.hdslb.com/bfs/live/7dd2ef03e13998575e4d8a803c6e12909f94e72b.png',
   妙: 'http://i0.hdslb.com/bfs/live/08f735d950a0fba267dda140673c9ab2edf6410d.png',
@@ -85,4 +87,28 @@ export const emojiMaping = {
 
 export function createEmojiMatchReg(emojis: string[]) {
   return new RegExp(`\\[(${emojis.join('|')})\\]`, 'g')
+}
+
+export function replaceTextToEmojiText(
+  input: string,
+  options?: { regexp?: RegExp; emojiMaping?: Record<string, string> },
+) {
+  let { regexp, emojiMaping } = options || {}
+  emojiMaping = emojiMaping || defaultEmojiMaping
+  regexp = regexp || createEmojiMatchReg(Object.getOwnPropertyNames(emojiMaping))
+  const matchResult = [...input.matchAll(regexp)]
+  const vnodes: VNodeChild = []
+  let pointer = 0
+  for (const item of matchResult) {
+    vnodes.push(input.slice(pointer, item.index))
+    const emoji = item[0].slice(1, -1)
+    const url = emojiMaping[emoji]
+    const img = h('img', { src: url })
+    vnodes.push(img)
+    pointer = item.index + item[0].length
+  }
+  if (pointer < input.length - 1) {
+    vnodes.push(input.slice(pointer))
+  }
+  return vnodes
 }
