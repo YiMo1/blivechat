@@ -23,10 +23,19 @@ export default (env, mode) => {
     plugins:
       mode === 'client'
         ? [
-            vue({ features: { optionsAPI: false } }),
+            vue(),
             jsx(),
-            AutoImport({ resolvers: [ElementPlusResolver()], dts: false }),
-            Components({ resolvers: [ElementPlusResolver()], dts: false }),
+            AutoImport({
+              resolvers: [ElementPlusResolver()],
+              dts: false,
+              imports: [{ '@/component/index.ts': ['EmojiText'] }],
+              defaultExportByFilename: true,
+            }),
+            Components({
+              resolvers: [ElementPlusResolver()],
+              dirs: [resolve('../src/component')],
+              dts: false,
+            }),
           ]
         : [],
     define: {
