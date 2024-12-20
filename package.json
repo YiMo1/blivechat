@@ -57,7 +57,8 @@
     "vue-tsc": "^2.1.10"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged",
+    "pre-push": "pnpm run test"
   },
   "lint-staged": {
     "*.{json,less,css,scss,sass}": "prettier --write",
