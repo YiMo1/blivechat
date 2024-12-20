@@ -21,6 +21,9 @@ export default tseslint.config(
       parser: vueEslintParser,
       parserOptions: {
         parser: tsEslintParser,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     rules: {
