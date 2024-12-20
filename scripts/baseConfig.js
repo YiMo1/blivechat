@@ -6,6 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vue from '@vitejs/plugin-vue'
+import jsx from '@vitejs/plugin-vue-jsx'
 
 const __dirname = fileURLToPath(dirname(import.meta.url))
 /** @param {string[]} paths */
@@ -23,6 +24,7 @@ export default (env, mode) => {
       mode === 'client'
         ? [
             vue({ features: { optionsAPI: false } }),
+            jsx(),
             AutoImport({ resolvers: [ElementPlusResolver()], dts: false }),
             Components({ resolvers: [ElementPlusResolver()], dts: false }),
           ]
