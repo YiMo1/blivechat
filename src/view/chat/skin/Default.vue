@@ -15,43 +15,10 @@
         </li>
       </template>
     </transition-group>
-    <transition-group id="chat_container" name="chat" tag="ul" class="chat_container">
-      <template v-for="chat in chats" :key="chat.data.msg_id">
-        <li v-if="chat.cmd === CMD.CHAT" class="chat">
-          <img class="avatar" :src="chat.data.uface" />
-          <div>
-            <div class="name">
-              <span>{{ chat.data.uname }}</span>
-              <div
-                v-if="chat.data.fans_medal_wearing_status"
-                :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
-              >
-                <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
-                <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
-              </div>
-            </div>
-            <emoji-text v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg" :text="chat.data.msg" />
-            <img v-else class="emoji" :src="chat.data.emoji_img_url" />
-          </div>
-        </li>
-        <li v-else-if="chat.cmd === CMD.GUARD" :class="['guard', calculationGuardColor(chat.data.guard_level)]">
-          <img class="avatar" :src="chat.data.user_info.uface" />
-          <div>
-            <div class="name">
-              <span>{{ chat.data.user_info.uname }}</span>
-              <div
-                v-if="chat.data.fans_medal_wearing_status"
-                :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
-              >
-                <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
-                <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
-              </div>
-            </div>
-            <div class="msg">欢迎{{ chat.data.user_info.uname }}上舰</div>
-          </div>
-        </li>
-        <li v-else-if="chat.cmd === CMD.GIFT" class="gift">
-          <div class="info">
+    <ul ref="chatContainer" class="chat_container">
+      <transition-group name="chat">
+        <template v-for="chat in chats" :key="chat.data.msg_id">
+          <li v-if="chat.cmd === CMD.CHAT" class="chat">
             <img class="avatar" :src="chat.data.uface" />
             <div>
               <div class="name">
@@ -64,17 +31,15 @@
                   <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
                 </div>
               </div>
-              <div class="price">CN￥{{ (chat.data.price / 1000).toFixed(1) }}</div>
+              <emoji-text v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg" :text="chat.data.msg" />
+              <img v-else class="emoji" :src="chat.data.emoji_img_url" />
             </div>
-          </div>
-          <div class="msg">投喂&ensp;{{ chat.data.gift_name }}×{{ chat.data.gift_num }}</div>
-        </li>
-        <li v-else-if="chat.cmd === CMD.SUPER_CHAT" :class="['super_chat', calculationSuperChatColor(chat.data.rmb)]">
-          <div class="info">
-            <img class="avatar" :src="chat.data.uface" />
+          </li>
+          <li v-else-if="chat.cmd === CMD.GUARD" :class="['guard', calculationGuardColor(chat.data.guard_level)]">
+            <img class="avatar" :src="chat.data.user_info.uface" />
             <div>
               <div class="name">
-                <span>{{ chat.data.uname }}</span>
+                <span>{{ chat.data.user_info.uname }}</span>
                 <div
                   v-if="chat.data.fans_medal_wearing_status"
                   :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
@@ -83,28 +48,79 @@
                   <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
                 </div>
               </div>
-              <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
+              <div class="msg">欢迎{{ chat.data.user_info.uname }}上舰</div>
             </div>
-          </div>
-          <emoji-text class="msg" :text="chat.data.message" />
-        </li>
-      </template>
-    </transition-group>
+          </li>
+          <li v-else-if="chat.cmd === CMD.GIFT" class="gift">
+            <div class="info">
+              <img class="avatar" :src="chat.data.uface" />
+              <div>
+                <div class="name">
+                  <span>{{ chat.data.uname }}</span>
+                  <div
+                    v-if="chat.data.fans_medal_wearing_status"
+                    :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+                  >
+                    <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                    <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+                  </div>
+                </div>
+                <div class="price">CN￥{{ (chat.data.price / 1000).toFixed(1) }}</div>
+              </div>
+            </div>
+            <div class="msg">投喂&ensp;{{ chat.data.gift_name }}×{{ chat.data.gift_num }}</div>
+          </li>
+          <li v-else-if="chat.cmd === CMD.SUPER_CHAT" :class="['super_chat', calculationSuperChatColor(chat.data.rmb)]">
+            <div class="info">
+              <img class="avatar" :src="chat.data.uface" />
+              <div>
+                <div class="name">
+                  <span>{{ chat.data.uname }}</span>
+                  <div
+                    v-if="chat.data.fans_medal_wearing_status"
+                    :class="['medal', calculationMedalColor(chat.data.fans_medal_level)]"
+                  >
+                    <div class="medal_name">{{ chat.data.fans_medal_name }}</div>
+                    <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
+                  </div>
+                </div>
+                <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
+              </div>
+            </div>
+            <emoji-text class="msg" :text="chat.data.message" />
+          </li>
+        </template>
+      </transition-group>
+    </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, h } from 'vue'
+import { ref, watch, h } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
 import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
+import { useEventListener, useTimeoutFn } from '@vueuse/core'
 
 const { chats, superChats } = storeToRefs(useMessageStore())
-const chatContainer = ref<HTMLDivElement | null>(null)
-const container = ref<HTMLDivElement | null>(null)
+const chatContainer = ref<HTMLUListElement>()
+const container = ref<HTMLDivElement>()
+const isScroll = ref(false)
+const { start, stop } = useTimeoutFn(
+  () => {
+    isScroll.value = false
+  },
+  350,
+  { immediate: false },
+)
 
-onMounted(() => {
-  chatContainer.value = document.querySelector<HTMLDivElement>('#chat_container')
+useEventListener(chatContainer, 'wheel', () => {
+  stop()
+  isScroll.value = true
+  const el = chatContainer.value
+  if (el && Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < 50) {
+    start()
+  }
 })
 
 type SuperChat = (typeof superChats.value)[number]
@@ -151,7 +167,7 @@ function calculationGuardColor(level: Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>) {
 watch(
   () => chats.value[chats.value.length - 1],
   () => {
-    if (chatContainer.value) {
+    if (chatContainer.value && !isScroll.value) {
       chatContainer.value.scrollTop = chatContainer.value?.scrollHeight
     }
   },
