@@ -7,8 +7,8 @@ export const HEADER_SIZE = 16
 export const CONFIG_INJECTION_KEY: InjectionKey<{
   isTest: boolean
   code: string | null
-  guardTheme: GUARD_THEME
-  chatTheme: CHAT_THEME
+  guardSkin: GUARD_SKIN
+  chatSkin: CHAT_SKIN
   chatRetainedQuantity: number
 }> = Symbol()
 export const DEFUALT_CHAT_RETAINED_QUANTITY = 100
@@ -51,10 +51,10 @@ export enum CMD {
   INTERACTION_END = 'LIVE_OPEN_PLATFORM_INTERACTION_END',
 }
 
-export enum GUARD_THEME {
+export enum GUARD_SKIN {
   DEFAULT = 'default',
 }
 
-export enum CHAT_THEME {
+export enum CHAT_SKIN {
   DEFAULT = 'default',
 }

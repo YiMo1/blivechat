@@ -5,16 +5,16 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeMount, inject } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
-import { GUARD_THEME, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
+import { GUARD_SKIN, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
 import { useIntervalFn } from '@vueuse/core'
 
 const store = useMessageStore()
-const themeMap = {
-  [GUARD_THEME.DEFAULT]: () => import('./theme/Default.vue'),
+const skinMaping = {
+  [GUARD_SKIN.DEFAULT]: () => import('./skin/Default.vue'),
 } as const
-const { guardTheme: theme, isTest } = inject(CONFIG_INJECTION_KEY) || { isTest: true, guardTheme: GUARD_THEME.DEFAULT }
+const { guardSkin: skin, isTest } = inject(CONFIG_INJECTION_KEY) || { isTest: true, guardSkin: GUARD_SKIN.DEFAULT }
 const AsyncComponent = defineAsyncComponent({
-  loader: themeMap[theme],
+  loader: skinMaping[skin],
 })
 
 onBeforeMount(() => {

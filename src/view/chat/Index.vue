@@ -6,7 +6,7 @@
 import { defineAsyncComponent, inject, onBeforeMount, watch } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import {
-  CHAT_THEME,
+  CHAT_SKIN,
   CONFIG_INJECTION_KEY,
   mockChat,
   mockGuard,
@@ -18,20 +18,20 @@ import {
 import { useIntervalFn } from '@vueuse/core'
 
 const store = useMessageStore()
-const themeMap = {
-  [CHAT_THEME.DEFAULT]: () => import('./theme/Default.vue'),
+const skinMaping = {
+  [CHAT_SKIN.DEFAULT]: () => import('./skin/Default.vue'),
 } as const
 const {
-  chatTheme: theme,
+  chatSkin: skin,
   isTest,
   chatRetainedQuantity,
 } = inject(CONFIG_INJECTION_KEY) || {
   isTest: true,
-  chatTheme: CHAT_THEME.DEFAULT,
+  chatSkin: CHAT_SKIN.DEFAULT,
   chatRetainedQuantity: DEFUALT_CHAT_RETAINED_QUANTITY,
 }
 const AsyncComponent = defineAsyncComponent({
-  loader: themeMap[theme],
+  loader: skinMaping[skin],
 })
 const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
 function mockChats() {

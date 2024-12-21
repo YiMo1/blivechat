@@ -13,8 +13,8 @@ import {
   parseWsMessage,
   CMD,
   CONFIG_INJECTION_KEY,
-  GUARD_THEME,
-  CHAT_THEME,
+  GUARD_SKIN,
+  CHAT_SKIN,
   DEFUALT_CHAT_RETAINED_QUANTITY,
 } from '@/tool/index.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
@@ -28,13 +28,13 @@ provide(CONFIG_INJECTION_KEY, config)
 
 function getConfig() {
   const search = new URLSearchParams(location.search)
-  let guardTheme = search.get('guardTheme')
-  if (!Array.prototype.includes.call(Object.values(GUARD_THEME), guardTheme)) {
-    guardTheme = GUARD_THEME.DEFAULT
+  let guardSkin = search.get('guardSkin')
+  if (!Array.prototype.includes.call(Object.values(GUARD_SKIN), guardSkin)) {
+    guardSkin = GUARD_SKIN.DEFAULT
   }
-  let chatTheme = search.get('chatTheme')
-  if (!Array.prototype.includes.call(Object.values(CHAT_THEME), chatTheme)) {
-    chatTheme = CHAT_THEME.DEFAULT
+  let chatSkin = search.get('chatSkin')
+  if (!Array.prototype.includes.call(Object.values(CHAT_SKIN), chatSkin)) {
+    chatSkin = CHAT_SKIN.DEFAULT
   }
   let chatRetainedQuantity = parseInt(search.get('chatRetainedQuantity') || '')
   if (Number.isNaN(chatRetainedQuantity) || chatRetainedQuantity < 1) {
@@ -44,8 +44,8 @@ function getConfig() {
   return {
     code: search.get('code'),
     isTest: Boolean(Number(search.get('test'))),
-    guardTheme: guardTheme as GUARD_THEME,
-    chatTheme: chatTheme as CHAT_THEME,
+    guardSkin: guardSkin as GUARD_SKIN,
+    chatSkin: chatSkin as CHAT_SKIN,
     chatRetainedQuantity,
   }
 }
