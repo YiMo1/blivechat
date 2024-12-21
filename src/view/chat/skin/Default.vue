@@ -229,7 +229,6 @@ watch(
   position: absolute;
   max-height: 100%;
   overflow-y: auto;
-  padding-top: 150px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -532,7 +531,6 @@ watch(
 }
 .chat-leave-to {
   opacity: 0;
-  transform: translateY(-150%);
 }
 .chat-leave-active {
   position: absolute;
