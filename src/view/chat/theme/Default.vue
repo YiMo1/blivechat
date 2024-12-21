@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div ref="container" class="container">
     <transition-group name="super_chat" tag="ul" class="super_chat_container">
       <template v-for="superChat in superChats.toReversed()" :key="superChat.msg_id">
         <li :class="['tag', calculationSuperChatColor(superChat.rmb)]" @click="() => expandSuperChat(superChat)">
@@ -30,10 +30,8 @@
                 <div class="medal_level">{{ chat.data.fans_medal_level }}</div>
               </div>
             </div>
-            <div>
-              <span v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg">{{ chat.data.msg }}</span>
-              <img v-else class="emoji" :src="chat.data.emoji_img_url" />
-            </div>
+            <emoji-text v-if="chat.data.dm_type === DM_TYPE.NORMAL" class="msg" :text="chat.data.msg" />
+            <img v-else class="emoji" :src="chat.data.emoji_img_url" />
           </div>
         </li>
         <li v-else-if="chat.cmd === CMD.GUARD" :class="['guard', calculationGuardColor(chat.data.guard_level)]">
@@ -88,7 +86,7 @@
               <div class="price">CN￥{{ chat.data.rmb.toFixed(1) }}</div>
             </div>
           </div>
-          <div class="msg">{{ chat.data.message }}</div>
+          <emoji-text class="msg" :text="chat.data.message" />
         </li>
       </template>
     </transition-group>
@@ -96,13 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, h } from 'vue'
 import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
 import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
 
 const { chats, superChats } = storeToRefs(useMessageStore())
 const chatContainer = ref<HTMLDivElement | null>(null)
+const container = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   chatContainer.value = document.querySelector<HTMLDivElement>('#chat_container')
@@ -112,9 +111,10 @@ type SuperChat = (typeof superChats.value)[number]
 
 function expandSuperChat(superChat: SuperChat) {
   ElMessageBox({
-    message: superChat.message,
+    message: h(EmojiText, { text: superChat.message, class: 'el-message-box-msg' }),
     showConfirmButton: false,
     title: `${superChat.uname}的超级留言`,
+    appendTo: container.value || document.body,
   }).catch(emptyArrowFunction)
 }
 
@@ -165,6 +165,16 @@ watch(
   height: 100vh;
   font-size: 14px;
   position: relative;
+
+  :deep(.el-message-box-msg) {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 
 .medal {
@@ -250,15 +260,23 @@ watch(
 
     .name {
       color: #696969;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .emoji {
+      display: block;
       height: 50px;
     }
 
     .msg {
       color: #111;
+      display: flex;
+      align-items: center;
+
+      :deep(img) {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 
@@ -387,6 +405,13 @@ watch(
       background-color: var(--msg-color);
       padding: 6px 8px;
       color: #ffffffbb;
+      display: flex;
+      align-items: center;
+
+      :deep(img) {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 }
