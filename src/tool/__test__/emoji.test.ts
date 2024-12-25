@@ -1,6 +1,7 @@
 import { it, describe, expect } from 'vitest'
-import { createEmojiMatchReg, defaultEmojiMaping, replaceTextToEmojiText } from '../emoji.ts'
 import { h } from 'vue'
+
+import { createEmojiMatchReg, defaultEmojiMaping, replaceTextToEmojiText } from '../emoji.ts'
 
 describe('createEmojiMatchReg', () => {
   it('应该返回一个全局正则对象', () => {

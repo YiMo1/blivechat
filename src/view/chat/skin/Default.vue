@@ -97,10 +97,11 @@
 
 <script setup lang="ts">
 import { ref, watch, h } from 'vue'
-import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
-import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
 import { useEventListener, useTimeoutFn } from '@vueuse/core'
+
+import { useMessageStore } from '@/store/index.ts'
+import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
 
 const { chats, superChats } = storeToRefs(useMessageStore())
 const chatContainer = ref<HTMLUListElement>()

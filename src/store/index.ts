@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+
 import type { Guard, Message, Chat, Gift, Like, SuperChat } from '../types/index.d.ts'
 
 export type Chats = Guard | Chat | Gift | Like | SuperChat

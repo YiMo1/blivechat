@@ -4,9 +4,10 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeMount, inject } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
+
 import { useMessageStore } from '@/store/index.ts'
 import { GUARD_SKIN, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
-import { useIntervalFn } from '@vueuse/core'
 
 const store = useMessageStore()
 const skinMaping = {

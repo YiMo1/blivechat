@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { defineComponent, type PropType, type SlotsType } from 'vue'
+
 import { createEmojiMatchReg, defaultEmojiMaping, replaceTextToEmojiText } from '@/tool/emoji.ts'
 
 const reg = createEmojiMatchReg(Object.getOwnPropertyNames(defaultEmojiMaping))

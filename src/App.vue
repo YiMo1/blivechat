@@ -3,7 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { useMessageStore } from './store/index.ts'
+import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
+import { onBeforeMount, provide } from 'vue'
+
 import {
   INFO_SESSION_STORAGE_KEY,
   PROJECT_HEARBEAT_INTERVAL,
@@ -18,8 +20,8 @@ import {
   DEFUALT_CHAT_RETAINED_QUANTITY,
 } from '@/tool/index.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
-import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
-import { onBeforeMount, provide } from 'vue'
+
+import { useMessageStore } from './store/index.ts'
 
 const store = useMessageStore()
 const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })

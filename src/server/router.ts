@@ -1,5 +1,7 @@
 import { Router } from 'express'
+
 import { isString } from '../tool/index.ts'
+
 import { gameStart, heartbeat, gameEnd } from './request.ts'
 
 const router = Router()

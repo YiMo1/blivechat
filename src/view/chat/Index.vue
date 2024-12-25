@@ -4,6 +4,8 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onBeforeMount, watch } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
+
 import { useMessageStore } from '@/store/index.ts'
 import {
   CHAT_SKIN,
@@ -15,7 +17,6 @@ import {
   DEFUALT_CHAT_RETAINED_QUANTITY,
   CMD,
 } from '@/tool/index.ts'
-import { useIntervalFn } from '@vueuse/core'
 
 const store = useMessageStore()
 const skinMaping = {

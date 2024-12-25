@@ -1,9 +1,11 @@
 // @ts-check
-import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
-import baseConfig from './baseConfig.js'
+
+import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
 import { nodeExternals } from 'rollup-plugin-node-externals'
+
+import baseConfig from './baseConfig.js'
 
 const __dirname = fileURLToPath(dirname(import.meta.url))
 /** @param {string[]} paths */

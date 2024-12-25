@@ -1,7 +1,8 @@
 // @ts-check
-import { defineConfig } from 'vite'
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { defineConfig } from 'vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'

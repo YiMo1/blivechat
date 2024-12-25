@@ -7,10 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { GUARD_LEVEL } from '@/tool/index.ts'
-import { useMessageStore } from '@/store/index.ts'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+
+import { GUARD_LEVEL } from '@/tool/index.ts'
+import { useMessageStore } from '@/store/index.ts'
 
 const { guards } = storeToRefs(useMessageStore())
 const guard = computed(() => guards.value[0])
