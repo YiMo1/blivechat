@@ -5,13 +5,16 @@ import prettierPlugin from 'eslint-plugin-prettier/recommended'
 import prettierConfig from 'eslint-config-prettier'
 import vuePlugin from 'eslint-plugin-vue'
 import vueEslintParser from 'vue-eslint-parser'
-import tsEslintParser from '@typescript-eslint/parser'
+import * as tsEslintParser from '@typescript-eslint/parser'
+import importPlugin from 'eslint-plugin-import-x'
 
 export default tseslint.config(
   { ignores: ['node_modules', 'temp', 'dist'] },
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,
+  importPlugin.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
   ...vuePlugin.configs['flat/recommended'],
   prettierPlugin,
   prettierConfig,
@@ -58,6 +61,20 @@ export default tseslint.config(
       'vue/prefer-define-options': 'error',
       'vue/prefer-true-attribute-shorthand': 'error',
       'vue/multi-word-component-names': 'off',
+      'import-x/newline-after-import': ['error', { count: 1, exactCount: true, considerComments: true }],
+      'import-x/no-named-as-default-member': 'off',
+      'import-x/no-deprecated': 'warn',
+      'import-x/no-empty-named-blocks': 'error',
+      'import-x/no-self-import': 'error',
+      'import-x/first': 'error',
+      'import-x/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
+          'newlines-between': 'always',
+          pathGroups: [{ pattern: '@/**', group: 'internal', position: 'after' }],
+        },
+      ],
     },
   },
 )
