@@ -12,6 +12,7 @@ export const CONFIG_INJECTION_KEY: InjectionKey<{
   chatRetainedQuantity: number
 }> = Symbol()
 export const DEFUALT_CHAT_RETAINED_QUANTITY = 100
+export const LIVE_OPEN_PLATFORM_MSG = 'LIVE_OPEN_PLATFORM_MSG'
 
 export enum OPERATION {
   OP_HEARTBEAT = 2,
