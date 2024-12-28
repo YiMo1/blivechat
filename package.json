@@ -9,8 +9,8 @@
     "build": "node scripts/build.js",
     "test": "vitest",
     "check": "vue-tsc --incremental --noEmit",
-    "lint": "eslint --fix --cache --cache-location \"temp/.eslintcache\" .",
-    "format": "prettier --write --cache .",
+    "lint": "eslint --fix",
+    "format": "prettier --write",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks"
   },

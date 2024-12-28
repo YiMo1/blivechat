@@ -7,10 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject, watchEffect } from 'vue'
 import { useIntervalFn, useDocumentVisibility } from '@vueuse/core'
+import { computed, ref, inject, watchEffect } from 'vue'
 
 import { GUARD_LEVEL, emitter, CMD, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
+
 import type { Guard } from '@/types/index.ts'
 
 const { isTest } = inject(CONFIG_INJECTION_KEY) || { isTest: true }

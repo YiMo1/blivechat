@@ -6,6 +6,7 @@
 import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
 import { onBeforeMount, provide } from 'vue'
 
+import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import {
   INFO_SESSION_STORAGE_KEY,
   PROJECT_HEARBEAT_INTERVAL,
@@ -20,7 +21,6 @@ import {
   emitter,
   LIVE_OPEN_PLATFORM_MSG,
 } from '@/tool/index.ts'
-import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 
 const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })
 const config = getConfig()

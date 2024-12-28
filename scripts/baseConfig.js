@@ -2,12 +2,12 @@
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vue from '@vitejs/plugin-vue'
 import jsx from '@vitejs/plugin-vue-jsx'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
 
 const __dirname = fileURLToPath(dirname(import.meta.url))
 /** @param {string[]} paths */

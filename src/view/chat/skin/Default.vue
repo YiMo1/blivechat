@@ -96,8 +96,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, h, inject, watchEffect } from 'vue'
 import { useEventListener, useTimeoutFn, useDocumentVisibility, useIntervalFn } from '@vueuse/core'
+import { ref, watch, h, inject, watchEffect } from 'vue'
 
 import {
   CMD,
@@ -112,6 +112,7 @@ import {
   CONFIG_INJECTION_KEY,
   DEFUALT_CHAT_RETAINED_QUANTITY,
 } from '@/tool/index.ts'
+
 import type { Guard, Chat, Gift, SuperChat } from '@/types/index.ts'
 
 const chats = ref<(Guard | Chat | Gift | SuperChat)[]>([])

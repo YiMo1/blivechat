@@ -1,6 +1,6 @@
-import type { Chat, Guard, Gift, SuperChat, Like } from '@/types/index.ts'
-
 import { CMD, DM_TYPE, GUARD_LEVEL } from './contanst.ts'
+
+import type { Chat, Guard, Gift, SuperChat, Like } from '@/types/index.ts'
 
 let id = 0
 const avatars = ['https://static.hdslb.com/images/member/noface.gif']

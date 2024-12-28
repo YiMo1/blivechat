@@ -2,8 +2,8 @@
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 
-import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
 import { nodeExternals } from 'rollup-plugin-node-externals'
+import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
 
 import baseConfig from './baseConfig.js'
 

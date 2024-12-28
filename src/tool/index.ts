@@ -1,7 +1,7 @@
 import { inflate } from 'pako'
 
-import { isString } from './general.ts'
 import { HEADER_SIZE, VERSION, OPERATION } from './contanst.ts'
+import { isString } from './general.ts'
 
 import type * as WS from '../types/index.d.ts'
 
