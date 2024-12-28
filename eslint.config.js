@@ -1,12 +1,12 @@
 // @ts-check
 import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import prettierPlugin from 'eslint-plugin-prettier/recommended'
-import prettierConfig from 'eslint-config-prettier'
-import vuePlugin from 'eslint-plugin-vue'
-import vueEslintParser from 'vue-eslint-parser'
 import * as tsEslintParser from '@typescript-eslint/parser'
+import prettierConfig from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import-x'
+import prettierPlugin from 'eslint-plugin-prettier/recommended'
+import vuePlugin from 'eslint-plugin-vue'
+import tseslint from 'typescript-eslint'
+import vueEslintParser from 'vue-eslint-parser'
 
 export default tseslint.config(
   { ignores: ['node_modules', 'temp', 'dist'] },
@@ -72,9 +72,34 @@ export default tseslint.config(
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
           'newlines-between': 'always',
-          pathGroups: [{ pattern: '@/**', group: 'internal', position: 'after' }],
+          alphabetize: {
+            order: 'asc',
+            orderImportKind: 'desc',
+            caseInsensitive: true,
+          },
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'before',
+            },
+          ],
+          distinctGroup: false,
+          warnOnUnassignedImports: true,
+          pathGroupsExcludedImportTypes: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'object',
+            'type',
+          ],
         },
       ],
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 )
