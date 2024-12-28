@@ -96,23 +96,84 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, h } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useEventListener, useTimeoutFn } from '@vueuse/core'
+import { ref, watch, h, inject, watchEffect } from 'vue'
+import { useEventListener, useTimeoutFn, useDocumentVisibility, useIntervalFn } from '@vueuse/core'
 
-import { useMessageStore } from '@/store/index.ts'
-import { CMD, DM_TYPE, emptyArrowFunction, GUARD_LEVEL } from '@/tool/index.ts'
+import {
+  CMD,
+  DM_TYPE,
+  emptyArrowFunction,
+  GUARD_LEVEL,
+  emitter,
+  mockChat,
+  mockGuard,
+  mockGift,
+  mockSuperChat,
+  CONFIG_INJECTION_KEY,
+  DEFUALT_CHAT_RETAINED_QUANTITY,
+} from '@/tool/index.ts'
+import type { Guard, Chat, Gift, SuperChat } from '@/types/index.ts'
 
-const { chats, superChats } = storeToRefs(useMessageStore())
+const chats = ref<(Guard | Chat | Gift | SuperChat)[]>([])
+const superChats = ref<SuperChat['data'][]>([])
 const chatContainer = ref<HTMLUListElement>()
 const container = ref<HTMLDivElement>()
+const visibility = useDocumentVisibility()
 const isScroll = ref(false)
+const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
+function mockChats() {
+  return mockFns[Math.floor(Math.random() * mockFns.length)]()
+}
+const { pause, resume } = useIntervalFn(
+  () => {
+    const chat = mockChats()
+    if (chat.cmd === CMD.SUPER_CHAT) {
+      superChats.value.push(chat.data)
+    }
+    chats.value.push(chat)
+  },
+  1000 / 1,
+  { immediate: false },
+)
 const { start, stop } = useTimeoutFn(
   () => {
     isScroll.value = false
   },
   350,
   { immediate: false },
+)
+const { isTest, chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) || {
+  isTest: true,
+  chatRetainedQuantity: DEFUALT_CHAT_RETAINED_QUANTITY,
+}
+
+if (isTest) {
+  watchEffect(() => {
+    visibility.value ? resume() : pause()
+  })
+}
+
+emitter.on(CMD.CHAT, (chat) => {
+  chats.value.push(chat)
+})
+emitter.on(CMD.GIFT, (gift) => {
+  chats.value.push(gift)
+})
+emitter.on(CMD.SUPER_CHAT, (superChat) => {
+  chats.value.push(superChat)
+  superChats.value.push(superChat.data)
+})
+emitter.on(CMD.GUARD, (guard) => {
+  chats.value.push(guard)
+})
+
+watch(
+  () => chats.value.length,
+  (value) => {
+    if (value > chatRetainedQuantity) {
+      chats.value = chats.value.slice(-chatRetainedQuantity)
+    }
+  },
 )
 
 useEventListener(chatContainer, 'wheel', () => {
@@ -124,9 +185,7 @@ useEventListener(chatContainer, 'wheel', () => {
   }
 })
 
-type SuperChat = (typeof superChats.value)[number]
-
-function expandSuperChat(superChat: SuperChat) {
+function expandSuperChat(superChat: SuperChat['data']) {
   ElMessageBox({
     message: h(EmojiText, { text: superChat.message, class: 'el-message-box-msg' }),
     showConfirmButton: false,
@@ -135,7 +194,7 @@ function expandSuperChat(superChat: SuperChat) {
   }).catch(emptyArrowFunction)
 }
 
-function delSuperChat(superChat: SuperChat) {
+function delSuperChat(superChat: SuperChat['data']) {
   superChats.value = superChats.value.filter((item) => item.msg_id !== superChat.msg_id)
 }
 

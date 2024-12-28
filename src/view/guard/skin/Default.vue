@@ -7,19 +7,37 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref, inject, watchEffect } from 'vue'
+import { useIntervalFn, useDocumentVisibility } from '@vueuse/core'
 
-import { GUARD_LEVEL } from '@/tool/index.ts'
-import { useMessageStore } from '@/store/index.ts'
+import { GUARD_LEVEL, emitter, CMD, CONFIG_INJECTION_KEY, mockGuard } from '@/tool/index.ts'
+import type { Guard } from '@/types/index.ts'
 
-const { guards } = storeToRefs(useMessageStore())
-const guard = computed(() => guards.value[0])
+const { isTest } = inject(CONFIG_INJECTION_KEY) || { isTest: true }
+
+const guards = ref<Guard[]>([])
+const visibility = useDocumentVisibility()
+const { pause, resume } = useIntervalFn(() => {
+  guards.value.push(mockGuard())
+}, 1000 * 7)
+
+emitter.on(CMD.GUARD, (guard) => {
+  guards.value.push(guard)
+})
+
+const guard = computed(() => guards.value[0]?.data)
 
 const map = {
   [GUARD_LEVEL.GOVERNOR]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_1_loop.webp',
   [GUARD_LEVEL.ADMIRAL]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_2_loop.webp',
   [GUARD_LEVEL.CAPTAIN]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/captain_test_loop_2.webp',
+}
+
+if (isTest) {
+  guards.value.push(mockGuard())
+  watchEffect(() => {
+    visibility.value ? resume() : pause()
+  })
 }
 </script>
 

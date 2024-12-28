@@ -13,17 +13,15 @@ import {
   makePacket,
   OPERATION,
   parseWsMessage,
-  CMD,
   CONFIG_INJECTION_KEY,
   GUARD_SKIN,
   CHAT_SKIN,
   DEFUALT_CHAT_RETAINED_QUANTITY,
+  emitter,
+  LIVE_OPEN_PLATFORM_MSG,
 } from '@/tool/index.ts'
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 
-import { useMessageStore } from './store/index.ts'
-
-const store = useMessageStore()
 const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })
 const config = getConfig()
 provide(CONFIG_INJECTION_KEY, config)
@@ -96,28 +94,8 @@ onBeforeMount(() => {
         const data = await parseWsMessage(event.data)
         if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
           const message = data.body
-          store.all.push(message)
-          switch (message.cmd) {
-            case CMD.CHAT:
-              store.chats.push(message)
-              break
-            case CMD.GIFT:
-              store.gifts.push(message.data)
-              store.chats.push(message)
-              break
-            case CMD.SUPER_CHAT:
-              store.superChats.push(message.data)
-              store.chats.push(message)
-              break
-            case CMD.LIKE:
-              store.likes.push(message.data)
-              store.chats.push(message)
-              break
-            case CMD.GUARD:
-              store.guards.push(message.data)
-              store.chats.push(message)
-              break
-          }
+          emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
+          emitter.emit(message.cmd, message)
           return
         }
       },
