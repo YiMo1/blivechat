@@ -115,6 +115,14 @@ const giftNames = [
   '激素跑车',
   '萌兔火箭',
 ]
+const SUPER_CHAT_SET_MEAL = [
+  { rmb: 30, time: 1000 * 60 },
+  { rmb: 50, time: 1000 * 60 * 2 },
+  { rmb: 100, time: 1000 * 60 * 5 },
+  { rmb: 500, time: 1000 * 60 * 30 },
+  { rmb: 1000, time: 1000 * 60 * 60 },
+  { rmb: 2000, time: 1000 * 60 * 60 * 2 },
+]
 
 function randomByArray<T extends any[]>(arr: T): T[number] {
   return arr[Math.floor(Math.random() * arr.length)]
@@ -213,14 +221,7 @@ export function mockGift(): Gift {
 }
 
 export function mockSuperChat(): SuperChat {
-  const i = randomByArray([
-    { rmb: 30, time: 1000 * 60 },
-    { rmb: 50, time: 1000 * 60 * 2 },
-    { rmb: 100, time: 1000 * 60 * 5 },
-    { rmb: 500, time: 1000 * 60 * 30 },
-    { rmb: 1000, time: 1000 * 60 * 60 },
-    { rmb: 2000, time: 1000 * 60 * 60 * 2 },
-  ])
+  const i = randomByArray(SUPER_CHAT_SET_MEAL)
   const r = Math.round(Math.random())
   return {
     cmd: CMD.SUPER_CHAT,
