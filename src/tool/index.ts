@@ -30,7 +30,7 @@ export function makePacket(rawBody: object | string, operation: OPERATION, versi
   return packet.buffer
 }
 
-type Package = WS.SMSReplyPackage | WS.SMSReplyPackage | WS.AuthReplyPackage
+type Package = WS.HearbeatReplyPackage | WS.SMSReplyPackage | WS.AuthReplyPackage
 export async function parseWsMessage(rawData: Blob): Promise<Package> {
   const buffer = await rawData.arrayBuffer()
   const view = new DataView(buffer)
