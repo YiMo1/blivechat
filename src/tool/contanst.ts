@@ -1,8 +1,8 @@
 import type { InjectionKey } from 'vue'
 
 export const INFO_SESSION_STORAGE_KEY = 'BLIVECHAT_INFO'
-export const PROJECT_HEARBEAT_INTERVAL = 1000 * 20
-export const WS_HEARBEAT_INTERVAL = 1000 * 30
+export const PROJECT_HEARBEAT_INTERVAL = 20000
+export const WS_HEARBEAT_INTERVAL = 30000
 export const HEADER_SIZE = 16
 export const CONFIG_INJECTION_KEY: InjectionKey<{
   isTest: boolean
