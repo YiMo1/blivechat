@@ -103,7 +103,7 @@ import { useLimitArrayLength, useChatAutoScroll } from '@/hook/index.ts'
 import {
   CMD,
   DM_TYPE,
-  emptyArrowFunction,
+  noop,
   GUARD_LEVEL,
   emitter,
   mockChat,
@@ -173,7 +173,7 @@ function expandSuperChat(superChat: SuperChat['data']) {
     showConfirmButton: false,
     title: `${superChat.uname}的超级留言`,
     appendTo: container.value || document.body,
-  }).catch(emptyArrowFunction)
+  }).catch(noop)
 }
 
 function delSuperChat(superChat: SuperChat['data']) {

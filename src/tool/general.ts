@@ -9,5 +9,6 @@ export const isBigint = (o: unknown): o is bigint => typeof o === 'bigint'
 export const isObject = (o: unknown): o is object => typeof o === 'object' && o !== null
 export const isNull = (o: unknown): o is null => o === null
 export const isArray = (o: unknown): o is unknown[] => Array.isArray(o)
+/** 一个空箭头函数 */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const emptyArrowFunction = () => {}
+export const noop = () => {}
