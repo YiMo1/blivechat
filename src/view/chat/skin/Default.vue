@@ -96,9 +96,10 @@
 </template>
 
 <script setup lang="ts">
-import { useEventListener, useTimeoutFn, useDocumentVisibility, useIntervalFn } from '@vueuse/core'
-import { ref, watch, h, inject, watchEffect } from 'vue'
+import { useDocumentVisibility, useIntervalFn } from '@vueuse/core'
+import { ref, h, inject, watchEffect } from 'vue'
 
+import { useLimitArrayLength, useChatAutoScroll } from '@/hook/index.ts'
 import {
   CMD,
   DM_TYPE,
@@ -115,16 +116,19 @@ import {
 
 import type { Guard, Chat, Gift, SuperChat } from '@/types/index.ts'
 
+const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
+
+const { isTest, chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) || {
+  isTest: true,
+  chatRetainedQuantity: DEFUALT_CHAT_RETAINED_QUANTITY,
+}
+
 const chats = ref<(Guard | Chat | Gift | SuperChat)[]>([])
 const superChats = ref<SuperChat['data'][]>([])
 const chatContainer = ref<HTMLUListElement>()
 const container = ref<HTMLDivElement>()
+
 const visibility = useDocumentVisibility()
-const isScroll = ref(false)
-const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
-function mockChats() {
-  return mockFns[Math.floor(Math.random() * mockFns.length)]()
-}
 const { pause, resume } = useIntervalFn(
   () => {
     const chat = mockChats()
@@ -136,17 +140,8 @@ const { pause, resume } = useIntervalFn(
   1000 / 1,
   { immediate: false },
 )
-const { start, stop } = useTimeoutFn(
-  () => {
-    isScroll.value = false
-  },
-  350,
-  { immediate: false },
-)
-const { isTest, chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) || {
-  isTest: true,
-  chatRetainedQuantity: DEFUALT_CHAT_RETAINED_QUANTITY,
-}
+useLimitArrayLength(chats, { maxLength: chatRetainedQuantity, remove: 'head' })
+useChatAutoScroll(chats, chatContainer)
 
 if (isTest) {
   watchEffect(() => {
@@ -168,23 +163,9 @@ emitter.on(CMD.GUARD, (guard) => {
   chats.value.push(guard)
 })
 
-watch(
-  () => chats.value.length,
-  (value) => {
-    if (value > chatRetainedQuantity) {
-      chats.value = chats.value.slice(-chatRetainedQuantity)
-    }
-  },
-)
-
-useEventListener(chatContainer, 'wheel', () => {
-  stop()
-  isScroll.value = true
-  const el = chatContainer.value
-  if (el && Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < 50) {
-    start()
-  }
-})
+function mockChats() {
+  return mockFns[Math.floor(Math.random() * mockFns.length)]()
+}
 
 function expandSuperChat(superChat: SuperChat['data']) {
   ElMessageBox({
@@ -224,16 +205,6 @@ function calculationGuardColor(level: Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>) {
   if (level === GUARD_LEVEL.CAPTAIN) return 'captain'
   if (level === GUARD_LEVEL.GOVERNOR) return 'governor'
 }
-
-watch(
-  () => chats.value[chats.value.length - 1],
-  () => {
-    if (chatContainer.value && !isScroll.value) {
-      chatContainer.value.scrollTop = chatContainer.value?.scrollHeight
-    }
-  },
-  { flush: 'post' },
-)
 </script>
 
 <style lang="scss" scoped>
