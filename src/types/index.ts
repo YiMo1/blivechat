@@ -23,6 +23,8 @@ export interface SMSReplyPackage extends BasePackage {
   body: Message
 }
 
+export type Package = AuthReplyPackage | HearbeatReplyPackage | SMSReplyPackage
+
 export type Message =
   | Chat
   | Gift

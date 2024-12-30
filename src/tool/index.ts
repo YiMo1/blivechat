@@ -3,7 +3,7 @@ import { inflate } from 'pako'
 import { HEADER_SIZE, VERSION, OPERATION } from './contanst.ts'
 import { isString } from './general.ts'
 
-import type * as WS from '../types/index.d.ts'
+import type { Package } from '../types/index.d.ts'
 
 export * from './general.ts'
 export * from './contanst.ts'
@@ -30,7 +30,6 @@ export function makePacket(rawBody: object | string, operation: OPERATION, versi
   return packet.buffer
 }
 
-type Package = WS.HearbeatReplyPackage | WS.SMSReplyPackage | WS.AuthReplyPackage
 export async function parseWsMessage(rawData: Blob): Promise<Package> {
   const buffer = await rawData.arrayBuffer()
   const view = new DataView(buffer)
