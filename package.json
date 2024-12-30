@@ -41,6 +41,7 @@
     "express": "^4.21.2",
     "lint-staged": "^15.2.11",
     "mitt": "^3.0.1",
+    "mock-socket": "^9.3.1",
     "pako": "^2.1.0",
     "prettier": "^3.4.2",
     "rollup-plugin-node-externals": "^8.0.0",
