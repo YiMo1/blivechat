@@ -1,16 +1,16 @@
-import type { InjectionKey } from 'vue'
+import type { InjectionKey, DeepReadonly } from 'vue'
 
 export const INFO_SESSION_STORAGE_KEY = 'BLIVECHAT_INFO'
 export const PROJECT_HEARBEAT_INTERVAL = 20000
 export const WS_HEARBEAT_INTERVAL = 30000
 export const HEADER_SIZE = 16
-export const CONFIG_INJECTION_KEY: InjectionKey<{
-  isTest: boolean
-  code: string | null
-  guardSkin: GUARD_SKIN
-  chatSkin: CHAT_SKIN
-  chatRetainedQuantity: number
-}> = Symbol()
+export const CONFIG_INJECTION_KEY: InjectionKey<
+  DeepReadonly<{
+    guardSkin: GUARD_SKIN
+    chatSkin: CHAT_SKIN
+    chatRetainedQuantity: number
+  }>
+> = Symbol()
 export const DEFUALT_CHAT_RETAINED_QUANTITY = 100
 export const LIVE_OPEN_PLATFORM_MSG = 'LIVE_OPEN_PLATFORM_MSG'
 

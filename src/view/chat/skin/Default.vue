@@ -96,8 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDocumentVisibility, useIntervalFn } from '@vueuse/core'
-import { ref, h, inject, watchEffect } from 'vue'
+import { ref, h, inject } from 'vue'
 
 import { useLimitArrayLength, useChatAutoScroll } from '@/hook/index.ts'
 import {
@@ -106,20 +105,13 @@ import {
   noop,
   GUARD_LEVEL,
   emitter,
-  mockChat,
-  mockGuard,
-  mockGift,
-  mockSuperChat,
   CONFIG_INJECTION_KEY,
   DEFUALT_CHAT_RETAINED_QUANTITY,
 } from '@/tool/index.ts'
 
 import type { Guard, Chat, Gift, SuperChat } from '@/types/index.ts'
 
-const mockFns = [mockChat, mockGuard, mockGift, mockSuperChat]
-
-const { isTest, chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) || {
-  isTest: true,
+const { chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) || {
   chatRetainedQuantity: DEFUALT_CHAT_RETAINED_QUANTITY,
 }
 
@@ -128,26 +120,8 @@ const superChats = ref<SuperChat['data'][]>([])
 const chatContainer = ref<HTMLUListElement>()
 const container = ref<HTMLDivElement>()
 
-const visibility = useDocumentVisibility()
-const { pause, resume } = useIntervalFn(
-  () => {
-    const chat = mockChats()
-    if (chat.cmd === CMD.SUPER_CHAT) {
-      superChats.value.push(chat.data)
-    }
-    chats.value.push(chat)
-  },
-  1000 / 1,
-  { immediate: false },
-)
 useLimitArrayLength(chats, { maxLength: chatRetainedQuantity, remove: 'head' })
 useChatAutoScroll(chats, chatContainer)
-
-if (isTest) {
-  watchEffect(() => {
-    visibility.value ? resume() : pause()
-  })
-}
 
 emitter.on(CMD.CHAT, (chat) => {
   chats.value.push(chat)
@@ -162,10 +136,6 @@ emitter.on(CMD.SUPER_CHAT, (superChat) => {
 emitter.on(CMD.GUARD, (guard) => {
   chats.value.push(guard)
 })
-
-function mockChats() {
-  return mockFns[Math.floor(Math.random() * mockFns.length)]()
-}
 
 function expandSuperChat(superChat: SuperChat['data']) {
   ElMessageBox({

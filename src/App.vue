@@ -3,8 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn } from '@vueuse/core'
-import { onBeforeMount, provide } from 'vue'
+import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn, useDocumentVisibility } from '@vueuse/core'
+import { Server } from 'mock-socket'
+import { onBeforeMount, provide, computed, readonly, watchEffect } from 'vue'
 
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import {
@@ -20,93 +21,135 @@ import {
   DEFUALT_CHAT_RETAINED_QUANTITY,
   emitter,
   LIVE_OPEN_PLATFORM_MSG,
+  mockChat,
+  mockGift,
+  mockGuard,
+  mockSuperChat,
+  isString,
+  randomByArray,
+  includesByArray,
 } from '@/tool/index.ts'
 
+const urlSearchParams = new URLSearchParams(window.location.search)
+
 const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })
-const config = getConfig()
-provide(CONFIG_INJECTION_KEY, config)
+const visibility = useDocumentVisibility()
+const searchParams = readonly({
+  test: urlSearchParams.get('test'),
+  guardSkin: urlSearchParams.get('guardSkin'),
+  chatSkin: urlSearchParams.get('chatSkin'),
+  chatRetainedQuantity: urlSearchParams.get('chatRetainedQuantity'),
+  code: urlSearchParams.get('code'),
+})
+const isTest = searchParams.test === '1'
+const wsUrl = computed(() => (isTest ? `ws://${location.host}` : info.value?.websocket_info.wss_link[0]))
+
+provide(CONFIG_INJECTION_KEY, readonly(getConfig()))
 
 function getConfig() {
-  const search = new URLSearchParams(location.search)
-  let guardSkin = search.get('guardSkin')
-  if (!Array.prototype.includes.call(Object.values(GUARD_SKIN), guardSkin)) {
-    guardSkin = GUARD_SKIN.DEFAULT
-  }
-  let chatSkin = search.get('chatSkin')
-  if (!Array.prototype.includes.call(Object.values(CHAT_SKIN), chatSkin)) {
-    chatSkin = CHAT_SKIN.DEFAULT
-  }
-  let chatRetainedQuantity = parseInt(search.get('chatRetainedQuantity') || '')
+  const guardSkin = includesByArray(Object.values(GUARD_SKIN), searchParams.guardSkin)
+    ? searchParams.guardSkin
+    : GUARD_SKIN.DEFAULT
+
+  const chatSkin = includesByArray(Object.values(CHAT_SKIN), searchParams.chatSkin)
+    ? searchParams.chatSkin
+    : CHAT_SKIN.DEFAULT
+
+  let chatRetainedQuantity = parseInt(urlSearchParams.get('chatRetainedQuantity') || '')
   if (Number.isNaN(chatRetainedQuantity) || chatRetainedQuantity < 1) {
     chatRetainedQuantity = DEFUALT_CHAT_RETAINED_QUANTITY
   }
 
   return {
-    code: search.get('code'),
-    isTest: Boolean(Number(search.get('test'))),
-    guardSkin: guardSkin as GUARD_SKIN,
-    chatSkin: chatSkin as CHAT_SKIN,
+    guardSkin,
+    chatSkin,
     chatRetainedQuantity,
   }
 }
 
-async function start() {
-  if (!config.code) return
-  const { data } = await startGame(config.code)
-  if (data.code !== 0) {
-    ElMessage.error(data.message)
-    return
-  }
-  info.value = data.data
-  resumeHearbeat()
-}
+onBeforeMount(async () => {
+  if (isTest) {
+    const mockServer = new Server(wsUrl.value!)
+    mockServer.on('connection', (socket) => {
+      const mockFns = [mockChat, mockGift, mockSuperChat]
 
-async function heartbeat() {
-  if (!info.value) return
-  const { data } = await keepHeartbeat(info.value.game_info.game_id)
-  if (data.code !== 0) {
-    ElMessage.error(data.message)
-    switch (data.code) {
-      case 7003:
-        info.value = null
-        start()
-    }
-    return
-  }
-}
+      const { pause: pauseMockGuard, resume: resumeMockGuard } = useIntervalFn(() => {
+        const pkg = makePacket(mockGuard(), OPERATION.OP_SEND_SMS_REPLY)
+        socket.send(new Blob([pkg]))
+      }, 1000 * 7)
 
-const { resume: resumeHearbeat } = useIntervalFn(heartbeat, PROJECT_HEARBEAT_INTERVAL, {
-  immediate: false,
-})
+      const { pause: pauseMockChats, resume: resumeMockChats } = useIntervalFn(() => {
+        const pkg = makePacket(randomByArray(mockFns)(), OPERATION.OP_SEND_SMS_REPLY)
+        socket.send(new Blob([pkg]))
+      }, 1000 / 1)
 
-onBeforeMount(() => {
-  if (!config.isTest) {
-    if (!config.code) {
-      ElMessage.error('加载失败: 缺少身份码或不是测试环境')
-      return
-    }
-    useWebSocket(() => info.value?.websocket_info.wss_link[0], {
-      heartbeat: { interval: WS_HEARBEAT_INTERVAL, message: makePacket('', OPERATION.OP_HEARTBEAT) },
-      onConnected(ws) {
-        ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
-      },
-      async onMessage(_, event) {
-        const data = await parseWsMessage(event.data)
-        if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
-          const message = data.body
-          emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
-          emitter.emit(message.cmd, message)
-          return
+      function resume() {
+        resumeMockChats()
+        resumeMockGuard()
+      }
+
+      function pause() {
+        pauseMockGuard()
+        pauseMockChats()
+      }
+
+      watchEffect(() => {
+        visibility.value ? resume() : pause()
+      })
+    })
+  } else if (searchParams.code) {
+    const code = isString(searchParams.code) ? searchParams.code : searchParams.code[0]
+
+    async function heartbeat() {
+      if (!info.value) return
+      const { data } = await keepHeartbeat(info.value.game_info.game_id)
+      if (data.code !== 0) {
+        ElMessage.error(data.message)
+        switch (data.code) {
+          case 7003:
+            info.value = null
+            start()
         }
-      },
+        return
+      }
+    }
+
+    async function start() {
+      const { data } = await startGame(code)
+      if (data.code !== 0) {
+        ElMessage.error(data.message)
+        return
+      }
+      info.value = data.data
+    }
+
+    const { resume } = useIntervalFn(heartbeat, PROJECT_HEARBEAT_INTERVAL, {
+      immediate: false,
     })
 
-    if (!info.value) {
-      start()
-    } else {
-      heartbeat()
-      resumeHearbeat()
-    }
+    !info.value ? await start() : heartbeat()
+    resume()
+  } else {
+    ElMessage.error('加载失败: 缺少身份码或不是测试环境')
+    return
   }
+
+  useWebSocket(wsUrl, {
+    heartbeat: isTest ? undefined : { interval: WS_HEARBEAT_INTERVAL, message: makePacket('', OPERATION.OP_HEARTBEAT) },
+    onConnected(ws) {
+      if (!isTest) {
+        ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
+      }
+    },
+    async onMessage(_, event) {
+      const data = await parseWsMessage(event.data)
+      if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
+        const message = data.body
+        emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
+        emitter.emit(message.cmd, message)
+        return
+      }
+    },
+  })
 })
 </script>
