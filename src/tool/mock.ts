@@ -1,4 +1,5 @@
 import { CMD, DM_TYPE, GUARD_LEVEL } from './contanst.ts'
+import { randomNumber, randomByArray } from './general.ts'
 
 import type { Chat, Guard, Gift, SuperChat, Like } from '@/types/index.ts'
 
@@ -124,10 +125,6 @@ const SUPER_CHAT_SET_MEAL = [
   { rmb: 2000, time: 1000 * 60 * 60 * 2 },
 ]
 
-function randomByArray<T extends any[]>(arr: T): T[number] {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
-
 function randomGuardLevel<T extends boolean>(all: T) {
   return randomByArray(all ? allGuardLevels : guardLevels) as T extends true
     ? GUARD_LEVEL
@@ -136,15 +133,6 @@ function randomGuardLevel<T extends boolean>(all: T) {
 
 function randomMedalLevel() {
   return Math.floor(Math.random() * 40) + 1
-}
-
-function randomNumber(options: { max?: number; min?: number; interger?: boolean } = {}) {
-  const { min = 0, max = 1, interger = true } = options
-  if (min > max) {
-    throw new Error('最小值不能大于最大值')
-  }
-  const n = Math.random() * (max - min) + min
-  return interger ? Math.round(n) : n
 }
 
 export function mockChat(): Chat {

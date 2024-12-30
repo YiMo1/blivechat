@@ -12,3 +12,46 @@ export const isArray = (o: unknown): o is unknown[] => Array.isArray(o)
 /** 一个空箭头函数 */
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop = () => {}
+
+interface RandomNumberOptions {
+  /** @default 1 */
+  max?: number
+  /** @default 0 */
+  min?: number
+  /** @default true */
+  interger?: boolean
+}
+export function randomNumber(options: RandomNumberOptions = {}) {
+  const { min = 0, max = 1, interger = true } = options
+  if (min > max) {
+    throw new Error('最小值不能大于最大值')
+  }
+  const n = Math.random() * (max - min) + min
+  return interger ? Math.round(n) : n
+}
+
+/** 从数组中随机取一个 */
+export function randomByArray<T>(arr: T[]): T {
+  return arr[randomNumber({ max: arr.length - 1 })]
+}
+
+/**
+ * 确定数组是否包含特定元素，和原生includes函数不同的是存在类型保护
+ * @example
+ * ```ts
+ * const arr = [1, 2, 3, 4, 5]
+ * const searchElement: any = 1
+ * if (arr.includes(searchElement)) {
+ *   const result = searchElement // result类型为any
+ * }
+ * if (Array.prototype.includes.call(arr, searchElement)) {
+ *   const result = searchElement // result类型为any
+ * }
+ * if (includesByArray(arr, searchElement)) {
+ *   const result = searchElement // result类型为number
+ * }
+ * ```
+ */
+export function includesByArray<T>(arr: T[], searchElement: unknown, fromIndex?: number): searchElement is T {
+  return Array.prototype.includes.call(arr, searchElement, fromIndex)
+}
