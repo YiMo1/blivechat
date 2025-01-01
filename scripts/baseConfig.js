@@ -7,49 +7,54 @@ import jsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-import { defineConfig } from 'vite'
+import { defineConfig, mergeConfig } from 'vite'
 
 const __dirname = fileURLToPath(dirname(import.meta.url))
 /** @param {string[]} paths */
 function resolve(...paths) {
   return _resolve(__dirname, ...paths)
 }
+
 /**
  * @param {Record<string, string>} env
- * @param {'client'|'server'} mode
+ * @param {'client'|'server'} end
  */
-export default (env, mode) => {
-  return defineConfig({
+export function getBaseConfig(env, end) {
+  const sharedConfig = defineConfig({
     root: resolve('../'),
-    plugins:
-      mode === 'client'
-        ? [
-            vue(),
-            jsx(),
-            AutoImport({
-              resolvers: [ElementPlusResolver()],
-              dts: false,
-              imports: [{ '@/component/index.ts': ['EmojiText'] }],
-              defaultExportByFilename: true,
-            }),
-            Components({
-              resolvers: [ElementPlusResolver()],
-              dirs: [resolve('../src/component')],
-              dts: false,
-            }),
-          ]
-        : [],
     define: {
       __ACCESS_KEY_ID__: JSON.stringify(env.ACCESS_KEY_ID),
       __ACCESS_KEY_SECRED__: JSON.stringify(env.ACCESS_KEY_SECRED),
       __PROJECT_ID__: JSON.stringify(env.PROJECT_ID),
       __CODE__: JSON.stringify(env.CODE),
+      __PORT__: JSON.stringify(Number(env.PORT)),
+      __BASE_URL__: JSON.stringify(env.BASE_URL),
     },
     resolve: { alias: { '@': resolve('../src') } },
+  })
+
+  const clientConfig = defineConfig({
+    plugins: [
+      vue(),
+      jsx(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+        dts: false,
+        imports: [{ '@/component/index.ts': ['EmojiText'] }],
+        defaultExportByFilename: true,
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
+        dirs: [resolve('../src/component')],
+        dts: false,
+      }),
+    ],
     css: {
       preprocessorOptions: {
         scss: { api: 'modern-compiler' },
       },
     },
   })
+
+  return end === 'client' ? mergeConfig(sharedConfig, clientConfig) : sharedConfig
 }

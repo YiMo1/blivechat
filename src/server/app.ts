@@ -8,7 +8,7 @@ import router from './router.ts'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const app = express()
-app.use(express.static(resolve(__dirname, 'client'), {}))
+app.use(express.static(resolve(__dirname, 'client')))
 app.use(__BASE_URL__, express.json())
 app.use(__BASE_URL__, (_, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
