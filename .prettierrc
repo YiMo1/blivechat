@@ -2,5 +2,6 @@
   "semi": false,
   "printWidth": 120,
   "htmlWhitespaceSensitivity": "ignore",
-  "singleQuote": true
+  "singleQuote": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 import vue from '@vitejs/plugin-vue'
 import jsx from '@vitejs/plugin-vue-jsx'
+import autoprefixer from 'autoprefixer'
+import tailwindcss from 'tailwindcss'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
@@ -52,6 +54,9 @@ export function getBaseConfig(env, end) {
     css: {
       preprocessorOptions: {
         scss: { api: 'modern-compiler' },
+      },
+      postcss: {
+        plugins: [tailwindcss, autoprefixer()],
       },
     },
   })

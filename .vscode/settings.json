@@ -2,5 +2,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": ["javascript", "javascriptreact", "vue"]
+  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "css.customData": [".vscode/tailwindcss.json"]
 }
