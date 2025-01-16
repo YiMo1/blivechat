@@ -98,7 +98,13 @@ function replaceTextToEmojiText(input: string, options: { regexp: RegExp; emojiM
     const url = emojiMaping[emoji]
     const img = h('img', {
       src: url,
-      style: { width: '18px', height: '18px', marginLeft: '2px', marginRight: '2px' } satisfies CSSProperties,
+      style: {
+        width: '18px',
+        height: '18px',
+        marginLeft: '2px',
+        marginRight: '2px',
+        display: 'inline-block',
+      } satisfies CSSProperties,
     })
     vnodes.push(img)
     pointer = item.index + item[0].length
