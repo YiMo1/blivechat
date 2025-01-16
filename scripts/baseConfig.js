@@ -41,13 +41,9 @@ export function getBaseConfig(env, end) {
       jsx(),
       AutoImport({
         resolvers: [ElementPlusResolver()],
-        dts: false,
-        imports: [{ '@/component/index.ts': ['EmojiText'] }],
-        defaultExportByFilename: true,
       }),
       Components({
         resolvers: [ElementPlusResolver()],
-        dirs: [resolve('../src/component')],
         dts: false,
       }),
     ],

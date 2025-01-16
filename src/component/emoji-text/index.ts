@@ -1,6 +1,8 @@
-import { type VNodeChild, h } from 'vue'
+import { defineComponent, h } from 'vue'
 
-export const defaultEmojiMaping = {
+import type { VNodeChild, CSSProperties } from 'vue'
+
+const defaultEmojiMaping = {
   dog: 'http://i0.hdslb.com/bfs/live/4428c84e694fbf4e0ef6c06e958d9352c3582740.png',
   花: 'http://i0.hdslb.com/bfs/live/7dd2ef03e13998575e4d8a803c6e12909f94e72b.png',
   妙: 'http://i0.hdslb.com/bfs/live/08f735d950a0fba267dda140673c9ab2edf6410d.png',
@@ -85,17 +87,8 @@ export const defaultEmojiMaping = {
   耶: 'http://i0.hdslb.com/bfs/live/eb2d84ba623e2335a48f73fb5bef87bcf53c1239.png',
 }
 
-export function createEmojiMatchReg(emojis: string[]) {
-  return new RegExp(`\\[(${emojis.join('|')})\\]`, 'g')
-}
-
-export function replaceTextToEmojiText(
-  input: string,
-  options?: { regexp?: RegExp; emojiMaping?: Record<string, string> },
-) {
-  let { regexp, emojiMaping } = options || {}
-  emojiMaping = emojiMaping || defaultEmojiMaping
-  regexp = regexp || createEmojiMatchReg(Object.getOwnPropertyNames(emojiMaping))
+function replaceTextToEmojiText(input: string, options: { regexp: RegExp; emojiMaping: Record<string, string> }) {
+  const { regexp, emojiMaping } = options || {}
   const matchResult = [...input.matchAll(regexp)]
   const vnodes: VNodeChild = []
   let pointer = 0
@@ -103,7 +96,10 @@ export function replaceTextToEmojiText(
     vnodes.push(input.slice(pointer, item.index))
     const emoji = item[0].slice(1, -1)
     const url = emojiMaping[emoji]
-    const img = h('img', { src: url })
+    const img = h('img', {
+      src: url,
+      style: { width: '18px', height: '18px', marginLeft: '2px', marginRight: '2px' } satisfies CSSProperties,
+    })
     vnodes.push(img)
     pointer = item.index + item[0].length
   }
@@ -112,3 +108,21 @@ export function replaceTextToEmojiText(
   }
   return vnodes
 }
+
+function createEmojiMatchReg(emojis: string[]) {
+  return new RegExp(`\\[(${emojis.join('|')})\\]`, 'g')
+}
+
+const reg = createEmojiMatchReg(Object.getOwnPropertyNames(defaultEmojiMaping))
+
+export default defineComponent({
+  name: 'EmojiText',
+  props: { text: { type: String, default: '', required: false } },
+  render() {
+    const emojiText = replaceTextToEmojiText(this.$props.text, {
+      emojiMaping: defaultEmojiMaping,
+      regexp: reg,
+    })
+    return h('span', emojiText)
+  },
+})

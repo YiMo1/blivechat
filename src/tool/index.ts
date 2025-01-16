@@ -8,7 +8,6 @@ import type { Package } from '../types/index.d.ts'
 export * from './general.ts'
 export * from './contanst.ts'
 export * from './mock.ts'
-export * from './emoji.ts'
 export * from './emitter.ts'
 
 const textEncoder = new TextEncoder()

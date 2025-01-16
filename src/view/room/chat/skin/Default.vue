@@ -98,6 +98,7 @@
 <script setup lang="ts">
 import { ref, h, inject } from 'vue'
 
+import { EmojiText } from '@/component/index.ts'
 import { useLimitArrayLength, useChatAutoScroll } from '@/hook/index.ts'
 import {
   CMD,
