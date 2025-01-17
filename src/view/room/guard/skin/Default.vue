@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="first"
+    :key="first.msg_id"
     class="container-leave relative h-[1080px] w-[1920px] select-none"
     :data-level="level"
     @animationend.self="() => guards.shift()"
