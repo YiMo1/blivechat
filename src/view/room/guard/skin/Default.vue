@@ -1,8 +1,27 @@
 <template>
-  <div v-if="guard" id="guard-page" :key="guard.msg_id" @animationend.self="() => guards.shift()">
-    <img id="full-screen-cele" :src="map[guard.guard_level]" />
-    <img id="avatar" :guard-level="guard.guard_level" :src="guard.user_info.uface" />
-    <div id="name" :guard-level="guard.guard_level">{{ guard.user_info.uname }}</div>
+  <div
+    v-if="first"
+    class="container-leave relative h-[1080px] w-[1920px] select-none"
+    :data-level="level"
+    @animationend.self="() => guards.shift()"
+  >
+    <img class="absolute inset-0" :src="map[first.guard_level]" />
+    <img
+      :class="[
+        'avatar-enter absolute left-[50%] top-[78%] h-[200px] w-[200px] rounded-full',
+        'border-[10px] border-solid border-[var(--border-color)] opacity-0',
+      ]"
+      :src="first.user_info.uface"
+    />
+    <div
+      style="box-shadow: var(--box-shadow)"
+      :class="[
+        'name-enter absolute left-[50%] top-[88%] min-w-[220px] text-center text-[28px]',
+        'rounded-full bg-[var(--bg-color)] px-[55px] py-2.5 leading-none text-white opacity-0',
+      ]"
+    >
+      {{ first.user_info.uname }}
+    </div>
   </div>
 </template>
 
@@ -13,11 +32,17 @@ import { GUARD_LEVEL, emitter, CMD } from '@/tool/index.ts'
 
 import type { Guard } from '@/types/index.ts'
 
-const guards = ref<Guard[]>([])
-const guard = computed(() => guards.value[0]?.data)
+const guards = ref<Guard['data'][]>([])
+const first = computed<Guard['data'] | undefined>(() => guards.value[0])
+const level = computed(() => {
+  if (first.value?.guard_level === GUARD_LEVEL.GOVERNOR) return 1
+  if (first.value?.guard_level === GUARD_LEVEL.ADMIRAL) return 2
+  if (first.value?.guard_level === GUARD_LEVEL.CAPTAIN) return 3
+  return undefined
+})
 
 emitter.on(CMD.GUARD, (guard) => {
-  guards.value.push(guard)
+  guards.value.push(guard.data)
 })
 
 const map = {
@@ -27,13 +52,17 @@ const map = {
 }
 </script>
 
-<style>
-#guard-page {
-  width: 1920px;
-  height: 1080px;
-  position: relative;
+<style scoped>
+.container-leave {
   animation: fadeOut 1s ease 3.7s forwards;
-  user-select: none;
+}
+
+.avatar-enter {
+  animation: fadeInUp 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) 1s forwards;
+}
+
+.name-enter {
+  animation: fadeInUp 1s cubic-bezier(0.645, 0.045, 0.355, 1) 1.2s forwards;
 }
 
 @keyframes fadeOut {
@@ -43,54 +72,6 @@ const map = {
   100% {
     opacity: 0;
   }
-}
-
-#guard-page #full-screen-cele {
-  position: absolute;
-  inset: 0;
-}
-
-#guard-page #avatar {
-  position: absolute;
-  border-radius: 50%;
-  top: 78%;
-  left: 50%;
-  height: 200px;
-  width: 200px;
-  transform: translate(-50%, -50%);
-  border: solid 10px transparent;
-  animation: fadeInUp 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) 1s forwards;
-  opacity: 0;
-  background: url('https://static.hdslb.com/images/member/noface.gif') no-repeat;
-}
-
-#guard-page #avatar[guard-level='1'] {
-  border-color: #dc7171;
-}
-
-#guard-page #avatar[guard-level='2'] {
-  border-color: #9671dc;
-}
-
-#guard-page #avatar[guard-level='3'] {
-  border-color: #6fabdd;
-}
-
-#guard-page #name {
-  position: absolute;
-  left: 50%;
-  top: 88%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 1;
-  padding: 10px 55px;
-  border-radius: 35px;
-  min-width: 220px;
-  text-align: center;
-  animation: fadeInUp 1s cubic-bezier(0.645, 0.045, 0.355, 1) 1.2s forwards;
-  opacity: 0;
 }
 
 @keyframes fadeInUp {
@@ -104,24 +85,19 @@ const map = {
   }
 }
 
-#guard-page #name[guard-level='1'] {
-  background-color: #dc7171;
-  box-shadow:
-    0 0 0 6px #e4a1a1,
-    0 0 0 12px #fff;
+[data-level='1'] {
+  --border-color: #dc7171;
+  --bg-color: #dc7171;
+  --box-shadow: 0 0 0 6px #e4a1a1, 0 0 0 12px #fff;
 }
-
-#guard-page #name[guard-level='2'] {
-  background-color: #9671dc;
-  box-shadow:
-    0 0 0 6px #baa4e1,
-    0 0 0 12px #fff;
+[data-level='2'] {
+  --border-color: #9671dc;
+  --bg-color: #9671dc;
+  --box-shadow: 0 0 0 6px #baa4e1, 0 0 0 12px #fff;
 }
-
-#guard-page #name[guard-level='3'] {
-  background-color: #6fabdd;
-  box-shadow:
-    0 0 0 6px #b4d2ea,
-    0 0 0 12px #fff;
+[data-level='3'] {
+  --border-color: #6fabdd;
+  --bg-color: #6fabdd;
+  --box-shadow: 0 0 0 6px #b4d2ea, 0 0 0 12px #fff;
 }
 </style>
