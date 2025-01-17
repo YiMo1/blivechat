@@ -6,8 +6,7 @@
   >
     <div class="absolute inset-0 -z-10 bg-[var(--background-color)]">
       <div
-        ref="progress"
-        class="absolute h-full w-full origin-left bg-[var(--progress-color)]"
+        class="progress absolute h-full w-full origin-left bg-[var(--progress-color)]"
         @animationend="() => $emit('animationend')"
       />
     </div>
@@ -28,16 +27,13 @@ const props = defineProps<SuperChat['data']>()
 defineEmits<{ animationend: [] }>()
 
 const tag = ref<HTMLLIElement>()
-const progress = ref<HTMLDivElement>()
 
 onMounted(() => {
-  if (progress.value) {
-    progress.value.animate({ transform: ['scaleX(1)', 'scaleX(0)'] }, props.end_time - props.start_time)
-  }
   if (tag.value) {
     const { progressColor, backgroundColor } = calculationColor(props.rmb)
     tag.value.style.setProperty('--progress-color', progressColor)
     tag.value.style.setProperty('--background-color', backgroundColor)
+    tag.value.style.setProperty('--animate-duration', `${(props.end_time - props.start_time) / 1000}s`)
   }
 })
 
@@ -58,3 +54,18 @@ function calculationColor(rmb: number) {
   return { backgroundColor: '#2a60b2', progressColor: '#4781d8' }
 }
 </script>
+
+<style scoped>
+.progress {
+  animation: progress var(--animate-duration) linear;
+}
+
+@keyframes progress {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+</style>
