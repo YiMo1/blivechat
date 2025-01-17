@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 
-import {
+import type { CMD, LIVE_OPEN_PLATFORM_MSG } from './contanst.ts'
+import type {
   Chat,
   Gift,
   Guard,
@@ -13,8 +14,6 @@ import {
   InteractionEnd,
   Message,
 } from '../types/index.ts'
-
-import { CMD, LIVE_OPEN_PLATFORM_MSG } from './contanst.ts'
 
 type Events = {
   [CMD.CHAT]: Chat
