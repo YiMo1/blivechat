@@ -28,7 +28,7 @@ export function useChatAutoScroll(
   container: MaybeRefOrGetter<HTMLElement | undefined | null>,
   options: UseChatAutoScrollOptions = {},
 ) {
-  const { offset = 50, interval = 350, wheel = true } = options
+  const { offset = 100, interval = 350, wheel = true } = options
   const isAutoScroll = ref(true)
   const containerRef = toRef(container)
   const chatsRef = toRef(chats)
