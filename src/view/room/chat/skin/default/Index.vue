@@ -79,23 +79,23 @@ function delSuperChat(superChat: SuperChatType['data']) {
 .super_chat-move,
 .super_chat-enter-active,
 .super_chat-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
 }
 .super_chat-enter-from {
   transform: translateX(-100%);
 }
 .super_chat-leave-to {
   opacity: 0;
-  transform: translateY(-120%);
+  transform: translateY(-100%);
 }
 .super_chat-leave-active {
-  position: absolute !important;
+  position: absolute;
 }
 
 .chat-move,
 .chat-enter-active,
 .chat-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
 }
 .chat-enter-from {
   opacity: 0;
