@@ -8,7 +8,7 @@ export interface UseChatAutoScrollOptions {
    * 滑动滚轮使容器滚动到离底部多少像素范围内才会开始切换至自动滚动
    * 如果为`false`则永远不切换至自动滚动
    * 如果为`true`则只要滚轮事件停止就立即计时
-   * @default 50
+   * @default 100
    */
   offset?: number | boolean
   /**
