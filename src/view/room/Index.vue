@@ -94,7 +94,7 @@ onBeforeMount(async () => {
       }
 
       watchEffect(() => {
-        visibility.value ? resume() : pause()
+        visibility.value === 'visible' ? resume() : pause()
       })
     })
   } else if (searchParams.code) {
