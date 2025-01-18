@@ -13,7 +13,7 @@ export interface UseChatAutoScrollOptions {
   offset?: number | boolean
   /**
    * 切换至自动模式的间隔时间
-   * @default 350
+   * @default 200
    */
   interval?: number
   /**
@@ -28,7 +28,7 @@ export function useChatAutoScroll(
   container: MaybeRefOrGetter<HTMLElement | undefined | null>,
   options: UseChatAutoScrollOptions = {},
 ) {
-  const { offset = 100, interval = 350, wheel = true } = options
+  const { offset = 100, interval = 200, wheel = true } = options
   const isAutoScroll = ref(true)
   const containerRef = toRef(container)
   const chatsRef = toRef(chats)
