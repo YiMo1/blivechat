@@ -4,8 +4,7 @@
 
 <script setup lang="ts">
 import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn, useDocumentVisibility } from '@vueuse/core'
-import { Server } from 'mock-socket'
-import { onBeforeMount, provide, computed, readonly, watchEffect } from 'vue'
+import { onBeforeMount, provide, readonly, watchEffect } from 'vue'
 
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import {
@@ -41,8 +40,6 @@ const searchParams = readonly({
   chatRetainedQuantity: urlSearchParams.get('chatRetainedQuantity'),
   code: urlSearchParams.get('code'),
 })
-const isTest = searchParams.test === '1'
-const wsUrl = computed(() => (isTest ? `ws://${location.host}` : info.value?.websocket_info.wss_link[0]))
 
 provide(CONFIG_INJECTION_KEY, readonly(getConfig()))
 
@@ -68,34 +65,33 @@ function getConfig() {
 }
 
 onBeforeMount(async () => {
-  if (isTest) {
-    const mockServer = new Server(wsUrl.value!)
-    mockServer.on('connection', (socket) => {
-      const mockFns = [mockChat, mockGift, mockSuperChat]
+  if (searchParams.test === '1') {
+    const mockFns = [mockChat, mockGift, mockSuperChat]
 
-      const { pause: pauseMockGuard, resume: resumeMockGuard } = useIntervalFn(() => {
-        const pkg = makePacket(mockGuard(), OPERATION.OP_SEND_SMS_REPLY)
-        socket.send(new Blob([pkg]))
-      }, 1000 * 7)
+    const { pause: pauseMockGuard, resume: resumeMockGuard } = useIntervalFn(() => {
+      const msg = mockGuard()
+      emitter.emit(msg.cmd, msg)
+      emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
+    }, 1000 * 7)
 
-      const { pause: pauseMockChats, resume: resumeMockChats } = useIntervalFn(() => {
-        const pkg = makePacket(randomByArray(mockFns)(), OPERATION.OP_SEND_SMS_REPLY)
-        socket.send(new Blob([pkg]))
-      }, 1000 / 1)
+    const { pause: pauseMockChats, resume: resumeMockChats } = useIntervalFn(() => {
+      const msg = randomByArray(mockFns)()
+      emitter.emit(msg.cmd, msg)
+      emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
+    }, 1000 / 1)
 
-      function resume() {
-        resumeMockChats()
-        resumeMockGuard()
-      }
+    function resume() {
+      resumeMockChats()
+      resumeMockGuard()
+    }
 
-      function pause() {
-        pauseMockGuard()
-        pauseMockChats()
-      }
+    function pause() {
+      pauseMockGuard()
+      pauseMockChats()
+    }
 
-      watchEffect(() => {
-        visibility.value === 'visible' ? resume() : pause()
-      })
+    watchEffect(() => {
+      visibility.value === 'visible' ? resume() : pause()
     })
   } else if (searchParams.code) {
     const code = isString(searchParams.code) ? searchParams.code : searchParams.code[0]
@@ -129,27 +125,25 @@ onBeforeMount(async () => {
 
     !info.value ? await start() : heartbeat()
     resume()
+
+    useWebSocket(info.value?.websocket_info.wss_link[0], {
+      heartbeat: { interval: WS_HEARBEAT_INTERVAL, message: makePacket('', OPERATION.OP_HEARTBEAT) },
+      onConnected(ws) {
+        ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
+      },
+      async onMessage(_, event) {
+        const data = await parseWsMessage(event.data)
+        if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
+          const message = data.body
+          emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
+          emitter.emit(message.cmd, message)
+          return
+        }
+      },
+    })
   } else {
     ElMessage.error('加载失败: 缺少身份码或不是测试环境')
     return
   }
-
-  useWebSocket(wsUrl, {
-    heartbeat: isTest ? undefined : { interval: WS_HEARBEAT_INTERVAL, message: makePacket('', OPERATION.OP_HEARTBEAT) },
-    onConnected(ws) {
-      if (!isTest) {
-        ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
-      }
-    },
-    async onMessage(_, event) {
-      const data = await parseWsMessage(event.data)
-      if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
-        const message = data.body
-        emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
-        emitter.emit(message.cmd, message)
-        return
-      }
-    },
-  })
 })
 </script>
