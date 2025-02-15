@@ -45,7 +45,6 @@ export function getBaseConfig(env, end) {
       }),
       Components({
         resolvers: [ElementPlusResolver()],
-        dts: false,
       }),
     ],
     css: {
@@ -53,7 +52,7 @@ export function getBaseConfig(env, end) {
         scss: { api: 'modern-compiler' },
       },
       postcss: {
-        plugins: [tailwindcss, autoprefixer()],
+        plugins: [tailwindcss, autoprefixer],
       },
     },
   })
