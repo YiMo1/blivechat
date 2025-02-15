@@ -19,7 +19,10 @@ export interface UseLimitArrayLengthOptions {
   immediate?: boolean
 }
 
-export function useLimitArrayLength(array: MaybeRef<unknown[]>, options: UseLimitArrayLengthOptions = {}) {
+export function useLimitArrayLength(
+  array: MaybeRef<unknown[]>,
+  options: UseLimitArrayLengthOptions = {},
+) {
   const { maxLength = DEFUALT_CHAT_RETAINED_QUANTITY, immediate = true, remove = 'tail' } = options
   const arrayRef = toRef(array)
 
@@ -27,7 +30,8 @@ export function useLimitArrayLength(array: MaybeRef<unknown[]>, options: UseLimi
     () => arrayRef.value.length,
     (value) => {
       if (value > maxLength) {
-        arrayRef.value = remove === 'head' ? arrayRef.value.slice(-maxLength) : arrayRef.value.slice(0, maxLength)
+        arrayRef.value =
+          remove === 'head' ? arrayRef.value.slice(-maxLength) : arrayRef.value.slice(0, maxLength)
       }
     },
     { immediate },

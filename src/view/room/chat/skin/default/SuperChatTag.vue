@@ -2,16 +2,16 @@
   <li
     ref="tag"
     class="relative mr-2 inline-flex min-w-[100px] cursor-pointer items-center overflow-hidden rounded-full p-1 pr-3 text-white"
-    @click="() => expandSuperChat({ uname, message })"
+    @click="() => expandSuperChat(superChat)"
   >
     <div class="absolute inset-0 -z-10 bg-[var(--background-color)]">
       <div
-        class="progress absolute h-full w-full origin-left bg-[var(--progress-color)]"
+        class="progress absolute size-full origin-left bg-[var(--progress-color)]"
         @animationend="() => $emit('animationend')"
       />
     </div>
-    <img class="mr-2 h-7 w-7 rounded-full" :src="uface" />
-    <span>CN￥{{ rmb }}</span>
+    <img class="mr-2 size-7 rounded-full" :src="superChat.uface" />
+    <span>CN￥{{ superChat.rmb }}</span>
   </li>
 </template>
 
@@ -21,17 +21,20 @@ import { noop } from '@/tool/index.ts'
 
 import type { SuperChat } from '@/types/index.ts'
 
-const props = defineProps<SuperChat['data']>()
+const props = defineProps<{ superChat: SuperChat['data'] }>()
 defineEmits<{ animationend: [] }>()
 
 const tag = ref<HTMLLIElement>()
 
 onMounted(() => {
   if (tag.value) {
-    const { progressColor, backgroundColor } = calculationColor(props.rmb)
+    const { progressColor, backgroundColor } = calculationColor(props.superChat.rmb)
     tag.value.style.setProperty('--progress-color', progressColor)
     tag.value.style.setProperty('--background-color', backgroundColor)
-    tag.value.style.setProperty('--animate-duration', `${(props.end_time - props.start_time) / 1000}s`)
+    tag.value.style.setProperty(
+      '--animate-duration',
+      `${(props.superChat.end_time - props.superChat.start_time) / 1000}s`,
+    )
   }
 })
 

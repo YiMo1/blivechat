@@ -163,7 +163,12 @@ export function mockGuard(): Guard {
   return {
     cmd: CMD.GUARD,
     data: {
-      user_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
+      user_info: {
+        open_id: '',
+        uid: 0,
+        uface: randomByArray(avatars),
+        uname: randomByArray(names),
+      },
       guard_num: 1,
       guard_unit: '月',
       price: randomNumber({ max: 1000 * 20000, min: 1000 * 100 }),
@@ -192,7 +197,12 @@ export function mockGift(): Gift {
       uname: randomByArray(names),
       price: randomNumber({ max: 1000 * 1000, min: 1000 * 0.1 }),
       r_price: randomNumber({ max: 1000 * 1000, min: 1000 * 0.1 }),
-      anchor_info: { open_id: '', uid: 0, uface: randomByArray(avatars), uname: randomByArray(names) },
+      anchor_info: {
+        open_id: '',
+        uid: 0,
+        uface: randomByArray(avatars),
+        uname: randomByArray(names),
+      },
       open_id: '',
       fans_medal_level: randomMedalLevel(),
       fans_medal_name: randomByArray(medalNames),

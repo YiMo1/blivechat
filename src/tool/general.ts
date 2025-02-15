@@ -10,7 +10,7 @@ export const isObject = (o: unknown): o is object => typeof o === 'object' && o 
 export const isNull = (o: unknown): o is null => o === null
 export const isArray = (o: unknown): o is unknown[] => Array.isArray(o)
 /** 一个空箭头函数 */
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+
 export const noop = () => {}
 
 interface RandomNumberOptions {
@@ -52,6 +52,10 @@ export function randomByArray<T>(arr: T[]): T {
  * }
  * ```
  */
-export function includesByArray<T>(arr: T[], searchElement: unknown, fromIndex?: number): searchElement is T {
+export function includesByArray<T>(
+  arr: T[],
+  searchElement: unknown,
+  fromIndex?: number,
+): searchElement is T {
   return Array.prototype.includes.call(arr, searchElement, fromIndex)
 }

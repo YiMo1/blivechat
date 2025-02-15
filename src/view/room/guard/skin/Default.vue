@@ -9,7 +9,7 @@
     <img class="absolute inset-0" :src="map[first.guard_level]" />
     <img
       :class="[
-        'avatar-enter absolute left-[50%] top-[78%] h-[200px] w-[200px] rounded-full',
+        'avatar-enter absolute left-1/2 top-[78%] size-[200px] rounded-full',
         'border-[10px] border-solid border-[var(--border-color)] opacity-0',
       ]"
       :src="first.user_info.uface"
@@ -17,7 +17,7 @@
     <div
       style="box-shadow: var(--box-shadow)"
       :class="[
-        'name-enter absolute left-[50%] top-[88%] min-w-[220px] text-center text-[28px]',
+        'name-enter absolute left-1/2 top-[88%] min-w-[220px] text-center text-[28px]',
         'rounded-full bg-[var(--bg-color)] px-[55px] py-2.5 leading-none text-white opacity-0',
       ]"
     >
@@ -45,9 +45,12 @@ emitter.on(CMD.GUARD, (guard) => {
 })
 
 const map = {
-  [GUARD_LEVEL.GOVERNOR]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_1_loop.webp',
-  [GUARD_LEVEL.ADMIRAL]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_2_loop.webp',
-  [GUARD_LEVEL.CAPTAIN]: 'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/captain_test_loop_2.webp',
+  [GUARD_LEVEL.GOVERNOR]:
+    'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_1_loop.webp',
+  [GUARD_LEVEL.ADMIRAL]:
+    'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/default_captain_2_loop.webp',
+  [GUARD_LEVEL.CAPTAIN]:
+    'https://i1.xuehusang.cn/openlivechat-css/fullScreenCele/captain_test_loop_2.webp',
 }
 </script>
 

@@ -1,5 +1,8 @@
 <template>
-  <div ref="medal" class="ml-2 inline-flex rounded-sm border-2 border-solid border-[var(--color)] text-xs">
+  <div
+    ref="medal"
+    class="ml-2 inline-flex rounded-sm border-2 border-solid border-[var(--color)] text-xs"
+  >
     <div class="bg-[var(--color)] px-1 text-white">{{ name }}</div>
     <div class="bg-white px-1 text-[var(--color)]">{{ level }}</div>
   </div>

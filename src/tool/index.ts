@@ -12,7 +12,11 @@ export * from './emitter.ts'
 
 const textEncoder = new TextEncoder()
 
-export function makePacket(rawBody: object | string, operation: OPERATION, version: VERSION = VERSION.ACTUAL) {
+export function makePacket(
+  rawBody: object | string,
+  operation: OPERATION,
+  version: VERSION = VERSION.ACTUAL,
+) {
   const body = textEncoder.encode(isString(rawBody) ? rawBody : JSON.stringify(rawBody))
   const headerBuffer = new ArrayBuffer(HEADER_SIZE)
   const headerView = new DataView(headerBuffer)
@@ -42,7 +46,10 @@ export async function parseWsMessage(rawData: Blob): Promise<Package> {
     version,
     operation,
     sequenceId: view.getUint32(12) as 0,
-    body: operation === OPERATION.OP_HEARTBEAT_REPLY ? undefined : parseWsMessageBody(bodyBuffer, version),
+    body:
+      operation === OPERATION.OP_HEARTBEAT_REPLY
+        ? undefined
+        : parseWsMessageBody(bodyBuffer, version),
   }
 }
 

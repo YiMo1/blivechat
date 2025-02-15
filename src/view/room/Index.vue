@@ -30,7 +30,9 @@ import {
 
 const urlSearchParams = new URLSearchParams(window.location.search)
 
-const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, { serializer: StorageSerializers.object })
+const info = useSessionStorage<Info | null>(INFO_SESSION_STORAGE_KEY, null, {
+  serializer: StorageSerializers.object,
+})
 const visibility = useDocumentVisibility()
 const searchParams = readonly({
   test: urlSearchParams.get('test'),
@@ -126,7 +128,10 @@ onBeforeMount(async () => {
     resume()
 
     useWebSocket(info.value?.websocket_info.wss_link[0], {
-      heartbeat: { interval: WS_HEARBEAT_INTERVAL, message: makePacket('', OPERATION.OP_HEARTBEAT) },
+      heartbeat: {
+        interval: WS_HEARBEAT_INTERVAL,
+        message: makePacket('', OPERATION.OP_HEARTBEAT),
+      },
       onConnected(ws) {
         ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
       },

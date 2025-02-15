@@ -1,7 +1,7 @@
-import type { OPERATION, VERSION, CMD, HEADER_SIZE, GUARD_LEVEL, DM_TYPE } from '../tool/index.ts'
+import type { OPERATION, VERSION, CMD, GUARD_LEVEL, DM_TYPE } from '../tool/index.ts'
 
 export interface BasePackage {
-  headerLength: typeof HEADER_SIZE
+  headerLength: 16
   operation: OPERATION
   packetLength: number
   /** @deprecated */
@@ -214,3 +214,5 @@ export interface InteractionEnd {
     timestamp: number
   }
 }
+
+export {}

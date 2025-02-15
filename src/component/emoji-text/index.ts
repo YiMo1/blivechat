@@ -85,7 +85,10 @@ const defaultEmojiMaping = {
   耶: 'http://i0.hdslb.com/bfs/live/eb2d84ba623e2335a48f73fb5bef87bcf53c1239.png',
 }
 
-function replaceTextToEmojiText(input: string, options: { regexp: RegExp; emojiMaping: Record<string, string> }) {
+function replaceTextToEmojiText(
+  input: string,
+  options: { regexp: RegExp; emojiMaping: Record<string, string> },
+) {
   const { regexp, emojiMaping } = options || {}
   const matchResult = [...input.matchAll(regexp)]
   const vnodes: VNodeChild = []
