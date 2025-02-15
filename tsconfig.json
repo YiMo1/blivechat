@@ -1,28 +1,7 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": "temp",
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "newLine": "LF",
-    "strict": true,
-    "noEmit": true,
-    "allowJs": false,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "useUnknownInCatchVariables": true,
-    "allowImportingTsExtensions": true,
-    "types": ["./global", "vite/client", "element-plus/global"],
-    "jsxImportSource": "vue",
-    "jsx": "preserve",
-    "isolatedModules": true,
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "./auto-imports.d.ts", "./components.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.app.json" }
+  ]
 }

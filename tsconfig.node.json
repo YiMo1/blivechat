@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "lib": ["ESNext"],
+    "moduleDetection": "force",
+    "isolatedModules": true
+  },
+  "include": ["eslint.config.ts", "tailwind.config.ts", "vitest.config.ts"]
+}
