@@ -1,6 +1,3 @@
-import { useEventListener, useTimeoutFn } from '@vueuse/core'
-import { ref, watch, type MaybeRefOrGetter, toRef } from 'vue'
-
 import { isNumber } from '@/tool/index.ts'
 
 export interface UseChatAutoScrollOptions {

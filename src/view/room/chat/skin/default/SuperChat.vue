@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 import { EmojiText } from '@/component/index.ts'
 
 import Medal from './Medal.vue'

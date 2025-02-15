@@ -3,8 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, inject } from 'vue'
-
 import { GUARD_SKIN, CONFIG_INJECTION_KEY } from '@/tool/index.ts'
 
 const skinMaping = {

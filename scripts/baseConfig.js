@@ -40,6 +40,7 @@ export function getBaseConfig(env, end) {
       vue(),
       jsx(),
       AutoImport({
+        imports: ['vue', 'vue-router', '@vueuse/core'],
         resolvers: [ElementPlusResolver()],
       }),
       Components({

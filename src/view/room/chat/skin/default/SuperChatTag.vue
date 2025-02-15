@@ -16,8 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, h } from 'vue'
-
 import { EmojiText } from '@/component/index.ts'
 import { noop } from '@/tool/index.ts'
 

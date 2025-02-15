@@ -1,4 +1,4 @@
-import type { InjectionKey, DeepReadonly } from 'vue'
+import type { DeepReadonly } from 'vue'
 
 export const INFO_SESSION_STORAGE_KEY = 'BLIVECHAT_INFO'
 export const PROJECT_HEARBEAT_INTERVAL = 20000

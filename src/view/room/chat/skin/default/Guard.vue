@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 import { GUARD_LEVEL } from '@/tool/contanst.ts'
 
 import Medal from './Medal.vue'

@@ -2,7 +2,7 @@
   "private": true,
   "version": "0.1.0",
   "description": "鱼鱼的B站弹幕姬",
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.3.0",
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.js",
@@ -15,7 +15,8 @@
     "postinstall": "simple-git-hooks"
   },
   "author": {
-    "name": "伊墨"
+    "name": "伊墨",
+    "email": "1905672206@qq.com"
   },
   "engines": {
     "node": ">=20.18.0"

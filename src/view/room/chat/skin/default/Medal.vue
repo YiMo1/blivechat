@@ -6,8 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 const props = defineProps<{ level: number; name: string }>()
 const medal = ref<HTMLDivElement>()
 

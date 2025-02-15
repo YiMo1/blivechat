@@ -27,8 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
 import { GUARD_LEVEL, emitter, CMD } from '@/tool/index.ts'
 
 import type { Guard } from '@/types/index.ts'

@@ -1,5 +1,3 @@
-import { defineComponent, h } from 'vue'
-
 import type { VNodeChild, CSSProperties } from 'vue'
 
 const defaultEmojiMaping = {

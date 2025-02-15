@@ -26,8 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
-
 import { useLimitArrayLength, useChatAutoScroll } from '@/hook/index.ts'
 import { CMD, emitter, CONFIG_INJECTION_KEY, DEFUALT_CHAT_RETAINED_QUANTITY } from '@/tool/index.ts'
 

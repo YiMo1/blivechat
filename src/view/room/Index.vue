@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStorage, StorageSerializers, useWebSocket, useIntervalFn, useDocumentVisibility } from '@vueuse/core'
-import { onBeforeMount, provide, readonly, watchEffect } from 'vue'
+import { StorageSerializers } from '@vueuse/core'
 
 import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
 import {
