@@ -25,7 +25,10 @@ export default ts.config(
     rules: { 'no-undef': 'off' },
   },
   {
+    files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
     languageOptions: { parserOptions: { projectService: true, extraFileExtensions: ['vue'] } },
+  },
+  {
     rules: {
       // tailwindcss
       'tailwindcss/enforces-shorthand': 'error',
