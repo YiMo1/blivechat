@@ -3,16 +3,16 @@ import mitt from 'mitt'
 import type { CMD, LIVE_OPEN_PLATFORM_MSG } from './contanst.ts'
 import type {
   Chat,
+  EnterRoom,
   Gift,
   Guard,
-  EnterRoom,
+  InteractionEnd,
   Like,
   LiveEnd,
   LiveStart,
+  Message,
   SuperChat,
   SuperChatOffline,
-  InteractionEnd,
-  Message,
 } from '../types/index.ts'
 
 type Events = {

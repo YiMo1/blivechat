@@ -10,7 +10,7 @@ export const CONFIG_INJECTION_KEY: InjectionKey<
     chatSkin: CHAT_SKIN
     chatRetainedQuantity: number
   }>
-> = Symbol()
+> = Symbol('CONFIG_INJECTION_KEY')
 export const DEFUALT_CHAT_RETAINED_QUANTITY = 100
 export const LIVE_OPEN_PLATFORM_MSG = 'LIVE_OPEN_PLATFORM_MSG'
 

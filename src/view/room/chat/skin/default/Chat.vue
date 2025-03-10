@@ -1,6 +1,19 @@
+<script setup lang="ts">
+import { EmojiText } from '@/component/index.ts'
+import { DM_TYPE } from '@/tool/index.ts'
+import Medal from './Medal.vue'
+
+import type { Chat } from '@/types'
+
+defineProps<{ chat: Chat['data'] }>()
+</script>
+
 <template>
   <li class="mb-3 flex w-full">
-    <img class="mr-2.5 size-7 rounded-full" :src="chat.uface" />
+    <img
+      class="mr-2.5 size-7 rounded-full"
+      :src="chat.uface"
+    />
     <div class="flex-1">
       <div class="mb-2 flex items-center">
         <span class="text-[#696969]">{{ chat.uname }}</span>
@@ -15,18 +28,11 @@
         class="flex items-center text-[#111]"
         :text="chat.msg"
       />
-      <img v-else class="block h-12" :src="chat.emoji_img_url" />
+      <img
+        v-else
+        class="block h-12"
+        :src="chat.emoji_img_url"
+      />
     </div>
   </li>
 </template>
-
-<script setup lang="ts">
-import { EmojiText } from '@/component/index.ts'
-import { DM_TYPE } from '@/tool/index.ts'
-
-import Medal from './Medal.vue'
-
-import type { Chat } from '@/types'
-
-defineProps<{ chat: Chat['data'] }>()
-</script>

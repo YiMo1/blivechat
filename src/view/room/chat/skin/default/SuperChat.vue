@@ -1,29 +1,5 @@
-<template>
-  <li ref="el" class="mb-3 w-full overflow-hidden rounded">
-    <div class="flex bg-[var(--bg-color)] px-3 py-2 text-[#111111cc]">
-      <img class="mr-3 h-8 rounded-full" :src="superChat.uface" />
-      <div>
-        <div class="mb-1 flex items-center">
-          <span>{{ superChat.uname }}</span>
-          <medal
-            v-if="superChat.fans_medal_wearing_status"
-            :level="superChat.fans_medal_level"
-            :name="superChat.fans_medal_name"
-          />
-        </div>
-        <div class="text-xs text-[#333333bb]">CN￥{{ superChat.rmb.toFixed(1) }}</div>
-      </div>
-    </div>
-    <emoji-text
-      class="flex bg-[var(--msg-color)] px-2 py-1.5 text-[#ffffffbb]"
-      :text="superChat.message"
-    />
-  </li>
-</template>
-
 <script setup lang="ts">
 import { EmojiText } from '@/component/index.ts'
-
 import Medal from './Medal.vue'
 
 import type { SuperChat } from '@/types'
@@ -48,3 +24,34 @@ function calculationColor(rmb: number) {
   return { bgColor: '#edf5ff', msgColor: '#2a60b2' }
 }
 </script>
+
+<template>
+  <li
+    ref="el"
+    class="mb-3 w-full overflow-hidden rounded"
+  >
+    <div class="flex bg-[var(--bg-color)] px-3 py-2 text-[#111111cc]">
+      <img
+        class="mr-3 h-8 rounded-full"
+        :src="superChat.uface"
+      />
+      <div>
+        <div class="mb-1 flex items-center">
+          <span>{{ superChat.uname }}</span>
+          <medal
+            v-if="superChat.fans_medal_wearing_status"
+            :level="superChat.fans_medal_level"
+            :name="superChat.fans_medal_name"
+          />
+        </div>
+        <div class="text-xs text-[#333333bb]">
+          CN￥{{ superChat.rmb.toFixed(1) }}
+        </div>
+      </div>
+    </div>
+    <emoji-text
+      class="flex bg-[var(--msg-color)] px-2 py-1.5 text-[#ffffffbb]"
+      :text="superChat.message"
+    />
+  </li>
+</template>

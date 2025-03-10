@@ -2,8 +2,6 @@
   "compilerOptions": {
     "strict": true,
     "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
     "target": "ESNext",

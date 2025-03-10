@@ -1,10 +1,10 @@
 // @ts-check
-import { rmSync, existsSync } from 'node:fs'
+import { existsSync, rmSync } from 'node:fs'
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { nodeExternals } from 'rollup-plugin-node-externals'
-import { loadEnv, build, mergeConfig, defineConfig } from 'vite'
+import { build, defineConfig, loadEnv, mergeConfig } from 'vite'
 
 import { getBaseConfig } from './baseConfig.js'
 
@@ -22,7 +22,10 @@ function rmDist() {
   }
 }
 
-const sharedConfig = defineConfig({ define: { __DEV__: JSON.stringify(false) }, build: { emptyOutDir: false } })
+const sharedConfig = defineConfig({
+  define: { __DEV__: JSON.stringify(false) },
+  build: { emptyOutDir: false },
+})
 
 function buildClient() {
   const baseConfig = mergeConfig(getBaseConfig(env, 'client'), sharedConfig)
@@ -35,7 +38,13 @@ function buildClient() {
 function buildServer() {
   const baseConfig = mergeConfig(getBaseConfig(env, 'server'), sharedConfig)
   const config = mergeConfig(baseConfig, {
-    plugins: [{ ...nodeExternals({ deps: false }), name: 'node-externals', enforce: 'pre' }],
+    plugins: [
+      {
+        ...nodeExternals({ deps: false }),
+        name: 'node-externals',
+        enforce: 'pre',
+      },
+    ],
     build: {
       outDir: 'dist',
       lib: {

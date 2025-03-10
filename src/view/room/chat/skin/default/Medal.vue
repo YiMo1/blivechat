@@ -1,19 +1,13 @@
-<template>
-  <div
-    ref="medal"
-    class="ml-2 inline-flex rounded-sm border-2 border-solid border-[var(--color)] text-xs"
-  >
-    <div class="bg-[var(--color)] px-1 text-white">{{ name }}</div>
-    <div class="bg-white px-1 text-[var(--color)]">{{ level }}</div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps<{ level: number; name: string }>()
 const medal = ref<HTMLDivElement>()
 
 onMounted(() => {
-  medal.value && medal.value.style.setProperty('--color', calculationMedalColor(props.level))
+  medal.value &&
+  medal.value.style.setProperty(
+    '--color',
+    calculationMedalColor(props.level),
+  )
 })
 
 function calculationMedalColor(level: number) {
@@ -27,3 +21,17 @@ function calculationMedalColor(level: number) {
   return '#75878a'
 }
 </script>
+
+<template>
+  <div
+    ref="medal"
+    class="ml-2 inline-flex rounded-sm border-2 border-solid border-[var(--color)] text-xs"
+  >
+    <div class="bg-[var(--color)] px-1 text-white">
+      {{ name }}
+    </div>
+    <div class="bg-white px-1 text-[var(--color)]">
+      {{ level }}
+    </div>
+  </div>
+</template>

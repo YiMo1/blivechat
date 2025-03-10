@@ -1,13 +1,12 @@
 import { Router } from 'express'
 
 import { isString } from '../tool/index.ts'
-
-import { gameStart, heartbeat, gameEnd } from './request.ts'
+import { gameEnd, gameStart, heartbeat } from './request.ts'
 
 const router = Router()
 
 router.post('/start', async (req, res) => {
-  const code = __DEV__ ? __CODE__ : req.body.code
+  const code = __DEV__ ? __CODE__ : (req.body as { code: unknown }).code
   if (!isString(code)) {
     res.send({ code: 4000, msg: '参数错误', data: null })
     return
@@ -17,7 +16,7 @@ router.post('/start', async (req, res) => {
 })
 
 router.post('/end', async (req, res) => {
-  const gameId = req.body.gameId
+  const { gameId } = req.body as { gameId: unknown }
   if (!isString(gameId)) {
     res.send({ code: 4000, msg: '参数错误', data: null })
     return
@@ -27,7 +26,7 @@ router.post('/end', async (req, res) => {
 })
 
 router.post('/heartbeat', async (req, res) => {
-  const gameId = req.body.gameId
+  const { gameId } = req.body as { gameId: unknown }
   if (!isString(gameId)) {
     res.send({ code: 4000, msg: '参数错误', data: null })
     return

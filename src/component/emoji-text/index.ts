@@ -1,4 +1,4 @@
-import type { VNodeChild, CSSProperties } from 'vue'
+import type { CSSProperties, VNodeChild } from 'vue'
 
 const defaultEmojiMaping = {
   dog: 'http://i0.hdslb.com/bfs/live/4428c84e694fbf4e0ef6c06e958d9352c3582740.png',
@@ -29,9 +29,11 @@ const defaultEmojiMaping = {
   嘘: 'http://i0.hdslb.com/bfs/live/b6226219384befa5da1d437cb2ff4ba06c303844.png',
   奸笑: 'http://i0.hdslb.com/bfs/live/5935e6a4103d024955f749d428311f39e120a58a.png',
   囧: 'http://i0.hdslb.com/bfs/live/204413d3cf330e122230dcc99d29056f2a60e6f2.png',
-  捂脸2: 'http://i0.hdslb.com/bfs/live/a2ad0cc7e390a303f6d243821479452d31902a5f.png',
+  捂脸2:
+    'http://i0.hdslb.com/bfs/live/a2ad0cc7e390a303f6d243821479452d31902a5f.png',
   出窍: 'http://i0.hdslb.com/bfs/live/bb8e95fa54512ffea07023ea4f2abee4a163e7a0.png',
-  吐了啊: 'http://i0.hdslb.com/bfs/live/2b6b4cc33be42c3257dc1f6ef3a39d666b6b4b1a.png',
+  吐了啊:
+    'http://i0.hdslb.com/bfs/live/2b6b4cc33be42c3257dc1f6ef3a39d666b6b4b1a.png',
   鼻子: 'http://i0.hdslb.com/bfs/live/f4ed20a70d0cb85a22c0c59c628aedfe30566b37.png',
   调皮: 'http://i0.hdslb.com/bfs/live/84fe12ecde5d3875e1090d83ac9027cb7d7fba9f.png',
   酸: 'http://i0.hdslb.com/bfs/live/98fd92c6115b0d305f544b209c78ec322e4bb4ff.png',
@@ -47,7 +49,8 @@ const defaultEmojiMaping = {
   无语: 'http://i0.hdslb.com/bfs/live/4781a77be9c8f0d4658274eb4e3012c47a159f23.png',
   哈欠: 'http://i0.hdslb.com/bfs/live/6e496946725cd66e7ff1b53021bf1cc0fc240288.png',
   可怜: 'http://i0.hdslb.com/bfs/live/8e88e6a137463703e96d4f27629f878efa323456.png',
-  歪嘴笑: 'http://i0.hdslb.com/bfs/live/bea1f0497888f3e9056d3ce14ba452885a485c02.png',
+  歪嘴笑:
+    'http://i0.hdslb.com/bfs/live/bea1f0497888f3e9056d3ce14ba452885a485c02.png',
   亲亲: 'http://i0.hdslb.com/bfs/live/10662d9c0d6ddb3203ecf50e77788b959d4d1928.png',
   问号: 'http://i0.hdslb.com/bfs/live/a0c456b6d9e3187399327828a9783901323bfdb5.png',
   波吉: 'http://i0.hdslb.com/bfs/live/57dee478868ed9f1ce3cf25a36bc50bde489c404.png',
@@ -62,8 +65,10 @@ const defaultEmojiMaping = {
   加油: 'http://i0.hdslb.com/bfs/live/fbc3c8bc4152a65bbf4a9fd5a5d27710fbff2119.png',
   害羞: 'http://i0.hdslb.com/bfs/live/d8ce9b05c0e40cec61a15ba1979c8517edd270bf.png',
   虎年: 'http://i0.hdslb.com/bfs/live/a51af0d7d9e60ce24f139c468a3853f9ba9bb184.png',
-  doge2: 'http://i0.hdslb.com/bfs/live/f547cc853cf43e70f1e39095d9b3b5ac1bf70a8d.png',
-  金钱豹: 'http://i0.hdslb.com/bfs/live/b6e8131897a9a718ee280f2510bfa92f1d84429b.png',
+  doge2:
+    'http://i0.hdslb.com/bfs/live/f547cc853cf43e70f1e39095d9b3b5ac1bf70a8d.png',
+  金钱豹:
+    'http://i0.hdslb.com/bfs/live/b6e8131897a9a718ee280f2510bfa92f1d84429b.png',
   瓜子: 'http://i0.hdslb.com/bfs/live/fd35718ac5a278fd05fe5287ebd41de40a59259d.png',
   墨镜: 'http://i0.hdslb.com/bfs/live/5e01c237642c8b662a69e21b8e0fbe6e7dbc2aa1.png',
   难过: 'http://i0.hdslb.com/bfs/live/5776481e380648c0fb3d4ad6173475f69f1ce149.png',
@@ -71,7 +76,8 @@ const defaultEmojiMaping = {
   跪了: 'http://i0.hdslb.com/bfs/live/4f2155b108047d60c1fa9dccdc4d7abba18379a0.png',
   摊手: 'http://i0.hdslb.com/bfs/live/1e0a2baf088a34d56e2cc226b2de36a5f8d6c926.png',
   热: 'http://i0.hdslb.com/bfs/live/6df760280b17a6cbac8c1874d357298f982ba4cf.png',
-  三星堆: 'http://i0.hdslb.com/bfs/live/0a1ab3f0f2f2e29de35c702ac1ecfec7f90e325d.png',
+  三星堆:
+    'http://i0.hdslb.com/bfs/live/0a1ab3f0f2f2e29de35c702ac1ecfec7f90e325d.png',
   鼠: 'http://i0.hdslb.com/bfs/live/98f842994035505c728e32e32045d649e371ecd6.png',
   汤圆: 'http://i0.hdslb.com/bfs/live/23ae12d3a71b9d7a22c8773343969fcbb94b20d0.png',
   泼水: 'http://i0.hdslb.com/bfs/live/29533893115c4609a4af336f49060ea13173ca78.png',
@@ -89,7 +95,7 @@ function replaceTextToEmojiText(
   input: string,
   options: { regexp: RegExp; emojiMaping: Record<string, string> },
 ) {
-  const { regexp, emojiMaping } = options || {}
+  const { regexp, emojiMaping } = options
   const matchResult = [...input.matchAll(regexp)]
   const vnodes: VNodeChild = []
   let pointer = 0

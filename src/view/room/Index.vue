@@ -1,31 +1,27 @@
-<template>
-  <router-view />
-</template>
-
 <script setup lang="ts">
 import { StorageSerializers } from '@vueuse/core'
 
-import { startGame, keepHeartbeat, type Info } from '@/api/index.ts'
+import { type Info, keepHeartbeat, startGame } from '@/api/index.ts'
 import {
+  CHAT_SKIN,
+  CONFIG_INJECTION_KEY,
+  DEFUALT_CHAT_RETAINED_QUANTITY,
+  GUARD_SKIN,
   INFO_SESSION_STORAGE_KEY,
+  LIVE_OPEN_PLATFORM_MSG,
+  OPERATION,
   PROJECT_HEARBEAT_INTERVAL,
   WS_HEARBEAT_INTERVAL,
-  makePacket,
-  OPERATION,
-  parseWsMessage,
-  CONFIG_INJECTION_KEY,
-  GUARD_SKIN,
-  CHAT_SKIN,
-  DEFUALT_CHAT_RETAINED_QUANTITY,
   emitter,
-  LIVE_OPEN_PLATFORM_MSG,
+  includesByArray,
+  isString,
+  makePacket,
   mockChat,
   mockGift,
   mockGuard,
   mockSuperChat,
-  isString,
+  parseWsMessage,
   randomByArray,
-  includesByArray,
 } from '@/tool/index.ts'
 
 const urlSearchParams = new URLSearchParams(window.location.search)
@@ -45,15 +41,21 @@ const searchParams = readonly({
 provide(CONFIG_INJECTION_KEY, readonly(getConfig()))
 
 function getConfig() {
-  const guardSkin = includesByArray(Object.values(GUARD_SKIN), searchParams.guardSkin)
+  const guardSkin = includesByArray(
+    Object.values(GUARD_SKIN),
+    searchParams.guardSkin,
+  )
     ? searchParams.guardSkin
     : GUARD_SKIN.DEFAULT
 
-  const chatSkin = includesByArray(Object.values(CHAT_SKIN), searchParams.chatSkin)
+  const chatSkin = includesByArray(
+    Object.values(CHAT_SKIN),
+    searchParams.chatSkin,
+  )
     ? searchParams.chatSkin
     : CHAT_SKIN.DEFAULT
 
-  let chatRetainedQuantity = parseInt(urlSearchParams.get('chatRetainedQuantity') || '')
+  let chatRetainedQuantity = parseInt(urlSearchParams.get('chatRetainedQuantity') ?? '')
   if (Number.isNaN(chatRetainedQuantity) || chatRetainedQuantity < 1) {
     chatRetainedQuantity = DEFUALT_CHAT_RETAINED_QUANTITY
   }
@@ -69,17 +71,23 @@ onBeforeMount(async () => {
   if (searchParams.test === '1') {
     const mockFns = [mockChat, mockGift, mockSuperChat]
 
-    const { pause: pauseMockGuard, resume: resumeMockGuard } = useIntervalFn(() => {
-      const msg = mockGuard()
-      emitter.emit(msg.cmd, msg)
-      emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
-    }, 1000 * 7)
+    const { pause: pauseMockGuard, resume: resumeMockGuard } = useIntervalFn(
+      () => {
+        const msg = mockGuard()
+        emitter.emit(msg.cmd, msg)
+        emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
+      },
+      1000 * 7,
+    )
 
-    const { pause: pauseMockChats, resume: resumeMockChats } = useIntervalFn(() => {
-      const msg = randomByArray(mockFns)()
-      emitter.emit(msg.cmd, msg)
-      emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
-    }, 1000 / 1)
+    const { pause: pauseMockChats, resume: resumeMockChats } = useIntervalFn(
+      () => {
+        const msg = randomByArray(mockFns)()
+        emitter.emit(msg.cmd, msg)
+        emitter.emit(LIVE_OPEN_PLATFORM_MSG, msg)
+      },
+      1000 / 1,
+    )
 
     function resume() {
       resumeMockChats()
@@ -95,7 +103,9 @@ onBeforeMount(async () => {
       visibility.value === 'visible' ? resume() : pause()
     })
   } else if (searchParams.code) {
-    const code = isString(searchParams.code) ? searchParams.code : searchParams.code[0]
+    const code = isString(searchParams.code)
+      ? searchParams.code
+      : searchParams.code[0]
 
     async function heartbeat() {
       if (!info.value) return
@@ -107,7 +117,6 @@ onBeforeMount(async () => {
             info.value = null
             start()
         }
-        return
       }
     }
 
@@ -120,6 +129,7 @@ onBeforeMount(async () => {
       info.value = data.data
     }
 
+    // eslint-disable-next-line ts/no-misused-promises
     const { resume } = useIntervalFn(heartbeat, PROJECT_HEARBEAT_INTERVAL, {
       immediate: false,
     })
@@ -136,18 +146,20 @@ onBeforeMount(async () => {
         ws.send(makePacket(info.value!.websocket_info.auth_body, OPERATION.OP_AUTH))
       },
       async onMessage(_, event) {
-        const data = await parseWsMessage(event.data)
+        const data = await parseWsMessage(event.data as Blob)
         if (data.operation === OPERATION.OP_SEND_SMS_REPLY) {
           const message = data.body
           emitter.emit(LIVE_OPEN_PLATFORM_MSG, message)
           emitter.emit(message.cmd, message)
-          return
         }
       },
     })
   } else {
     ElMessage.error('加载失败: 缺少身份码或不是测试环境')
-    return
   }
 })
 </script>
+
+<template>
+  <router-view />
+</template>

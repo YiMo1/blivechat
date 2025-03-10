@@ -2,7 +2,7 @@
 import { resolve as _resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { loadEnv, createServer, mergeConfig, defineConfig } from 'vite'
+import { createServer, defineConfig, loadEnv, mergeConfig } from 'vite'
 import express from 'vite-plugin-express'
 
 import { getBaseConfig } from './baseConfig.js'
@@ -17,7 +17,12 @@ const env = loadEnv('development', resolve('../'), '')
 const config = mergeConfig(
   getBaseConfig(env, 'client'),
   defineConfig({
-    plugins: [express({ middlewareFiles: 'src/server/router.ts', prefixUrl: env.BASE_URL })],
+    plugins: [
+      express({
+        middlewareFiles: 'src/server/router.ts',
+        prefixUrl: env.BASE_URL,
+      }),
+    ],
     define: { __DEV__: JSON.stringify(true) },
   }),
 )

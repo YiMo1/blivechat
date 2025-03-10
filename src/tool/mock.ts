@@ -1,7 +1,7 @@
 import { CMD, DM_TYPE, GUARD_LEVEL } from './contanst.ts'
-import { randomNumber, randomByArray } from './general.ts'
+import { randomByArray, randomNumber } from './general.ts'
 
-import type { Chat, Guard, Gift, SuperChat, Like } from '@/types/index.ts'
+import type { Chat, Gift, Guard, Like, SuperChat } from '@/types/index.ts'
 
 let id = 0
 const avatars = ['https://static.hdslb.com/images/member/noface.gif']
@@ -33,7 +33,11 @@ const names = [
   '散华礼弥',
   '蜡笔小新',
 ]
-const guardLevels = [GUARD_LEVEL.ADMIRAL, GUARD_LEVEL.CAPTAIN, GUARD_LEVEL.GOVERNOR]
+const guardLevels = [
+  GUARD_LEVEL.ADMIRAL,
+  GUARD_LEVEL.CAPTAIN,
+  GUARD_LEVEL.GOVERNOR,
+]
 const allGuardLevels = [...guardLevels, GUARD_LEVEL.NONE]
 const medalNames = [
   '宠鱼',
@@ -190,7 +194,12 @@ export function mockGift(): Gift {
     data: {
       uid: 0,
       gift_name: randomByArray(giftNames),
-      combo_info: { combo_base_num: 0, combo_id: '', combo_count: 0, combo_timeout: 0 },
+      combo_info: {
+        combo_base_num: 0,
+        combo_id: '',
+        combo_count: 0,
+        combo_timeout: 0,
+      },
       combo_gift: false,
       paid: !!r,
       uface: randomByArray(avatars),

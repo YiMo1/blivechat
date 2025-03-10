@@ -1,6 +1,6 @@
 import { inflate } from 'pako'
 
-import { HEADER_SIZE, VERSION, OPERATION } from './contanst.ts'
+import { HEADER_SIZE, OPERATION, VERSION } from './contanst.ts'
 import { isString } from './general.ts'
 
 import type { Package } from '../types/index.d.ts'
@@ -46,6 +46,7 @@ export async function parseWsMessage(rawData: Blob): Promise<Package> {
     version,
     operation,
     sequenceId: view.getUint32(12) as 0,
+    // eslint-disable-next-line ts/no-unsafe-assignment
     body:
       operation === OPERATION.OP_HEARTBEAT_REPLY
         ? undefined
@@ -56,26 +57,28 @@ export async function parseWsMessage(rawData: Blob): Promise<Package> {
 const textDecoder = new TextDecoder()
 
 export function parseWsMessageBody(body: ArrayBuffer, version: VERSION) {
-  if (version === VERSION.ACTUAL) {
-    return JSON.parse(textDecoder.decode(body))
-  }
-  if (version === VERSION.COMPRESSED) {
-    let buffer = arrayBufferLikeToArrayBuffer(inflate(body).buffer)
-    const pkgs: Blob[] = []
-    while (buffer.byteLength > 0) {
-      const view = new DataView(buffer)
-      const packetLength = view.getUint32(0)
-      const pkg = buffer.slice(0, packetLength)
-      buffer = buffer.slice(packetLength)
-      pkgs.push(new Blob([pkg]))
+  switch (version) {
+    case VERSION.ACTUAL:
+      // eslint-disable-next-line ts/no-unsafe-return
+      return JSON.parse(textDecoder.decode(body))
+    case VERSION.COMPRESSED: {
+
+      let buffer = arrayBufferLikeToArrayBuffer(inflate(body).buffer)
+      const pkgs: Blob[] = []
+      while (buffer.byteLength > 0) {
+        const view = new DataView(buffer)
+        const packetLength = view.getUint32(0)
+        const pkg = buffer.slice(0, packetLength)
+        buffer = buffer.slice(packetLength)
+        pkgs.push(new Blob([pkg]))
+      }
+      return pkgs.map((pkg) => parseWsMessage(pkg))
     }
-    return pkgs.map((pkg) => parseWsMessage(pkg))
   }
-  throw new Error('未知的version值')
 }
 
 export function arrayBufferLikeToArrayBuffer(arrayBufferLike: ArrayBufferLike) {
-  const byteLength = arrayBufferLike.byteLength
+  const { byteLength } = arrayBufferLike
   const targetBuffer = new ArrayBuffer(byteLength)
   const targetView = new Uint8Array(targetBuffer)
   const sourceView = new Uint8Array(arrayBufferLike)

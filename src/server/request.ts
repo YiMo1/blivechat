@@ -3,14 +3,18 @@ import crypto from 'crypto'
 import axios from 'axios'
 
 function getMd5Content(data: crypto.BinaryLike) {
-  return crypto.createHash('md5').update(data).digest('hex')
+  return crypto.createHash('md5').update(data).
+    digest('hex')
 }
 
 function getHmacSha256Content(data: crypto.BinaryLike) {
-  return crypto.createHmac('sha256', __ACCESS_KEY_SECRED__).update(data).digest('hex')
+  return crypto.
+    createHmac('sha256', __ACCESS_KEY_SECRED__).
+    update(data).
+    digest('hex')
 }
 
-function getEncodeHeader(body = {}) {
+function getEncodeHeader(body: unknown = {}) {
   const timestamp = parseInt(`${Date.now()}`)
   const nonce = parseInt(`${Math.random() * 100000000}`) + timestamp
   const header = {

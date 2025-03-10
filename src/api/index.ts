@@ -5,13 +5,19 @@ const instance = axios.create({
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 })
 
-export interface Info {
+export type Info = {
   game_info: { game_id: string }
   websocket_info: { auth_body: string; wss_link: string[] }
-  anchor_info: { room_id: number; uname: string; uface: string; uid: number; open_id: string }
+  anchor_info: {
+    room_id: number
+    uname: string
+    uface: string
+    uid: number
+    open_id: string
+  }
 }
 
-interface Result<T = object> {
+type Result<T = object> = {
   code: number
   data: T
   message: string

@@ -1,6 +1,6 @@
 import { DEFUALT_CHAT_RETAINED_QUANTITY } from '@/tool/index.ts'
 
-export interface UseLimitArrayLengthOptions {
+export type UseLimitArrayLengthOptions = {
   /**
    * 数组最大长度
    * @default DEFUALT_CHAT_RETAINED_QUANTITY
@@ -23,7 +23,11 @@ export function useLimitArrayLength(
   array: MaybeRef<unknown[]>,
   options: UseLimitArrayLengthOptions = {},
 ) {
-  const { maxLength = DEFUALT_CHAT_RETAINED_QUANTITY, immediate = true, remove = 'tail' } = options
+  const {
+    maxLength = DEFUALT_CHAT_RETAINED_QUANTITY,
+    immediate = true,
+    remove = 'tail',
+  } = options
   const arrayRef = toRef(array)
 
   const { pause, resume, stop } = watch(
@@ -31,7 +35,9 @@ export function useLimitArrayLength(
     (value) => {
       if (value > maxLength) {
         arrayRef.value =
-          remove === 'head' ? arrayRef.value.slice(-maxLength) : arrayRef.value.slice(0, maxLength)
+          remove === 'head'
+            ? arrayRef.value.slice(-maxLength)
+            : arrayRef.value.slice(0, maxLength)
       }
     },
     { immediate },

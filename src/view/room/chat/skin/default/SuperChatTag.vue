@@ -1,20 +1,3 @@
-<template>
-  <li
-    ref="tag"
-    class="relative mr-2 inline-flex min-w-[100px] cursor-pointer items-center overflow-hidden rounded-full p-1 pr-3 text-white"
-    @click="() => expandSuperChat(superChat)"
-  >
-    <div class="absolute inset-0 -z-10 bg-[var(--background-color)]">
-      <div
-        class="progress absolute size-full origin-left bg-[var(--progress-color)]"
-        @animationend="() => $emit('animationend')"
-      />
-    </div>
-    <img class="mr-2 size-7 rounded-full" :src="superChat.uface" />
-    <span>CN￥{{ superChat.rmb }}</span>
-  </li>
-</template>
-
 <script setup lang="ts">
 import { EmojiText } from '@/component/index.ts'
 import { noop } from '@/tool/index.ts'
@@ -38,7 +21,13 @@ onMounted(() => {
   }
 })
 
-function expandSuperChat({ message, uname }: { message: string; uname: string }) {
+function expandSuperChat({
+  message,
+  uname,
+}: {
+  message: string
+  uname: string
+}) {
   ElMessageBox({
     message: h(EmojiText, { text: message }),
     showConfirmButton: false,
@@ -55,6 +44,29 @@ function calculationColor(rmb: number) {
   return { backgroundColor: '#2a60b2', progressColor: '#4781d8' }
 }
 </script>
+
+<template>
+  <li
+    ref="tag"
+    :class="[
+      'relative mr-2 inline-flex min-w-[100px] cursor-pointer items-center overflow-hidden',
+      'rounded-full p-1 pr-3 text-white',
+    ]"
+    @click="() => expandSuperChat(superChat)"
+  >
+    <div class="absolute inset-0 -z-10 bg-[var(--background-color)]">
+      <div
+        class="progress absolute size-full origin-left bg-[var(--progress-color)]"
+        @animationend="() => $emit('animationend')"
+      />
+    </div>
+    <img
+      class="mr-2 size-7 rounded-full"
+      :src="superChat.uface"
+    />
+    <span>CN￥{{ superChat.rmb }}</span>
+  </li>
+</template>
 
 <style scoped>
 .progress {

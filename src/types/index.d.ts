@@ -1,6 +1,12 @@
-import type { OPERATION, VERSION, CMD, GUARD_LEVEL, DM_TYPE } from '../tool/index.ts'
+import type {
+  CMD,
+  DM_TYPE,
+  GUARD_LEVEL,
+  OPERATION,
+  VERSION,
+} from '../tool/index.ts'
 
-export interface BasePackage {
+export type BasePackage = {
   headerLength: 16
   operation: OPERATION
   packetLength: number
@@ -9,19 +15,20 @@ export interface BasePackage {
   version: VERSION
 }
 
-export interface AuthReplyPackage extends BasePackage {
+export type AuthReplyPackage = {
   operation: OPERATION.OP_AUTH_REPLY
   body: { code: number }
-}
+} & BasePackage
 
-export interface HearbeatReplyPackage extends BasePackage {
+export type HearbeatReplyPackage = {
   operation: OPERATION.OP_HEARTBEAT_REPLY
-}
+  body?: undefined
+} & BasePackage
 
-export interface SMSReplyPackage extends BasePackage {
+export type SMSReplyPackage = {
   operation: OPERATION.OP_SEND_SMS_REPLY
   body: Message
-}
+} & BasePackage
 
 export type Package = AuthReplyPackage | HearbeatReplyPackage | SMSReplyPackage
 
@@ -37,7 +44,7 @@ export type Message =
   | InteractionEnd
   | SuperChatOffline
 
-export interface Chat {
+export type Chat = {
   cmd: CMD.CHAT
   data: {
     room_id: number
@@ -58,21 +65,21 @@ export interface Chat {
   }
 }
 
-interface AnchorInfo {
+type AnchorInfo = {
   uid: number
   open_id: string
   uname: string
   uface: string
 }
 
-interface ComboInfo {
+type ComboInfo = {
   combo_base_num: number
   combo_count: number
   combo_id: string
   combo_timeout: number
 }
 
-export interface Gift {
+export type Gift = {
   cmd: CMD.GIFT
   data: {
     room_id: number
@@ -100,7 +107,7 @@ export interface Gift {
   }
 }
 
-export interface SuperChat {
+export type SuperChat = {
   cmd: CMD.SUPER_CHAT
   data: {
     room_id: number
@@ -123,7 +130,7 @@ export interface SuperChat {
   }
 }
 
-export interface SuperChatOffline {
+export type SuperChatOffline = {
   cmd: CMD.SUPER_CHAT_OFFLINE
   data: {
     room_id: number
@@ -132,14 +139,14 @@ export interface SuperChatOffline {
   }
 }
 
-interface UserInfo {
+type UserInfo = {
   uid: 0
   open_id: string
   uname: string
   uface: string
 }
 
-export interface Guard {
+export type Guard = {
   cmd: CMD.GUARD
   data: {
     user_info: UserInfo
@@ -156,7 +163,7 @@ export interface Guard {
   }
 }
 
-export interface Like {
+export type Like = {
   cmd: CMD.LIKE
   data: {
     uname: string
@@ -174,7 +181,7 @@ export interface Like {
   }
 }
 
-export interface EnterRoom {
+export type EnterRoom = {
   cmd: CMD.ENTER_ROOM
   data: {
     room_id: number
@@ -185,7 +192,7 @@ export interface EnterRoom {
   }
 }
 
-export interface LiveStart {
+export type LiveStart = {
   cmd: CMD.LIVE_START
   data: {
     room_id: number
@@ -196,7 +203,7 @@ export interface LiveStart {
   }
 }
 
-export interface LiveEnd {
+export type LiveEnd = {
   cmd: CMD.LIVE_END
   data: {
     room_id: number
@@ -207,7 +214,7 @@ export interface LiveEnd {
   }
 }
 
-export interface InteractionEnd {
+export type InteractionEnd = {
   cmd: CMD.INTERACTION_END
   data: {
     game_id: string

@@ -1,6 +1,6 @@
 import { isNumber } from '@/tool/index.ts'
 
-export interface UseChatAutoScrollOptions {
+export type UseChatAutoScrollOptions = {
   /**
    * 滑动滚轮使容器滚动到离底部多少像素范围内才会开始切换至自动滚动
    * 如果为`false`则永远不切换至自动滚动
@@ -42,7 +42,10 @@ export function useChatAutoScroll(
       stopAutoScroll()
       isAutoScroll.value = false
       if (isNumber(offset)) {
-        if (el && Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < offset) {
+        if (
+          el &&
+          Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < offset
+        ) {
           startAutoScroll()
         }
       } else if (offset) {
