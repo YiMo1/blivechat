@@ -1,5 +1,3 @@
-import { inflate } from 'pako'
-
 import { HEADER_SIZE, OPERATION, VERSION } from './contanst.ts'
 import { isString } from './general.ts'
 
@@ -33,6 +31,7 @@ export function makePacket(
   return packet.buffer
 }
 
+const textDecoder = new TextDecoder()
 export async function parseWsMessage(rawData: Blob): Promise<Package> {
   const buffer = await rawData.arrayBuffer()
   const view = new DataView(buffer)
@@ -46,34 +45,10 @@ export async function parseWsMessage(rawData: Blob): Promise<Package> {
     version,
     operation,
     sequenceId: view.getUint32(12) as 0,
-    // eslint-disable-next-line ts/no-unsafe-assignment
     body:
       operation === OPERATION.OP_HEARTBEAT_REPLY
         ? undefined
-        : parseWsMessageBody(bodyBuffer, version),
-  }
-}
-
-const textDecoder = new TextDecoder()
-
-export function parseWsMessageBody(body: ArrayBuffer, version: VERSION) {
-  switch (version) {
-    case VERSION.ACTUAL:
-      // eslint-disable-next-line ts/no-unsafe-return
-      return JSON.parse(textDecoder.decode(body))
-    case VERSION.COMPRESSED: {
-
-      let buffer = arrayBufferLikeToArrayBuffer(inflate(body).buffer)
-      const pkgs: Blob[] = []
-      while (buffer.byteLength > 0) {
-        const view = new DataView(buffer)
-        const packetLength = view.getUint32(0)
-        const pkg = buffer.slice(0, packetLength)
-        buffer = buffer.slice(packetLength)
-        pkgs.push(new Blob([pkg]))
-      }
-      return pkgs.map((pkg) => parseWsMessage(pkg))
-    }
+        : JSON.parse(textDecoder.decode(bodyBuffer)) as Package['body'],
   }
 }
 

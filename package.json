@@ -25,7 +25,6 @@
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/express-serve-static-core": "^5.0.2",
-    "@types/pako": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "@vueuse/core": "^12.0.0",
@@ -38,7 +37,6 @@
     "jiti": "^2.4.2",
     "lint-staged": "^15.2.11",
     "mitt": "^3.0.1",
-    "pako": "^2.1.0",
     "prettier": "^3.4.2",
     "rollup-plugin-node-externals": "^8.0.0",
     "sass": "^1.83.0",
