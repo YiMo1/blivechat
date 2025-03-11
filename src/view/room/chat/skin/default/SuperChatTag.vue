@@ -57,13 +57,9 @@ function calculationColor(rmb: number) {
     <div class="absolute inset-0 -z-10 bg-[var(--background-color)]">
       <div
         class="progress absolute size-full origin-left bg-[var(--progress-color)]"
-        @animationend="() => $emit('animationend')"
-      />
+        @animationend="() => $emit('animationend')" />
     </div>
-    <img
-      class="mr-2 size-7 rounded-full"
-      :src="superChat.uface"
-    />
+    <img class="mr-2 size-7 rounded-full" :src="superChat.uface" />
     <span>CN￥{{ superChat.rmb }}</span>
   </li>
 </template>

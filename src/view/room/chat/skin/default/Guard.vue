@@ -32,18 +32,14 @@ function calculationColor(level: Exclude<GUARD_LEVEL, GUARD_LEVEL.NONE>) {
     ref="el"
     class="mb-3 flex h-14 w-full bg-[var(--color)] px-3 py-2"
   >
-    <img
-      class="mr-3 h-full rounded-full"
-      :src="guard.user_info.uface"
-    />
+    <img class="mr-3 h-full rounded-full" :src="guard.user_info.uface" />
     <div>
       <div class="mb-1.5 flex h-5 items-center">
         <span class="text-white">{{ guard.user_info.uname }}</span>
         <medal
           v-if="guard.fans_medal_wearing_status"
           :level="guard.fans_medal_level"
-          :name="guard.fans_medal_name"
-        />
+          :name="guard.fans_medal_name" />
       </div>
       <div class="text-[#ffffffbb]">
         欢迎{{ guard.user_info.uname }}上舰

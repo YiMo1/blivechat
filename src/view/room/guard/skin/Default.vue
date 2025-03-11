@@ -34,17 +34,13 @@ const map = {
     :data-level="level"
     @animationend.self="() => guards.shift()"
   >
-    <img
-      class="absolute inset-0"
-      :src="map[first.guard_level]"
-    />
+    <img class="absolute inset-0" :src="map[first.guard_level]" />
     <img
       :class="[
         'avatar-enter absolute left-1/2 top-[78%] size-[200px] rounded-full',
         'border-[10px] border-solid border-[var(--border-color)] opacity-0',
       ]"
-      :src="first.user_info.uface"
-    />
+      :src="first.user_info.uface" />
     <div
       style="box-shadow: var(--box-shadow)"
       :class="[

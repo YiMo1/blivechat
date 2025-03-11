@@ -26,7 +26,6 @@ const { chatRetainedQuantity } = inject(CONFIG_INJECTION_KEY) ?? {
 const messages = ref<(GuardType | ChatType | GiftType | SuperChatType)[]>([])
 const superChats = ref<SuperChatType['data'][]>([])
 const chatContainer = ref<HTMLUListElement>()
-const container = ref<HTMLDivElement>()
 
 useLimitArrayLength(messages, {
   maxLength: chatRetainedQuantity,
@@ -54,10 +53,7 @@ function delSuperChat(superChat: SuperChatType['data']) {
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="relative mx-5 min-h-screen text-sm"
-  >
+  <div class="relative mx-5 min-h-screen text-sm">
     <transition-group
       name="super_chat"
       tag="ul"
@@ -67,34 +63,18 @@ function delSuperChat(superChat: SuperChatType['data']) {
         v-for="superChat in superChats"
         :key="superChat.msg_id"
         :super-chat="superChat"
-        @animationend="() => delSuperChat(superChat)"
-      />
+        @animationend="() => delSuperChat(superChat)" />
     </transition-group>
     <ul
       ref="chatContainer"
       class="absolute bottom-0 max-h-full w-full overflow-y-auto scrollbar-hidden"
     >
       <transition-group name="chat">
-        <template
-          v-for="msg in messages"
-          :key="msg.data.msg_id"
-        >
-          <chat
-            v-if="msg.cmd === CMD.CHAT"
-            :chat="msg.data"
-          />
-          <guard
-            v-else-if="msg.cmd === CMD.GUARD"
-            :guard="msg.data"
-          />
-          <gift
-            v-else-if="msg.cmd === CMD.GIFT"
-            :gift="msg.data"
-          />
-          <super-chat
-            v-else-if="msg.cmd === CMD.SUPER_CHAT"
-            :super-chat="msg.data"
-          />
+        <template v-for="msg in messages" :key="msg.data.msg_id">
+          <chat v-if="msg.cmd === CMD.CHAT" :chat="msg.data" />
+          <guard v-else-if="msg.cmd === CMD.GUARD" :guard="msg.data" />
+          <gift v-else-if="msg.cmd === CMD.GIFT" :gift="msg.data" />
+          <super-chat v-else-if="msg.cmd === CMD.SUPER_CHAT" :super-chat="msg.data" />
         </template>
       </transition-group>
     </ul>
