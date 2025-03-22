@@ -6,5 +6,5 @@
     "moduleDetection": "force",
     "isolatedModules": true
   },
-  "include": ["eslint.config.ts", "tailwind.config.ts", "vitest.config.ts"]
+  "include": ["eslint.config.js", "tailwind.config.ts", "vitest.config.ts"]
 }
