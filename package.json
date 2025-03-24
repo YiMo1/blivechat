@@ -32,7 +32,7 @@
     "axios": "^1.7.9",
     "element-plus": "^2.9.1",
     "eslint": "^9.17.0",
-    "eslint-config-yimo": "^1.0.4",
+    "eslint-config-yimo": "^1.0.8",
     "express": "^4.21.2",
     "lint-staged": "^15.2.11",
     "mitt": "^3.0.1",
