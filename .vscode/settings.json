@@ -28,5 +28,6 @@
   },
   "[vue]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+  "explorer.fileNesting.enabled": true
 }
