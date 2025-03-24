@@ -129,7 +129,6 @@ onBeforeMount(async () => {
       info.value = data.data
     }
 
-    // eslint-disable-next-line ts/no-misused-promises
     const { resume } = useIntervalFn(heartbeat, PROJECT_HEARBEAT_INTERVAL, {
       immediate: false,
     })

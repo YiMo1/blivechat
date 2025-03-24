@@ -21,6 +21,5 @@ app.get('*', (_, res) => {
 })
 app.use(__BASE_URL__, router)
 app.listen(__PORT__, () => {
-  // eslint-disable-next-line no-console
   console.log(`服务已在${__PORT__}端口启动...`)
 })
